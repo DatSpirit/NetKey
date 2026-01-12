@@ -5,12 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes; 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, SoftDeletes, HasApiTokens;//thêm HasApiTokens để hỗ trợ Laravel Sanctum
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            // Tự động set hạn 30 ngày cho user mới (trừ admin)
+            if (empty($user->expires_at) && !$user->is_admin) {
+                $user->expires_at = now()->addDays(30);
+                $user->account_status = 'active';
+                $user->account_notes = ($user->account_notes ?? '') . "\nAuto-assigned 30 days expiration on creation.";
+            }
+        });
+    }
 
     /**
      * Các thuộc tính được phép gán.
@@ -106,12 +121,12 @@ class User extends Authenticatable
             'total_deposited' => 0,
             'total_spent' => 0,
             'currency' => 'COINKEY',
-            'is_locked' => false,        
+            'is_locked' => false,
         ]);
     }
 
 
-     /**
+    /**
      * Kiểm tra số dư coinkey
      */
 

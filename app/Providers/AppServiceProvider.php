@@ -70,10 +70,7 @@ class AppServiceProvider extends ServiceProvider
             \App\Http\Responses\RegisterResponse::class
         );
 
-        Event::listen(
-            Login::class,
-            UpdateLastLogin::class
-        );
+
     }
 
     /**

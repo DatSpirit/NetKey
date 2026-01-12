@@ -62,8 +62,8 @@ class AccountExpirationService
             $user->update([
                 'expires_at' => $newExpiresAt,
                 'account_status' => 'active',
-                'account_notes' => ($user->account_notes ?? '') . 
-                    "\nExtended {$days} days at " . now()->toDateTimeString() . 
+                'account_notes' => ($user->account_notes ?? '') .
+                    "\nExtended {$days} days at " . now()->toDateTimeString() .
                     ($reason ? " - Reason: {$reason}" : '')
             ]);
 
@@ -84,7 +84,7 @@ class AccountExpirationService
         $user->update([
             'expires_at' => $expiresAt,
             'account_status' => $expiresAt->isFuture() ? 'active' : 'expired',
-            'account_notes' => ($user->account_notes ?? '') . 
+            'account_notes' => ($user->account_notes ?? '') .
                 "\nExpiration set to {$expiresAt->toDateTimeString()} at " . now()->toDateTimeString() .
                 ($reason ? " - Reason: {$reason}" : '')
         ]);
@@ -99,7 +99,7 @@ class AccountExpirationService
     {
         $user->update([
             'account_status' => 'suspended',
-            'account_notes' => ($user->account_notes ?? '') . 
+            'account_notes' => ($user->account_notes ?? '') .
                 "\nSuspended at " . now()->toDateTimeString() . " - Reason: {$reason}"
         ]);
 
@@ -118,7 +118,7 @@ class AccountExpirationService
 
         $user->update([
             'account_status' => 'active',
-            'account_notes' => ($user->account_notes ?? '') . 
+            'account_notes' => ($user->account_notes ?? '') .
                 "\nActivated at " . now()->toDateTimeString() .
                 ($reason ? " - Reason: {$reason}" : '')
         ]);
@@ -157,5 +157,15 @@ class AccountExpirationService
                 ->whereBetween('expires_at', [now(), now()->addDays(30)])
                 ->count(),
         ];
+    }
+    /**
+     * Mark a user as expired specifically
+     */
+    public function markAsExpired(User $user): void
+    {
+        $user->update([
+            'account_status' => 'expired',
+            'account_notes' => ($user->account_notes ?? '') . "\nMarked as expired by system at: " . now()->toDateTimeString()
+        ]);
     }
 }

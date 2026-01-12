@@ -2,15 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-3xl font-bold text-gray-100 dark:text-white">Welcome Back!</h2>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Welcome Back!</h2>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Here's what's happening with your account today
                 </p>
-            </div>
-            <div class="hidden sm:block">
-                <span
-                    class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-xl shadow-lg">
-                    🎉 {{ $user->login_count ?? 0 }} Logins
-                </span>
             </div>
         </div>
     </x-slot>
@@ -18,34 +12,77 @@
     <div class="space-y-6">
         {{-- Welcome Banner --}}
         <div
-            class="bg-gradient-to-r from-blue-600 to-blue-200 dark:from-blue-600 dark:to-blue-200 rounded-2xl shadow-xl p-8 text-white">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="mb-4 md:mb-0">
-                    <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
-                        Chào mừng, <span class="text-yellow-300">{{ $user->name }}</span> !!!
+            class="relative overflow-hidden bg-gradient-to-r from-indigo-700 to-blue-600 rounded-3xl shadow-2xl p-6 sm:p-10 text-white">
+            {{-- Decorative Background Circles --}}
+            <div
+                class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-white opacity-5 blur-3xl pointer-events-none">
+            </div>
+            <div
+                class="absolute bottom-0 left-0 -ml-20 -mb-20 w-60 h-60 rounded-full bg-blue-400 opacity-10 blur-3xl pointer-events-none">
+            </div>
+
+            <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+                {{-- Profile Info --}}
+                <div class="text-center lg:text-left space-y-3">
+                    <h3 class="text-3xl md:text-5xl font-extrabold tracking-tight">
+                        Welcome, <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-400">{{ $user->name }}</span>
+
                     </h3>
-                    <p class="text-gray-900 dark:text-white text-lg">
-                        Số lần đăng nhập: <span class="font-bold">{{ number_format($user->login_count ?? 0) }}</span> •
-                        Tài khoản được tạo {{ $user->created_at->diffForHumans() }}
+                    <p class="text-blue-100 text-lg flex items-center justify-center lg:justify-start gap-3">
+                        <span
+                            class="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            Join: {{ $user->created_at->format('d/m/Y') }}
+                        </span>
+                        <span
+                            class="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full text-sm backdrop-blur-sm">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
+                                </path>
+                            </svg>
+                            Login: {{ number_format($user->login_count ?? 0) }} times
+                        </span>
                     </p>
+                </div>
+
+                {{-- Action & Timer --}}
+                <div class="flex flex-col sm:flex-row items-center gap-2 w-full lg:w-auto">
                     @if ($user->expires_at)
-                        <div class="mt-4 p-4 bg-yellow-100 border border-yellow-300 rounded-lg shadow">
-                            <h3 class="text-lg font-semibold text-gray-800">
-                                Thời gian sử dụng còn lại:
-                            </h3>
-                            <p id="countdown" class="text-xl font-bold text-red-600 mt-2">
-                                Đang tải...
+                        <div
+                            class="flex-1 w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-center min-w-[220px] shadow-lg">
+                            <p
+                                class="text-xs font-bold text-blue-200 uppercase tracking-wider mb-1 flex items-center justify-center gap-1">
+                                <svg class="w-3 h-3 animate-pulse text-green-400" fill="currentColor" viewBox="0 0 8 8">
+                                    <circle cx="4" cy="4" r="3" />
+                                </svg>
+                                Expiry Date
+                            </p>
+                            <p id="countdown" class="text-2xl font-mono font-bold text-white drop-shadow-md"
+                                data-expires-at="{{ $user->expires_at }}">
+                                Loading...
                             </p>
                         </div>
                     @endif
-                    <p class="text-sm text-gray-900 dark:text-white mt-2">
-                        Vui lòng kiểm tra thời hạn sử dụng ở trên. Hãy kiểm tra tổng quan giao dịch bên dưới.
-                    </p>
+
+                    <a href="{{ route('profile.edit') }}"
+                        class="group flex items-center gap-2 px-6 py-4 bg-white text-indigo-600 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:bg-gray-50 transition-all transform hover:-translate-y-1">
+                        <span>Cài đặt</span>
+                        <svg class="w-5 h-5 group-hover:rotate-90 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </a>
                 </div>
-                <a href="{{ route('profile.edit') }}"
-                    class="inline-flex items-center px-6 py-3 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg transform hover:scale-105">
-                    ✏️ Cập nhật Hồ sơ
-                </a>
             </div>
         </div>
 
@@ -56,15 +93,17 @@
             <div
                 class="bg-gradient-to-br from-blue-600 to-blue-200 dark:from-blue-200 dark:to-blue-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="p-3 bg-white/20 dark:bg-white backdrop-blur-sm rounded-xl">
+                    <div class="p-3 bg-white/20 dark:bg-blue-200 backdrop-blur-sm rounded-xl">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm text-gray-900 dark:text-white opacity-90 mb-2 uppercase tracking-wider">Tổng Chi Tiêu</p>
-                <p class="text-3xl text-gray-900 dark:text-white font-bold">{{ number_format($stats['total_spend']) }}</p>
+                <p class="text-sm text-gray-900 dark:text-white opacity-90 mb-2 uppercase tracking-wider">Tổng Chi Tiêu
+                </p>
+                <p class="text-3xl text-gray-900 dark:text-white font-bold">{{ number_format($stats['total_spend']) }}
+                </p>
                 <p class="text-xs text-gray-900 dark:text-white opacity-75 mt-2">VND (Đã xác nhận)</p>
             </div>
 
@@ -189,8 +228,8 @@
                 <!-- Header -->
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
-                        <svg class="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 mr-2 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
@@ -248,8 +287,7 @@
                             <div class="flex items-center space-x-4 flex-1 min-w-0">
                                 <div
                                     class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                     </svg>
@@ -275,8 +313,8 @@
                         <div class="text-center py-16">
                             <div
                                 class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-10 h-10 text-gray-400 dark:text-gray-500" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-10 h-10 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                 </svg>
@@ -356,7 +394,7 @@
                 const expiresAt = new Date(countdownEl.dataset.expiresAt).getTime();
 
                 // Cập nhật đồng hồ đếm ngược mỗi giây
-                const countdownInterval = setInterval(function() {
+                const countdownInterval = setInterval(function () {
                     const now = new Date().getTime();
                     const distance = expiresAt - now;
 
@@ -372,7 +410,7 @@
                     } else {
                         clearInterval(countdownInterval);
                         countdownEl.innerHTML = "ĐÃ HẾT HẠN";
-                
+
                     }
                 }, 1000);
             </script>
@@ -382,7 +420,7 @@
         {{-- Script cho biểu đồ --}}
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
 
                 // Gradient TAILWIND (Auto Dark)
                 function createGradient(ctx, colorFrom, colorTo) {
@@ -431,7 +469,7 @@
                                         size: 13
                                     },
                                     callbacks: {
-                                        label: function(context) {
+                                        label: function (context) {
                                             const count = context.parsed; // Số lượng giao dịch
                                             let percentage = 0;
 
@@ -515,45 +553,45 @@
                         labels,
                         datasets: [{
 
-                                label: 'Chi Tiêu / Giao Dịch',
-                                data: avg,
-                                fill: true,
-                                borderColor: '#22c55e',
-                                backgroundColor: 'rgba(14, 165, 233, 0.55)',
-                                tension: 0.4,
-                                borderWidth: 2,
-                                pointRadius: 2,
-                                pointHoverRadius: 5,
-                                yAxisID: "moneyAxis",
-                            },
-                            {
+                            label: 'Chi Tiêu / Giao Dịch',
+                            data: avg,
+                            fill: true,
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(14, 165, 233, 0.55)',
+                            tension: 0.4,
+                            borderWidth: 2,
+                            pointRadius: 2,
+                            pointHoverRadius: 5,
+                            yAxisID: "moneyAxis",
+                        },
+                        {
 
-                                label: "Tổng Chi Tiêu (VND)",
-                                data: totals,
-                                borderColor: '#1d4ed8',
-                                backgroundColor: createGradient(
-                                    ctx,
-                                    'rgba(252, 165, 165, 0.9)',
-                                    'rgba(244, 63, 94, 0.7)'
-                                ),
-                                tension: 0.4,
-                                borderWidth: 1.5,
-                                pointRadius: 2,
-                                pointHoverRadius: 5,
-                                yAxisID: "moneyAxis"
-                            },
-                            {
+                            label: "Tổng Chi Tiêu (VND)",
+                            data: totals,
+                            borderColor: '#1d4ed8',
+                            backgroundColor: createGradient(
+                                ctx,
+                                'rgba(252, 165, 165, 0.9)',
+                                'rgba(244, 63, 94, 0.7)'
+                            ),
+                            tension: 0.4,
+                            borderWidth: 1.5,
+                            pointRadius: 2,
+                            pointHoverRadius: 5,
+                            yAxisID: "moneyAxis"
+                        },
+                        {
 
-                                label: 'Số Giao Dịch Thành Công',
-                                data: counts,
-                                borderColor: '#f59e0b',
-                                backgroundColor: 'rgba(245, 158, 11, 0.25)',
-                                borderWidth: 2,
-                                tension: 0.4,
-                                yAxisID: "countAxis",
-                                pointRadius: 2,
-                                pointHoverRadius: 5
-                            }
+                            label: 'Số Giao Dịch Thành Công',
+                            data: counts,
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.25)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            yAxisID: "countAxis",
+                            pointRadius: 2,
+                            pointHoverRadius: 5
+                        }
 
                         ]
                     },
@@ -605,8 +643,8 @@
                         // xoay vòng
                         currentType =
                             currentType === "bar" ? "line" :
-                            currentType === "line" ? "area" :
-                            "bar";
+                                currentType === "line" ? "area" :
+                                    "bar";
 
                         chart.data.datasets.forEach(ds => {
 
@@ -624,7 +662,7 @@
 
                 //    --- Logic Chuyển Đổi Phạm Vi ---
                 document.getElementById('chart-range-select')
-                    .addEventListener('change', function() {
+                    .addEventListener('change', function () {
                         const selectedValue = this.value;
                         window.location.href = `?range=${selectedValue}`;
                     });

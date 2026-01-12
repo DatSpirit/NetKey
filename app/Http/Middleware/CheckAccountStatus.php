@@ -36,8 +36,25 @@ class CheckAccountStatus
                 $user->update(['account_status' => 'expired']);
             }
 
-            // Cho phép truy cập nhưng hiển thị warning
-            session()->flash('warning', 'Your account has expired. Please renew to continue using all features.');
+            // Danh sách các route cho phép khi hết hạn
+            $allowedRoutes = [
+                'wallet.index',
+                'wallet.buy-package',
+                'wallet.purchase-package',
+                'wallet.check-balance',
+                'wallet.calculate-price',
+                'logout',
+                'profile.edit', // Cho phép xem profile để biết tình trạng
+                'profile.update',
+                'password.confirm',
+                'password.confirm.custom',
+            ];
+
+            // Nếu route hiện tại không nằm trong danh sách cho phép -> Redirect
+            if (!$request->routeIs($allowedRoutes)) {
+                return redirect()->route('wallet.buy-package')
+                    ->with('error', 'Your account has expired. Please renew your subscription to access this feature.');
+            }
         }
 
         return $next($request);
