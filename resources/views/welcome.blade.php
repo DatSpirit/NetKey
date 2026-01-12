@@ -4,20 +4,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Laravel') }} - Nền tảng quản lý thông minh</title>
+    <title>{{ config('app.name', 'Netkey') }} - Nền tảng quản lý thông minh</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
 
-   <!-- Styles -->
-<!-- Styles -->
-@if (app()->environment('local'))
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-@else
-    <link rel="stylesheet" href="{{ secure_asset('build/assets/app-CfAMAoGE.css') }}">
-    <script src="{{ secure_asset('build/assets/app-ByAQDGt7.js') }}" defer></script>
-@endif
+    <!-- Styles -->
+    <!-- Styles -->
+    @if (app()->environment('local'))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        <link rel="stylesheet" href="{{ secure_asset('build/assets/app-CfAMAoGE.css') }}">
+        <script src="{{ secure_asset('build/assets/app-ByAQDGt7.js') }}" defer></script>
+    @endif
 
 
 </head>
@@ -587,7 +587,7 @@
 
     <!-- Footer -->
     <footer class="py-8 bg-gray-900 text-center text-gray-400 text-sm">
-        <p>© {{ date('Y') }} {{ config('app.name', 'Laravel') }}. Mọi quyền được bảo lưu.</p>
+        <p>© {{ date('Y') }} {{ config('app.name', 'NetKey') }}. Mọi quyền được bảo lưu.</p>
         <div class="mt-3">
             <a href="{{ url('/') }}" class="mx-2 hover:text-indigo-400 transition">Trang chủ</a> |
             <a href="#features" class="mx-2 hover:text-indigo-400 transition">Tính năng</a> |

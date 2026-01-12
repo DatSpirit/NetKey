@@ -5,64 +5,64 @@
     $notifications = [];
 
     // Today's products (example - adjust based on your Product model)
-if (class_exists('\App\Models\Product')) {
-    $todayProducts = \App\Models\Product::whereDate('created_at', today())->count();
-    if ($todayProducts > 0) {
-        $notifications[] = [
-            'type' => 'info',
-            'icon' => '🆕',
-            'title' => 'Sản phẩm mới',
-            'message' => "{$todayProducts} sản phẩm mới được thêm hôm nay",
-            'time' => 'Hôm nay',
-            'link' => route('products'),
-        ];
-    }
-}
-
-// Recent transactions (for current user)
-if (class_exists('\App\Models\Transaction')) {
-    $recentSuccess = \App\Models\Transaction::where('user_id', $user->id)
-        ->where('status', 'success')
-        ->whereDate('created_at', '>=', now()->subDays(1))
-        ->count();
-
-    if ($recentSuccess > 0) {
-        $notifications[] = [
-            'type' => 'success',
-            'icon' => '✅',
-            'title' => 'Giao dịch thành công',
-            'message' => "{$recentSuccess} giao dịch đã được xác nhận",
-            'time' => '24h qua',
-            'link' => '#',
-        ];
+    if (class_exists('\App\Models\Product')) {
+        $todayProducts = \App\Models\Product::whereDate('created_at', today())->count();
+        if ($todayProducts > 0) {
+            $notifications[] = [
+                'type' => 'info',
+                'icon' => '🆕',
+                'title' => 'Sản phẩm mới',
+                'message' => "{$todayProducts} sản phẩm mới được thêm hôm nay",
+                'time' => 'Hôm nay',
+                'link' => route('products'),
+            ];
+        }
     }
 
-    $recentPending = \App\Models\Transaction::where('user_id', $user->id)->where('status', 'pending')->count();
+    // Recent transactions (for current user)
+    if (class_exists('\App\Models\Transaction')) {
+        $recentSuccess = \App\Models\Transaction::where('user_id', $user->id)
+            ->where('status', 'success')
+            ->whereDate('created_at', '>=', now()->subDays(1))
+            ->count();
 
-    if ($recentPending > 0) {
-        $notifications[] = [
-            'type' => 'warning',
-            'icon' => '⏳',
-            'title' => 'Chờ thanh toán',
-            'message' => "{$recentPending} giao dịch đang chờ xử lý",
-            'time' => 'Hiện tại',
-            'link' => '#',
-        ];
-    }
+        if ($recentSuccess > 0) {
+            $notifications[] = [
+                'type' => 'success',
+                'icon' => '✅',
+                'title' => 'Giao dịch thành công',
+                'message' => "{$recentSuccess} giao dịch đã được xác nhận",
+                'time' => '24h qua',
+                'link' => '#',
+            ];
+        }
 
-    $recentFailed = \App\Models\Transaction::where('user_id', $user->id)
-        ->whereIn('status', ['failed', 'cancelled'])
-        ->whereDate('created_at', '>=', now()->subDays(1))
-        ->count();
+        $recentPending = \App\Models\Transaction::where('user_id', $user->id)->where('status', 'pending')->count();
 
-    if ($recentFailed > 0) {
-        $notifications[] = [
-            'type' => 'error',
-            'icon' => '❌',
-            'title' => 'Giao dịch thất bại',
-            'message' => "{$recentFailed} giao dịch không thành công",
-            'time' => '24h qua',
-            'link' => '#',
+        if ($recentPending > 0) {
+            $notifications[] = [
+                'type' => 'warning',
+                'icon' => '⏳',
+                'title' => 'Chờ thanh toán',
+                'message' => "{$recentPending} giao dịch đang chờ xử lý",
+                'time' => 'Hiện tại',
+                'link' => '#',
+            ];
+        }
+
+        $recentFailed = \App\Models\Transaction::where('user_id', $user->id)
+            ->whereIn('status', ['failed', 'cancelled'])
+            ->whereDate('created_at', '>=', now()->subDays(1))
+            ->count();
+
+        if ($recentFailed > 0) {
+            $notifications[] = [
+                'type' => 'error',
+                'icon' => '❌',
+                'title' => 'Giao dịch thất bại',
+                'message' => "{$recentFailed} giao dịch không thành công",
+                'time' => '24h qua',
+                'link' => '#',
             ];
         }
     }
@@ -73,16 +73,15 @@ if (class_exists('\App\Models\Transaction')) {
 <div x-data="{ sidebarOpen: false, notificationOpen: false }" class="relative">
 
     {{-- Mobile Overlay --}}
-    <div x-show="sidebarOpen" @click="sidebarOpen = false" x-transition:enter="transition-opacity ease-linear duration-300"
-        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-        x-transition:leave="transition-opacity ease-linear duration-300" x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0" class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
-        style="display: none;">
+    <div x-show="sidebarOpen" @click="sidebarOpen = false"
+        x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden" style="display: none;">
     </div>
 
     {{-- Top Navigation Bar --}}
-    <nav
-        class="fixed top-0 left-0 right-0 z-30 bg-gray-600 dark:bg-white border-b border-gray-200 dark:border-gray-700 shadow-sm">
+    <nav class="fixed top-0 left-0 right-0 z-30 bg-white border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
 
@@ -99,15 +98,12 @@ if (class_exists('\App\Models\Transaction')) {
                     </button>
 
                     {{-- Logo --}}
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3">
-                        <div
-                            class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-200 rounded-xl flex items-center justify-center shadow-lg">
-                            <span class="text-gray-800 dark:text-white font-bold text-xl">SP</span>
-                            {{-- <img src="/logo.png" alt="Logo" class="w-8 h-8"> cần chèn logo --}}
-                        </div>
+                    {{-- Logo --}}
+                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 group">
+                        <x-application-logo class="w-10 h-10 group-hover:rotate-12 transition-transform duration-300" />
                         <span
-                            class="hidden sm:block text-xl font-bold bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
-                            StellaPay
+                            class="hidden sm:block text-2xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                            NetKey
                         </span>
                     </a>
                 </div>
@@ -192,18 +188,20 @@ if (class_exists('\App\Models\Transaction')) {
                                     <div class="flex-shrink-0 mr-3">
                                         <div
                                             class="w-10 h-10 rounded-full flex items-center justify-center
-                                            {{ $notif['type'] === 'success' ? 'bg-green-100 dark:bg-green-900/30' : '' }}
-                                            {{ $notif['type'] === 'error' ? 'bg-red-100 dark:bg-red-900/30' : '' }}
-                                            {{ $notif['type'] === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/30' : '' }}
-                                            {{ $notif['type'] === 'info' ? 'bg-blue-100 dark:bg-blue-900/30' : '' }}">
+                                                                {{ $notif['type'] === 'success' ? 'bg-green-100 dark:bg-green-900/30' : '' }}
+                                                                {{ $notif['type'] === 'error' ? 'bg-red-100 dark:bg-red-900/30' : '' }}
+                                                                {{ $notif['type'] === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/30' : '' }}
+                                                                {{ $notif['type'] === 'info' ? 'bg-blue-100 dark:bg-blue-900/30' : '' }}">
                                             <span class="text-lg">{{ $notif['icon'] }}</span>
                                         </div>
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-sm font-semibold text-gray-900 dark:text-white">
-                                            {{ $notif['title'] }}</p>
+                                            {{ $notif['title'] }}
+                                        </p>
                                         <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                                            {{ $notif['message'] }}</p>
+                                            {{ $notif['message'] }}
+                                        </p>
                                         <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">{{ $notif['time'] }}
                                         </p>
                                     </div>
@@ -240,17 +238,35 @@ if (class_exists('\App\Models\Transaction')) {
                         {{-- Dropdown Menu --}}
                         <div x-show="profileOpen" @click.away="profileOpen = false"
                             x-transition:enter="transition ease-out duration-200"
-                            x-transition:enter-start="opacity-0 scale-95"
-                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                             x-transition:leave="transition ease-in duration-150"
-                            x-transition:leave-start="opacity-100 scale-100"
-                            x-transition:leave-end="opacity-0 scale-95"
+                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                             class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 py-2"
                             style="display: none;">
 
                             <div class="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                                 <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $user->name }}</p>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ $user->email }}</p>
+
+                                <!-- Expiration Badge -->
+                                <div class="mt-2 flex items-center">
+                                    @if(!$user->expires_at)
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                            Lifetime
+                                        </span>
+                                    @elseif($user->account_status === 'expired' || $user->expires_at->isPast())
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
+                                            Expired
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium {{ $user->expires_at->diffInDays(now()) < 7 ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800' }}">
+                                            Exp: {{ $user->expires_at->diffForHumans() }}
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
 
                             <a href="{{ route('profile.edit') }}"
@@ -266,8 +282,7 @@ if (class_exists('\App\Models\Transaction')) {
                                 @csrf
                                 <button type="submit"
                                     class="w-full flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                     </svg>
@@ -291,7 +306,8 @@ if (class_exists('\App\Models\Transaction')) {
                 <div class="relative">
                     <div
                         class="w-14 h-14 bg-gradient-to-br from-blue-200 to-blue-600 rounded-full flex items-center justify-center shadow-lg ring-2 ring-indigo-100 dark:ring-indigo-900">
-                        <span class="text-gray-800 dark:text-white font-bold text-xl">{{ strtoupper(substr($user->name, 0, 2)) }}</span>
+                        <span
+                            class="text-gray-800 dark:text-white font-bold text-xl">{{ strtoupper(substr($user->name, 0, 2)) }}</span>
                     </div>
                     <span
                         class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white dark:border-gray-800 rounded-full"></span>
@@ -333,10 +349,9 @@ if (class_exists('\App\Models\Transaction')) {
                     <span>Home</span>
                 </a>
 
-                <a href="{{ route('products') }}"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('products')
-                        ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                <a href="{{ route('products') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('products')
+    ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
+    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -344,10 +359,9 @@ if (class_exists('\App\Models\Transaction')) {
                     <span>Products</span>
                 </a>
 
-                <a href="{{ route('wallet.index') }}"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('wallet.index')
-                        ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                <a href="{{ route('wallet.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('wallet.index')
+    ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
+    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -357,10 +371,9 @@ if (class_exists('\App\Models\Transaction')) {
 
 
 
-                <a href="{{ route('transactions.index') }}"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('transactions.index')
-                        ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                <a href="{{ route('transactions.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('transactions.index')
+    ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
+    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -368,22 +381,20 @@ if (class_exists('\App\Models\Transaction')) {
                     <span>My Transactions</span>
                 </a>
 
-                <a href="{{ route('keys.index') }}"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('keys.index')
-                        ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                <a href="{{ route('keys.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('keys.index')
+    ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
+    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                           d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                            d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                     </svg>
                     <span>My Keys</span>
                 </a>
 
 
-                <a href="{{ route('analytics.index') }}"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('analytics.index')
-                        ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                <a href="{{ route('analytics.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('analytics.index')
+    ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
+    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -391,10 +402,9 @@ if (class_exists('\App\Models\Transaction')) {
                     <span>Analytics</span>
                 </a>
 
-                <a href="{{ route('settings.index') }}"
-                    class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('settings.index')
-                        ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                <a href="{{ route('settings.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('settings.index')
+    ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
+    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -407,55 +417,53 @@ if (class_exists('\App\Models\Transaction')) {
 
             {{-- Admin Section --}}
             @if (Auth::check() && Auth::user()->is_admin)
-                <div class="pt-6 space-y-1">
-                    <p
-                        class="px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
-                        Administration</p>
+                    <div class="pt-6 space-y-1">
+                        <p class="px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
+                            Administration</p>
 
-                    <a href="{{ route('admin.dashboard') }}"
-                        class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                            <rect x="3" y="3" width="8" height="8" rx="1" stroke-width="1.5" />
-                            <rect x="13" y="3" width="8" height="8" rx="1" stroke-width="1.5" />
-                            <rect x="3" y="13" width="8" height="8" rx="1" stroke-width="1.5" />
-                            <rect x="13" y="13" width="8" height="8" rx="1" stroke-width="1.5" />
-                        </svg>
-                        <span>Admin Dashboard</span>
-                    </a>
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                                <rect x="3" y="3" width="8" height="8" rx="1" stroke-width="1.5" />
+                                <rect x="13" y="3" width="8" height="8" rx="1" stroke-width="1.5" />
+                                <rect x="3" y="13" width="8" height="8" rx="1" stroke-width="1.5" />
+                                <rect x="13" y="13" width="8" height="8" rx="1" stroke-width="1.5" />
+                            </svg>
+                            <span>Admin Dashboard</span>
+                        </a>
 
-                    <a href="{{ route('admin.users') }}"
-                        class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.users') ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        <span>User Management</span>
-                    </a>
+                        <a href="{{ route('admin.users') }}"
+                            class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.users') ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            <span>User Management</span>
+                        </a>
 
-                    <a href="{{ route('admin.transactions.all-transactions') }}"
-                        class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.transactions.all-transactions') ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <span>All Transactions</span>
-                    </a>
+                        <a href="{{ route('admin.transactions.all-transactions') }}"
+                            class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.transactions.all-transactions') ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <span>All Transactions</span>
+                        </a>
 
-                    <a href="{{ route('admin.keys.index') }}"
-                        class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.keys.index')
-                            ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
-                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                        </svg>
-                        <span> Keys Management </span>
-                    </a>
+                        <a href="{{ route('admin.keys.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.keys.index')
+                ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50'
+                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                            </svg>
+                            <span> Keys Management </span>
+                        </a>
 
 
 
-                </div>
+                    </div>
             @endif
 
             {{-- Help & Support Section --}}
@@ -486,7 +494,7 @@ if (class_exists('\App\Models\Transaction')) {
         {{-- Footer --}}
         <div class="p-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
             <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-                <span>© 2025 StellaPay</span>
+                <span>© 2025 NetKey</span>
                 <span
                     class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full font-semibold">v2.0.0</span>
             </div>
@@ -496,7 +504,7 @@ if (class_exists('\App\Models\Transaction')) {
     {{-- Dark Mode Toggle Script - Tailwind 4 Compatible --}}
     <script>
         // Initialize theme immediately to prevent flash
-        (function() {
+        (function () {
             const savedTheme = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const theme = savedTheme || (prefersDark ? 'dark' : 'light');
@@ -509,7 +517,7 @@ if (class_exists('\App\Models\Transaction')) {
         })();
 
         // Main theme toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const themeToggle = document.getElementById('theme-toggle');
             const htmlElement = document.documentElement;
             const iconSun = document.getElementById('theme-icon-sun');
