@@ -146,7 +146,7 @@ class AdminController extends Controller
     {
         // Validate dữ liệu nhập vào
         $validated = $request->validate([
-            'name'  => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'phone_number' => 'required|string|max:20',
             'notes' => 'nullable|string|max:1000',
@@ -174,6 +174,13 @@ class AdminController extends Controller
             return redirect()
                 ->route('admin.users')
                 ->with('error', 'You cannot delete your own account.');
+        }
+
+        // Không cho phép xóa admin khác
+        if ($user->isAdmin()) {
+            return redirect()
+                ->route('admin.users')
+                ->with('error', 'You cannot delete another admin account.');
         }
 
         $user->delete();
