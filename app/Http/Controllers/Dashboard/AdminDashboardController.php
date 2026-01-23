@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\CoinkeyTransaction;
 use App\Models\User;
@@ -107,9 +109,9 @@ class AdminDashboardController extends Controller
 
         $activityStatus = [
             'very_active' => $veryActiveCount,
-            'active'      => $activeCount,
-            'inactive'    => $inactiveCount,
-            'dormant'     => $dormantCount,
+            'active' => $activeCount,
+            'inactive' => $inactiveCount,
+            'dormant' => $dormantCount,
         ];
 
         // ===== TOP 10 NGƯỜI MUA HÀNG NHIỀU NHẤT =====

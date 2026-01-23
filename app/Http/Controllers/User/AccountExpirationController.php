@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use App\Services\AccountExpirationService;
@@ -54,10 +56,10 @@ class AccountExpirationController extends Controller
         try {
             $user = User::findOrFail($userId);
             $days = $request->input('days');
-            
+
             $updatedUser = $this->expirationService->extendAccount(
-                $user, 
-                $days, 
+                $user,
+                $days,
                 "Admin extended by {$days} days"
             );
 
@@ -99,7 +101,7 @@ class AccountExpirationController extends Controller
         try {
             $user = User::findOrFail($userId);
             $expiresAt = \Carbon\Carbon::parse($request->expires_at);
-            
+
             $updatedUser = $this->expirationService->setExpiration(
                 $user,
                 $expiresAt,
@@ -215,7 +217,7 @@ class AccountExpirationController extends Controller
         return response()->json([
             'success' => true,
             'count' => $users->count(),
-            'users' => $users->map(function($user) {
+            'users' => $users->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -233,10 +235,10 @@ class AccountExpirationController extends Controller
     public function getExpiredAccounts()
     {
         $users = User::where('account_status', 'expired')
-            ->orWhere(function($q) {
+            ->orWhere(function ($q) {
                 $q->where('account_status', 'active')
-                  ->whereNotNull('expires_at')
-                  ->where('expires_at', '<', now());
+                    ->whereNotNull('expires_at')
+                    ->where('expires_at', '<', now());
             })
             ->orderBy('expires_at', 'asc')
             ->get();

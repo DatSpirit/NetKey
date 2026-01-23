@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\System;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Transaction;
 use App\Models\Product;
@@ -18,13 +20,13 @@ class AnalyticsController extends Controller
         // ============================
         // 1 FILTERS
         // ============================
-        $days      = $request->input('days', 30);
-        $status    = $request->input('status');    // success / pending / failed
-        $method    = $request->input('method');    // COINKEY / VND
+        $days = $request->input('days', 30);
+        $status = $request->input('status');    // success / pending / failed
+        $method = $request->input('method');    // COINKEY / VND
         $productId = $request->input('product_id');
 
         $startDate = now()->subDays($days);
-        $endDate   = now();
+        $endDate = now();
 
         // ============================
         // 2BASE QUERY
@@ -33,9 +35,12 @@ class AnalyticsController extends Controller
             ->whereBetween('transactions.created_at', [$startDate, $endDate])
             ->with('product');
 
-        if ($status)    $query->where('transactions.status', $status);
-        if ($method)    $query->where('transactions.currency', $method);
-        if ($productId) $query->where('transactions.product_id', $productId);
+        if ($status)
+            $query->where('transactions.status', $status);
+        if ($method)
+            $query->where('transactions.currency', $method);
+        if ($productId)
+            $query->where('transactions.product_id', $productId);
 
         $transactions = $query->orderBy('transactions.created_at', 'desc')->get();
 
@@ -43,11 +48,11 @@ class AnalyticsController extends Controller
         // 3) KPI SECTION
         // ============================
         $analytics = [
-            'totalRevenue'   => $transactions->where('status', 'success')->sum('amount'),
-            'ordersTotal'    => $transactions->count(),
-            'ordersSuccess'  => $transactions->where('status', 'success')->count(),
-            'successRate'    => $this->successRate($transactions),
-            'avgOrder'       => $transactions->where('status', 'success')->avg('amount') ?? 0,
+            'totalRevenue' => $transactions->where('status', 'success')->sum('amount'),
+            'ordersTotal' => $transactions->count(),
+            'ordersSuccess' => $transactions->where('status', 'success')->count(),
+            'successRate' => $this->successRate($transactions),
+            'avgOrder' => $transactions->where('status', 'success')->avg('amount') ?? 0,
         ];
 
         // ============================
@@ -57,7 +62,7 @@ class AnalyticsController extends Controller
             ->where('status', 'success')
             ->groupBy(fn($t) => $t->created_at->format('Y-m-d'))
             ->map(fn($rows, $date) => [
-                'date'  => $date,
+                'date' => $date,
                 'total' => $rows->sum('amount')
             ])
             ->values();
@@ -67,7 +72,7 @@ class AnalyticsController extends Controller
         // ============================
         $paymentMethods = [
             'COINKEY' => $transactions->where('currency', 'COINKEY')->count(),
-            'VND'     => $transactions->where('currency', 'VND')->count(),
+            'VND' => $transactions->where('currency', 'VND')->count(),
         ];
 
         // ============================
@@ -123,7 +128,8 @@ class AnalyticsController extends Controller
         $newUsersRevenue = $transactions
             ->where('status', 'success')
             ->filter(function ($t) use ($startDate, $endDate) {
-                if (!$t->assigned_to_email) return false;
+                if (!$t->assigned_to_email)
+                    return false;
 
                 return User::where('email', $t->assigned_to_email)
                     ->whereBetween('created_at', [$startDate, $endDate])
@@ -132,9 +138,9 @@ class AnalyticsController extends Controller
             ->sum('amount');
 
         $cohort = [
-            'newUsers'        => $newUsers,
+            'newUsers' => $newUsers,
             'newUsersRevenue' => $newUsersRevenue,
-            'repeatRate'      => $this->repeatRate($transactions),
+            'repeatRate' => $this->repeatRate($transactions),
         ];
 
 
@@ -164,7 +170,8 @@ class AnalyticsController extends Controller
     // ============================
     private function successRate($rows)
     {
-        if ($rows->count() == 0) return 0;
+        if ($rows->count() == 0)
+            return 0;
         $success = $rows->where('status', 'success')->count();
         return round(($success / $rows->count()) * 100, 1);
     }
@@ -175,7 +182,8 @@ class AnalyticsController extends Controller
             ->where('status', 'success')
             ->groupBy('assigned_to_email');
 
-        if ($customers->count() == 0) return 0;
+        if ($customers->count() == 0)
+            return 0;
 
         $repeat = $customers->filter(fn($g) => $g->count() > 1)->count();
 

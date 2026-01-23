@@ -2,25 +2,25 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\UserDashboardController;
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Dashboard\UserDashboardController;
+use App\Http\Controllers\Dashboard\AdminDashboardController;
+use App\Http\Controllers\Financial\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\AllTransactionController;
-use App\Http\Controllers\SupportController;
-use App\Http\Controllers\MyTransactionController;
-use App\Http\Controllers\AnalyticsController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\AccountExpirationController;
-use App\Http\Controllers\CoinkeyWalletController;
-use App\Http\Controllers\KeyManagementController;
+use App\Http\Controllers\Financial\AllTransactionController;
+use App\Http\Controllers\System\SupportController;
+use App\Http\Controllers\Financial\MyTransactionController;
+use App\Http\Controllers\System\AnalyticsController;
+use App\Http\Controllers\System\SettingsController;
+use App\Http\Controllers\User\AccountExpirationController;
+use App\Http\Controllers\Financial\CoinkeyWalletController;
+use App\Http\Controllers\System\KeyManagementController;
 use App\Http\Controllers\Admin\AdminKeyManagementController;
 use App\Http\Controllers\Admin\AdminCustomExtendController;
-use App\Http\Controllers\DailyCheckinController;
+use App\Http\Controllers\User\DailyCheckinController;
 
 // ===========================
 // 🔹 TRANG CHỦ

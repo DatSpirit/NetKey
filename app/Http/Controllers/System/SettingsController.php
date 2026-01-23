@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\System;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,11 +73,11 @@ class SettingsController extends Controller
     private function updateNotifications(Request $request)
     {
         $user = Auth::user();
-        
+
         // Update notification preferences
         // You might want to create a separate settings table
         // or add JSON column to users table
-        
+
         return back()->with('success', 'Notification settings updated');
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\System;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\ProductKey;
 use App\Models\Product;
@@ -88,11 +90,11 @@ class KeyManagementController extends Controller
 
         // Thống kê nhanh
         $stats = [
-            'total'         => $user->productKeys()->count(),
-            'active'        => $user->productKeys()->active()->count(),
-            'expired'       => $user->productKeys()->expired()->count(),
+            'total' => $user->productKeys()->count(),
+            'active' => $user->productKeys()->active()->count(),
+            'expired' => $user->productKeys()->expired()->count(),
             'expiring_soon' => $user->productKeys()->expiringSoon(7)->count(),
-            'total_spent'   => $user->productKeys()->sum('key_cost'),
+            'total_spent' => $user->productKeys()->sum('key_cost'),
         ];
 
         return view('keys.index', compact('keys', 'stats'));
@@ -112,9 +114,9 @@ class KeyManagementController extends Controller
 
         $validationStats = [
             'total_validations' => $key->validation_count,
-            'success_count'     => $key->validationLogs()->success()->count(),
-            'failed_count'      => $key->validationLogs()->failed()->count(),
-            'unique_ips'        => $key->validationLogs()->distinct('ip_address')->count('ip_address'),
+            'success_count' => $key->validationLogs()->success()->count(),
+            'failed_count' => $key->validationLogs()->failed()->count(),
+            'unique_ips' => $key->validationLogs()->distinct('ip_address')->count('ip_address'),
         ];
 
         return view('keys.keydetails', compact('key', 'recentValidations', 'validationStats'));
@@ -200,12 +202,12 @@ class KeyManagementController extends Controller
     {
         // 1. Validate
         $validated = $request->validate([
-            'product_id'        => 'required|exists:products,id', // Bắt buộc phải chọn gói
-            'key_code'          => 'required|string|min:3|max:50|regex:/^[A-Z0-9\-_]+$/i|unique:product_keys,key_code',
-            'payment_method'    => 'required|in:wallet,cash',
+            'product_id' => 'required|exists:products,id', // Bắt buộc phải chọn gói
+            'key_code' => 'required|string|min:3|max:50|regex:/^[A-Z0-9\-_]+$/i|unique:product_keys,key_code',
+            'payment_method' => 'required|in:wallet,cash',
         ], [
             'key_code.unique' => 'Mã key này đã tồn tại, vui lòng chọn mã khác.',
-            'key_code.regex'  => 'Mã key chỉ được chứa chữ cái, số và dấu gạch ngang.',
+            'key_code.regex' => 'Mã key chỉ được chứa chữ cái, số và dấu gạch ngang.',
         ]);
 
         $user = Auth::user();
@@ -221,7 +223,7 @@ class KeyManagementController extends Controller
             $durationMinutes = $product->duration_minutes ?? 0; // Lấy thời gian từ gói sản phẩm
 
             // Tạo Order Code và Description chuẩn 
-            $orderCode = (int)(now()->timestamp . rand(100, 999));
+            $orderCode = (int) (now()->timestamp . rand(100, 999));
             $description = $orderCode . "K"; // Ký hiệu K = mua Key/backage 
 
             // --- TRƯỜNG HỢP 1: THANH TOÁN VÍ (COINKEY) ---
@@ -253,12 +255,12 @@ class KeyManagementController extends Controller
 
                     // 2. Tạo Transaction record
                     $newTransaction = Transaction::create([
-                        'user_id'     => $user->id,
-                        'product_id'  => $product->id, // Link sản phẩm
-                        'order_code'  => (int)(now()->timestamp . rand(100, 999)),
-                        'amount'      => $costCoinkey,
-                        'status'      => 'success',
-                        'currency'    => 'COINKEY',
+                        'user_id' => $user->id,
+                        'product_id' => $product->id, // Link sản phẩm
+                        'order_code' => (int) (now()->timestamp . rand(100, 999)),
+                        'amount' => $costCoinkey,
+                        'status' => 'success',
+                        'currency' => 'COINKEY',
                         'description' => $description,
                         'is_processed' => true,
                         'processed_at' => now(),
@@ -275,14 +277,14 @@ class KeyManagementController extends Controller
 
                     // 3. Tạo ProductKey
                     $key = ProductKey::create([
-                        'user_id'           => $user->id,
-                        'product_id'        => $product->id, //  Gắn ID sản phẩm
-                        'transaction_id'    => $newTransaction->id,
-                        'key_code'          => $keyCode,
-                        'key_type'          => 'custom', // đánh dấu là custom để biết user tự đặt tên
-                        'duration_minutes'  => $durationMinutes,
-                        'key_cost'          => $costCoinkey,
-                        'status'            => 'active',
+                        'user_id' => $user->id,
+                        'product_id' => $product->id, //  Gắn ID sản phẩm
+                        'transaction_id' => $newTransaction->id,
+                        'key_code' => $keyCode,
+                        'key_type' => 'custom', // đánh dấu là custom để biết user tự đặt tên
+                        'duration_minutes' => $durationMinutes,
+                        'key_cost' => $costCoinkey,
+                        'status' => 'active',
 
                     ]);
 
@@ -315,24 +317,24 @@ class KeyManagementController extends Controller
             if ($request->payment_method === 'cash') {
                 // Giá VND lấy từ sản phẩm
                 $amountVND = $product->price;
-                $orderCode = (int)(now()->timestamp . rand(100, 999));
+                $orderCode = (int) (now()->timestamp . rand(100, 999));
 
                 // Tạo transaction pending
                 $transaction = Transaction::create([
-                    'user_id'       => $user->id,
-                    'product_id'    => $product->id,
-                    'order_code'    => $orderCode,
-                    'amount'        => $amountVND,
-                    'status'        => 'pending',
-                    'currency'      => 'VND',
-                    'description'   => $description,
+                    'user_id' => $user->id,
+                    'product_id' => $product->id,
+                    'order_code' => $orderCode,
+                    'amount' => $amountVND,
+                    'status' => 'pending',
+                    'currency' => 'VND',
+                    'description' => $description,
                     // METADATA CHI TIẾT (webhook sẽ dùng để tạo key)
                     'response_data' => [
-                        'type'             => 'custom_key_purchase',
+                        'type' => 'custom_key_purchase',
                         'payment_method' => 'cash', // Thanh toán PayOS
-                        'key_code'         => $keyCode,
+                        'key_code' => $keyCode,
                         'duration_minutes' => $durationMinutes,
-                        'product_id'       => $product->id,
+                        'product_id' => $product->id,
                         'product_name' => $product->name, // Thêm tên sản phẩm
                         'price_vnd' => $amountVND,
 
@@ -342,16 +344,18 @@ class KeyManagementController extends Controller
                 // Gọi PayOS
                 $payosService = app(PayosService::class);
                 $paymentLink = $payosService->createPaymentLink([
-                    'orderCode'   => $orderCode,
-                    'amount'      => (int) $amountVND,
+                    'orderCode' => $orderCode,
+                    'amount' => (int) $amountVND,
                     'description' => substr($description, 0, 25),
-                    'returnUrl'   => route('thankyou', ['orderCode' => $orderCode]), // URL thành công
-                    'cancelUrl'   => route('payos.cancel-process'), // URL hủy thanh toán
-                    'items'       => [[
-                        'name'     => "Custom Key: {$keyCode}",
-                        'quantity' => 1,
-                        'price'    => (int) $amountVND
-                    ]]
+                    'returnUrl' => route('thankyou', ['orderCode' => $orderCode]), // URL thành công
+                    'cancelUrl' => route('payos.cancel-process'), // URL hủy thanh toán
+                    'items' => [
+                        [
+                            'name' => "Custom Key: {$keyCode}",
+                            'quantity' => 1,
+                            'price' => (int) $amountVND
+                        ]
+                    ]
                 ]);
 
                 return redirect($paymentLink);
@@ -367,7 +371,7 @@ class KeyManagementController extends Controller
     {
         $request->validate([
             'duration_minutes' => 'required|integer|min:1',
-            'key_code'         => 'required|string|unique:product_keys,key_code'
+            'key_code' => 'required|string|unique:product_keys,key_code'
         ]);
 
         $user = Auth::user();
@@ -440,7 +444,7 @@ class KeyManagementController extends Controller
         try {
 
             // Tạo mã đơn hàng chung
-            $orderCode = (int)(now()->timestamp . rand(100, 999));
+            $orderCode = (int) (now()->timestamp . rand(100, 999));
 
             // Mô tả giao dịch có đuôi EX để phân biệt giao dịch gia hạn
             $description = $orderCode . "EX";
@@ -510,36 +514,38 @@ class KeyManagementController extends Controller
 
                 // 1. Tạo Transaction Pending
                 $transaction = Transaction::create([
-                    'user_id'       => $user->id,
-                    'product_id'    => $product->id,
-                    'order_code'    => $orderCode,
-                    'amount'        => $amountVND,
-                    'status'        => 'pending',
-                    'currency'      => 'VND',
-                    'description'   => $description,
+                    'user_id' => $user->id,
+                    'product_id' => $product->id,
+                    'order_code' => $orderCode,
+                    'amount' => $amountVND,
+                    'status' => 'pending',
+                    'currency' => 'VND',
+                    'description' => $description,
                     // Metadata quan trọng để Webhook xử lý gia hạn
                     'response_data' => [
-                        'type'             => 'key_extension',
-                        'key_id'           => $key->id,
-                        'key_code'         => $key->key_code,
+                        'type' => 'key_extension',
+                        'key_id' => $key->id,
+                        'key_code' => $key->key_code,
                         'duration_minutes' => $product->duration_minutes,
-                        'price_vnd'        => $amountVND // Lưu giá để cộng vào cost key
+                        'price_vnd' => $amountVND // Lưu giá để cộng vào cost key
                     ]
                 ]);
 
                 // 2. Tạo Link PayOS
                 $payosService = app(PayosService::class);
                 $paymentLink = $payosService->createPaymentLink([
-                    'orderCode'   => $orderCode,
-                    'amount'      => (int) $amountVND,
+                    'orderCode' => $orderCode,
+                    'amount' => (int) $amountVND,
                     'description' => substr($description, 0, 25),
-                    'returnUrl'   => route('thankyou', ['orderCode' => $orderCode]),
-                    'cancelUrl'   => route('payos.cancel-process'),
-                    'items'       => [[
-                        'name'     => "Extension: {$key->key_code}",
-                        'quantity' => 1,
-                        'price'    => (int) $amountVND
-                    ]]
+                    'returnUrl' => route('thankyou', ['orderCode' => $orderCode]),
+                    'cancelUrl' => route('payos.cancel-process'),
+                    'items' => [
+                        [
+                            'name' => "Extension: {$key->key_code}",
+                            'quantity' => 1,
+                            'price' => (int) $amountVND
+                        ]
+                    ]
                 ]);
 
                 return redirect($paymentLink);
@@ -672,7 +678,7 @@ class KeyManagementController extends Controller
         ];
 
         try {
-            $orderCode = (int)(now()->timestamp . rand(100, 999));
+            $orderCode = (int) (now()->timestamp . rand(100, 999));
             $description = $orderCode . "CEX"; // Custom Extension suffix
 
             // --- PHƯƠNG THỨC 1: THANH TOÁN BẰNG VÍ ---
@@ -776,11 +782,13 @@ class KeyManagementController extends Controller
                     'description' => substr($description, 0, 25),
                     'returnUrl' => route('thankyou', ['orderCode' => $orderCode]),
                     'cancelUrl' => route('payos.cancel-process'),
-                    'items' => [[
-                        'name' => "Gia hạn: {$key->key_code} (+{$package->days}d)",
-                        'quantity' => 1,
-                        'price' => (int) $amountVND
-                    ]]
+                    'items' => [
+                        [
+                            'name' => "Gia hạn: {$key->key_code} (+{$package->days}d)",
+                            'quantity' => 1,
+                            'price' => (int) $amountVND
+                        ]
+                    ]
                 ]);
 
                 return redirect($paymentLink);
@@ -851,7 +859,7 @@ class KeyManagementController extends Controller
         $exists = ProductKey::where('key_code', $request->key_code)->exists();
         return response()->json([
             'available' => !$exists,
-            'message'   => $exists ? 'Mã key đã tồn tại' : 'Mã key hợp lệ',
+            'message' => $exists ? 'Mã key đã tồn tại' : 'Mã key hợp lệ',
         ]);
     }
 }

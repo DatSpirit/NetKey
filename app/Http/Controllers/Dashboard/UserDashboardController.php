@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Routing\Controller;
+
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Carbon\CarbonPeriod;
@@ -107,7 +109,7 @@ class UserDashboardController extends Controller
         $chartLabels = [];
         $chartTotals = [];
         $chartCounts = [];
-        
+
         // ----------------------------------------------------
         // XỬ LÝ PHẠM VI 7 NGÀY
         // ----------------------------------------------------
@@ -126,7 +128,7 @@ class UserDashboardController extends Controller
             foreach (CarbonPeriod::create($start, $end) as $date) {
                 $key = $date->format('d/m');
                 $chartLabels[] = "Day {$key}";
-                
+
                 $dayTransactions = $transactions->get($key, collect());
 
                 $chartTotals[] = $dayTransactions->sum('amount');
@@ -153,9 +155,9 @@ class UserDashboardController extends Controller
             for ($i = 1; $i <= $daysInMonth; $i++) {
                 $key = str_pad($i, 2, '0', STR_PAD_LEFT);
                 $chartLabels[] = "Day {$key}";
-                
+
                 $dayTransactions = $transactions->get($key, collect());
-                
+
                 $chartTotals[] = $dayTransactions->sum('amount');
                 $chartCounts[] = $dayTransactions->count();
             }
@@ -170,24 +172,24 @@ class UserDashboardController extends Controller
                 ->where('status', 'success')
                 ->whereYear('created_at', now()->year)
                 ->get()
-                ->groupBy(fn($t) => $t->created_at->format('m')); 
+                ->groupBy(fn($t) => $t->created_at->format('m'));
 
             // Duyệt qua 12 tháng
             for ($m = 1; $m <= 12; $m++) {
                 $key = str_pad($m, 2, '0', STR_PAD_LEFT);
                 $chartLabels[] = "Amount {$m}";
-                
+
                 $monthTransactions = $transactions->get($key, collect());
 
                 $chartTotals[] = $monthTransactions->sum('amount');
                 $chartCounts[] = $monthTransactions->count();
             }
         }
-        
+
         // ----------------------------------------------------
         // TRẢ VỀ VIEW
         // ----------------------------------------------------
-        return view('dashboard.user', [ 
+        return view('dashboard.user', [
             'user' => $user,
             'stats' => $stats,
             'productsBought' => $productsBought,

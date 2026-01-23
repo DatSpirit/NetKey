@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Financial;
+
+use App\Http\Controllers\Controller;
 
 use App\Services\CoinkeyService;
 use Illuminate\Http\Request;
@@ -147,9 +149,12 @@ class CoinkeyWalletController extends Controller
 
     private function calculateRequiredVip(float $price): int
     {
-        if ($price >= 500000) return 3;
-        if ($price >= 200000) return 2;
-        if ($price >= 100000) return 1;
+        if ($price >= 500000)
+            return 3;
+        if ($price >= 200000)
+            return 2;
+        if ($price >= 100000)
+            return 1;
         return 0;
     }
 

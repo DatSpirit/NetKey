@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Financial;
+
+use App\Http\Controllers\Controller;
 
 use PayOS\PayOS;
 use Illuminate\Http\Request;
@@ -28,9 +30,9 @@ class PaymentController extends Controller
     {
         try {
             $response = $this->payOS->getPaymentLinkInformation($orderCode);
-            
+
             Log::info("Payment info retrieved for order: {$orderCode}", $response);
-            
+
             return response()->json([
                 "error" => 0,
                 "message" => "Success",
@@ -38,7 +40,7 @@ class PaymentController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('❌ Error getting payment info: ' . $e->getMessage());
-            
+
             return response()->json([
                 "error" => 1,
                 "message" => "Failed to get payment info",
@@ -56,9 +58,9 @@ class PaymentController extends Controller
             $cancelBody = [
                 'cancellationReason' => $request->input('reason', 'Người dùng hủy đơn hàng')
             ];
-            
+
             $response = $this->payOS->cancelPaymentLink($orderCode, $cancelBody);
-            
+
             // Cập nhật trạng thái transaction
             $transaction = Transaction::where('order_code', $orderCode)->first();
             if ($transaction) {
@@ -67,9 +69,9 @@ class PaymentController extends Controller
                     'description' => 'Payment cancelled by user'
                 ]);
             }
-            
+
             Log::info("Payment cancelled for order: {$orderCode}");
-            
+
             return response()->json([
                 "error" => 0,
                 "message" => "Payment cancelled successfully",
@@ -77,7 +79,7 @@ class PaymentController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('❌ Error cancelling payment: ' . $e->getMessage());
-            
+
             return response()->json([
                 "error" => 1,
                 "message" => "Failed to cancel payment",
@@ -92,16 +94,16 @@ class PaymentController extends Controller
     private function verifyWebhookSignature($data, $signature)
     {
         $checksumKey = env('PAYOS_CHECKSUM_KEY');
-        
+
         // Sắp xếp keys theo alphabet
         ksort($data);
-        
+
         // Tạo query string
         $dataStr = http_build_query($data);
-        
+
         // Tính signature
         $computedSignature = hash_hmac('sha256', $dataStr, $checksumKey);
-        
+
         return hash_equals($signature, $computedSignature);
     }
 }

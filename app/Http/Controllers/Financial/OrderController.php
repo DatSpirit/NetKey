@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Financial;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Transaction;
 use App\Models\Product;
@@ -115,7 +117,7 @@ class OrderController extends Controller
             //sử dụng $trasaction thay $key
             $transaction = DB::transaction(function () use ($user, $product, $wallet, $finalPrice, $discountPercent, $originalPrice) {
 
-                $orderCode = (int)(now()->timestamp . rand(100, 999)); // Tạo mã đơn hàng ngẫu nhiên
+                $orderCode = (int) (now()->timestamp . rand(100, 999)); // Tạo mã đơn hàng ngẫu nhiên
                 // 1. Trừ tiền VÍ (tự động ghi log vào coinkey_transactions)
                 $wallet->withdraw(
                     amount: $finalPrice,
@@ -185,10 +187,10 @@ class OrderController extends Controller
             // $user = Auth::user();
 
             // 1. Tạo mã đơn hàng unique
-            $orderCode = (int)(now()->timestamp . rand(100, 999));
+            $orderCode = (int) (now()->timestamp . rand(100, 999));
 
             // PayOS yêu cầu tối thiểu 2000 VND
-            $amount = (int)max(2000, $product->price);
+            $amount = (int) max(2000, $product->price);
 
             // 2.Xác định suffix cho description dựa vào product_type
             $productType = $product->product_type ?? '';
@@ -198,7 +200,7 @@ class OrderController extends Controller
             // 3. Chuẩn bị data 
             $data = [
                 'orderCode' => $orderCode,
-                'amount'    => $amount,
+                'amount' => $amount,
                 'description' => $description,
 
                 // return + cancel 
@@ -245,7 +247,7 @@ class OrderController extends Controller
         } catch (Exception $e) {
             Log::error('❌ Payment failed: ' . $e->getMessage(), [
                 'product_id' => $product->id ?? 'unknown',
-                'user_id'    => $user->id ?? 'unknown'
+                'user_id' => $user->id ?? 'unknown'
             ]);
 
             if (isset($transaction)) {
@@ -273,7 +275,7 @@ class OrderController extends Controller
                 'cancelUrl' => 'nullable|url',
             ]);
 
-            $orderCode = (int)(now()->timestamp . rand(100, 999));
+            $orderCode = (int) (now()->timestamp . rand(100, 999));
 
             $body = [
                 'amount' => $validated['amount'],
@@ -523,10 +525,12 @@ class OrderController extends Controller
                 $keyId = $meta['key_id'] ?? null;
                 $duration = $meta['duration_minutes'] ?? 0;
 
-                if (!$keyId || !$duration) return;
+                if (!$keyId || !$duration)
+                    return;
 
                 $key = \App\Models\ProductKey::find($keyId);
-                if (!$key) return;
+                if (!$key)
+                    return;
 
                 $oldExpiry = $key->expires_at?->toDateTimeString() ?? 'N/A';
                 $key->extend($duration);

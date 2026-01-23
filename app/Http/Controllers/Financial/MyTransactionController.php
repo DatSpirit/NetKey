@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Financial;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -33,23 +35,23 @@ class MyTransactionController extends Controller
             $search = '%' . $request->search . '%';
             if (!$request->filled('status') || $request->status === 'all') {
                 // Tìm trên tất cả các cột liên quan
-                $query->where(function($q) use ($search) {
+                $query->where(function ($q) use ($search) {
                     $q->where('order_code', 'like', $search)
-                      ->orWhere('amount', 'like', $search)
-                      ->orWhere('status', 'like', $search)
-                      ->orWhere('description', 'like', $search)
-                      ->orWhere('currency', 'like', $search)// Tìm theo loại tiền
-                      ->orWhere('payment_link_id', 'like', $search)// Tìm theo ID liên kết thanh toán
-                      ->orWhere('account_number', 'like', $search)// Tìm theo số tài khoản
-                      ->orWhere('counter_account_name', 'like', $search)
-                      ->orWhere('counter_account_number', 'like', $search)
-                      ->orWhere('counter_account_bank_id', 'like', $search)
-                      ->orWhere('counter_account_bank_name', 'like', $search)
-                      ->orWhere('transaction_datetime', 'like', $search)// Tìm theo datetime dạng chuỗi
-                      ->orWhere('payment_reference', 'like', $search)
-                      ->orWhere('webhook_signature', 'like', $search)
-                      ->orWhere('webhook_payload', 'like', $search)
-                      ->orWhere('response_data', 'like', $search); // Nếu cần tìm JSON, có thể dùng JSON_CONTAINS nếu MySQL hỗ trợ
+                        ->orWhere('amount', 'like', $search)
+                        ->orWhere('status', 'like', $search)
+                        ->orWhere('description', 'like', $search)
+                        ->orWhere('currency', 'like', $search)// Tìm theo loại tiền
+                        ->orWhere('payment_link_id', 'like', $search)// Tìm theo ID liên kết thanh toán
+                        ->orWhere('account_number', 'like', $search)// Tìm theo số tài khoản
+                        ->orWhere('counter_account_name', 'like', $search)
+                        ->orWhere('counter_account_number', 'like', $search)
+                        ->orWhere('counter_account_bank_id', 'like', $search)
+                        ->orWhere('counter_account_bank_name', 'like', $search)
+                        ->orWhere('transaction_datetime', 'like', $search)// Tìm theo datetime dạng chuỗi
+                        ->orWhere('payment_reference', 'like', $search)
+                        ->orWhere('webhook_signature', 'like', $search)
+                        ->orWhere('webhook_payload', 'like', $search)
+                        ->orWhere('response_data', 'like', $search); // Nếu cần tìm JSON, có thể dùng JSON_CONTAINS nếu MySQL hỗ trợ
                 });
             } else {
                 // Nếu có filter status cụ thể, chỉ tìm trên order_code như cũ

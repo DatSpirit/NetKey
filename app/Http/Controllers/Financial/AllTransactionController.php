@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Financial;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -108,20 +110,20 @@ class AllTransactionController extends Controller
 
         // ✅ THỐNG KÊ THEO TYPE (tách riêng)
         $stats = [
-            'total'          => (clone $baseQuery)->count(),
-            'success'        => (clone $baseQuery)->where('status', 'success')->count(),
-            'failed'         => (clone $baseQuery)->where('status', 'failed')->count(),
-            'pending'        => (clone $baseQuery)->where('status', 'pending')->count(),
-            'cancelled'      => (clone $baseQuery)->where('status', 'cancelled')->count(),
+            'total' => (clone $baseQuery)->count(),
+            'success' => (clone $baseQuery)->where('status', 'success')->count(),
+            'failed' => (clone $baseQuery)->where('status', 'failed')->count(),
+            'pending' => (clone $baseQuery)->where('status', 'pending')->count(),
+            'cancelled' => (clone $baseQuery)->where('status', 'cancelled')->count(),
 
             // Tổng tiền (chỉ success)
-            'total_amount'   => (clone $baseQuery)->where('status', 'success')->sum('amount'),
+            'total_amount' => (clone $baseQuery)->where('status', 'success')->sum('amount'),
             'pending_amount' => (clone $baseQuery)->where('status', 'pending')->sum('amount'),
 
             // Thống kê theo thời gian (trong type hiện tại)
-            'today'          => (clone $baseQuery)->whereDate('created_at', today())->count(),
-            'this_week'      => (clone $baseQuery)->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count(),
-            'this_month'     => (clone $baseQuery)->whereMonth('created_at', now()->month)->count(),
+            'today' => (clone $baseQuery)->whereDate('created_at', today())->count(),
+            'this_week' => (clone $baseQuery)->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])->count(),
+            'this_month' => (clone $baseQuery)->whereMonth('created_at', now()->month)->count(),
         ];
 
         // ✅ BIỂU ĐỒ THEO NGÀY (7 ngày gần nhất - theo type)
@@ -138,16 +140,16 @@ class AllTransactionController extends Controller
 
         return view('admin.transactions.all-transactions', [
             'transactions' => $transactions,
-            'stats'        => $stats,
-            'chartData'    => $chartData,
-            'type'         => $type, // ✅ Pass type vào view
+            'stats' => $stats,
+            'chartData' => $chartData,
+            'type' => $type, // ✅ Pass type vào view
 
             // Filters
-            'status'   => $status,
-            'search'   => $search,
+            'status' => $status,
+            'search' => $search,
             'dateFrom' => $dateFrom,
-            'dateTo'   => $dateTo,
-            'sortBy'   => $sortBy,
+            'dateTo' => $dateTo,
+            'sortBy' => $sortBy,
             'sortOrder' => $sortOrder,
             'advanced' => $advanced,
         ]);
