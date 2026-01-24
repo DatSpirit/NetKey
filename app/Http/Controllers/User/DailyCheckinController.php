@@ -20,13 +20,16 @@ class DailyCheckinController extends Controller
     /**
      * Trang điểm danh
      */
+    /**
+     * Trang điểm danh (lịch tháng)
+     */
     public function index()
     {
         $user = Auth::user();
-        $stats = $this->checkinService->getStats($user);
-        $history = $this->checkinService->getHistory($user, 30);
+        $today = now();
+        $calendar = $this->checkinService->getMonthlyState($user, $today->month, $today->year);
 
-        return view('checkin.index', compact('stats', 'history'));
+        return view('checkin.index', compact('calendar'));
     }
 
     /**

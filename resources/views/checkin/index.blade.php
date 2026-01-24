@@ -1,219 +1,241 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-bold text-2xl text-gray-800 dark:text-white flex items-center gap-2">
-            <svg class="w-7 h-7 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Điểm Danh Hàng Ngày
-        </h2>
+        <div class="flex items-center justify-between">
+            <h2
+                class="font-black text-3xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 flex items-center gap-3">
+                Lịch Điểm Danh Tháng {{ $calendar['month'] }}/{{ $calendar['year'] }}
+            </h2>
+            <div
+                class="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-sm">
+                <span>Hôm nay: {{ now()->format('d/m/Y') }}</span>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-8 px-4 sm:px-6 lg:px-8 space-y-6">
-        
-        <!-- Main Check-in Card -->
-        <div class="relative overflow-hidden bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 rounded-3xl shadow-2xl p-8 text-white">
-            <div class="absolute inset-0 opacity-20">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse"></div>
-            </div>
+    <div class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
+        <div class="max-w-5xl mx-auto space-y-8">
 
-            <div class="relative z-10">
-                @if($stats['can_checkin'])
-                    <!-- Can Check-in State -->
-                    <div class="text-center space-y-6">
-                        <div class="text-7xl animate-bounce">🎁</div>
+            <!-- Hero Summary Card -->
+            <div
+                class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 rounded-[2rem] shadow-2xl p-8 sm:p-10 text-white transform hover:scale-[1.01] transition-transform duration-300">
+                <!-- Background Decorations -->
+                <div class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-white opacity-10 rounded-full blur-3xl">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-yellow-300 opacity-20 rounded-full blur-2xl">
+                </div>
+
+                <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-8">
+                    <div class="flex items-center gap-6">
+                        <div class="p-4 bg-white/20 backdrop-blur-md rounded-2xl shadow-inner border border-white/10">
+                            <span class="text-5xl">📅</span>
+                        </div>
                         <div>
-                            <h3 class="text-3xl font-black mb-2">Điểm Danh Hôm Nay!</h3>
-                            <p class="text-green-100 text-lg">Nhận ngay phần thưởng Coinkey miễn phí</p>
-                        </div>
-
-                        <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 inline-block">
-                            <p class="text-sm text-green-100 mb-2">Phần thưởng dự kiến</p>
-                            <p class="text-5xl font-black">+{{ number_format($stats['current_streak'] > 0 ? $stats['current_streak'] * 10 : 10) }}</p>
-                            <p class="text-xl font-bold text-green-100">Coinkey</p>
-                        </div>
-
-                        <button id="checkin-btn" class="px-12 py-4 bg-white text-green-600 rounded-2xl font-black text-xl shadow-2xl hover:bg-green-50 hover:scale-105 transform transition-all duration-200">
-                            🎉 ĐIỂM DANH NGAY
-                        </button>
-                    </div>
-                @else
-                    <!-- Already Checked-in State -->
-                    <div class="text-center space-y-6">
-                        <div class="text-7xl">✅</div>
-                        <div>
-                            <h3 class="text-3xl font-black mb-2">Đã Điểm Danh!</h3>
-                            <p class="text-green-100 text-lg">Quay lại vào ngày mai nhé</p>
-                        </div>
-
-                        <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 inline-block">
-                            <p class="text-sm text-green-100 mb-2">Thời gian còn lại</p>
-                            <p class="text-3xl font-black" id="countdown">--:--:--</p>
+                            <p class="text-indigo-100 text-lg font-medium mb-1">Tổng Coinkey Tháng Này</p>
+                            <h3 class="text-5xl font-black tracking-tight text-white drop-shadow-md">
+                                {{ number_format(collect($calendar['days'])->where('status', 'checked')->sum('reward')) }}
+                                <span class="text-2xl opacity-80 font-bold">Coinkey</span>
+                            </h3>
                         </div>
                     </div>
-                @endif
 
-                <!-- Streak Display -->
-                <div class="mt-8 pt-6 border-t border-white/30">
-                    <div class="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                            <p class="text-sm text-green-100 mb-1">Chuỗi hiện tại</p>
-                            <p class="text-3xl font-black">{{ $stats['current_streak'] }}</p>
-                            <p class="text-xs text-green-100">ngày</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-green-100 mb-1">Dài nhất</p>
-                            <p class="text-3xl font-black">{{ $stats['longest_streak'] }}</p>
-                            <p class="text-xs text-green-100">ngày</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-green-100 mb-1">Tổng kiếm được</p>
-                            <p class="text-3xl font-black">{{ number_format($stats['total_earned']) }}</p>
-                            <p class="text-xs text-green-100">Coinkey</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Milestone Progress -->
-        @if($stats['next_milestone'])
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h4 class="font-bold text-lg text-gray-900 dark:text-white">Mốc tiếp theo</h4>
-                <span class="px-3 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-sm font-bold">
-                    +{{ number_format($stats['next_milestone']['bonus']) }} Coinkey
-                </span>
-            </div>
-            
-            <div class="space-y-2">
-                <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                    <span>Ngày {{ $stats['current_streak'] }}/{{ $stats['next_milestone']['day'] }}</span>
-                    <span>Còn {{ $stats['next_milestone']['remaining_days'] }} ngày</span>
-                </div>
-                <div class="w-full h-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-500" 
-                         style="width: {{ ($stats['current_streak'] / $stats['next_milestone']['day']) * 100 }}%"></div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <!-- Rewards Table -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <h4 class="font-bold text-xl text-gray-900 dark:text-white">Phần Thưởng Theo Chuỗi</h4>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-50 dark:bg-gray-700">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Ngày</th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Phần Thưởng</th>
-                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase">Bonus</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                            <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">Ngày 1-2</td>
-                            <td class="px-6 py-4 text-gray-900 dark:text-white">10 Coinkey/ngày</td>
-                            <td class="px-6 py-4 text-gray-500 dark:text-gray-400">-</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 bg-green-50 dark:bg-green-900/20">
-                            <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">✨ Ngày 3</td>
-                            <td class="px-6 py-4 text-green-600 dark:text-green-400 font-bold">15 Coinkey</td>
-                            <td class="px-6 py-4 text-green-600 dark:text-green-400 font-bold">+5 Bonus</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                            <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">Ngày 4-6</td>
-                            <td class="px-6 py-4 text-gray-900 dark:text-white">10 Coinkey/ngày</td>
-                            <td class="px-6 py-4 text-gray-500 dark:text-gray-400">-</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 bg-yellow-50 dark:bg-yellow-900/20">
-                            <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">🎊 Ngày 7</td>
-                            <td class="px-6 py-4 text-yellow-600 dark:text-yellow-400 font-bold">30 Coinkey</td>
-                            <td class="px-6 py-4 text-yellow-600 dark:text-yellow-400 font-bold">+20 Bonus</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 bg-orange-50 dark:bg-orange-900/20">
-                            <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">🔥 Ngày 14</td>
-                            <td class="px-6 py-4 text-orange-600 dark:text-orange-400 font-bold">60 Coinkey</td>
-                            <td class="px-6 py-4 text-orange-600 dark:text-orange-400 font-bold">+50 Bonus</td>
-                        </tr>
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 bg-red-50 dark:bg-red-900/20">
-                            <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">💎 Ngày 30</td>
-                            <td class="px-6 py-4 text-red-600 dark:text-red-400 font-bold">210 Coinkey</td>
-                            <td class="px-6 py-4 text-red-600 dark:text-red-400 font-bold">+200 Bonus</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- History -->
-        @if(count($history) > 0)
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <h4 class="font-bold text-xl text-gray-900 dark:text-white">Lịch Sử Điểm Danh</h4>
-            </div>
-            
-            <div class="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
-                @foreach($history as $log)
-                <div class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="font-semibold text-gray-900 dark:text-white">
-                                Ngày {{ $log['streak_day'] }} - {{ \Carbon\Carbon::parse($log['checkin_date'])->format('d/m/Y') }}
+                    <div class="flex gap-4">
+                        <div
+                            class="text-center px-6 py-4 bg-black/20 backdrop-blur-sm rounded-2xl border border-white/10 hover:bg-black/30 transition">
+                            <p class="text-xs text-indigo-200 uppercase tracking-widest font-bold mb-1">Đã điểm danh</p>
+                            <p class="text-3xl font-black">
+                                {{ collect($calendar['days'])->where('status', 'checked')->count() }}
+                                <span class="text-sm text-indigo-200 font-normal">/
+                                    {{ count($calendar['days']) }}</span>
                             </p>
-                            @if($log['notes'])
-                            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $log['notes'] }}</p>
-                            @endif
                         </div>
-                        <div class="text-right">
-                            <p class="text-lg font-bold text-green-600 dark:text-green-400">+{{ number_format($log['reward_amount']) }}</p>
-                            @if($log['is_bonus'])
-                            <span class="inline-block px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded text-xs font-bold">BONUS</span>
-                            @endif
+                        <div
+                            class="text-center px-6 py-4 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/10 hover:bg-white/30 transition">
+                            <p class="text-xs text-indigo-100 uppercase tracking-widest font-bold mb-1">Chuỗi hiện tại
+                            </p>
+                            <!-- Note: Streak calculation would need to be passed strictly if accurate streak display is needed here, 
+                                 but for monthly view visual summary we can just show a placeholder or calculate loosely -->
+                            <p class="text-3xl font-black">🔥
+                                {{ collect($calendar['days'])->where('status', 'checked')->count() }}
+                            </p>
                         </div>
                     </div>
                 </div>
-                @endforeach
             </div>
+
+            <!-- Calendar Container -->
+            <div
+                class="bg-white dark:bg-gray-800 rounded-[2rem] shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+
+                <!-- Days of Week Header -->
+                <div
+                    class="grid grid-cols-7 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+                    @foreach(['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'] as $index => $day)
+                        <div class="py-4 text-center">
+                            <span
+                                class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{{ $day }}</span>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Calendar Grid -->
+                <div class="grid grid-cols-7 bg-gray-100 dark:bg-gray-700 gap-px">
+
+                    <!-- Empty Cells -->
+                    @for($i = 0; $i < $calendar['start_day_of_week']; $i++)
+                        <div class="bg-white dark:bg-gray-800 h-32 sm:h-40"></div>
+                    @endfor
+
+                    @foreach($calendar['days'] as $day)
+                        <div class="relative bg-white dark:bg-gray-800 h-32 sm:h-40 p-3 transition-all duration-200 group hover:z-10 hover:shadow-lg
+                                                            {{ $day['is_today'] ? 'bg-blue-500/30 dark:bg-blue-900/10' : '' }}
+                                                            {{ $day['special_day'] ? 'bg-gradient-to-br from-yellow-500 to-orange-50 dark:from-yellow-900/10 dark:to-orange-900/10' : '' }}
+                                                        ">
+                            <!-- Date Number -->
+                            <div class="flex justify-between items-start">
+                                <span
+                                    class="text-sm font-bold w-8 h-8 flex items-center justify-center rounded-full transition-colors
+                                                                    {{ $day['is_today'] ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'text-gray-700 dark:text-gray-300 group-hover:bg-gray-100 dark:group-hover:bg-gray-700' }}">
+                                    {{ $day['day'] }}
+                                </span>
+
+                                @if($day['special_day'])
+                                    <div class="group/tooltip relative">
+                                        <span
+                                            class="text-xl cursor-help hover:scale-125 transition-transform duration-200">🎉</span>
+                                        <div
+                                            class="absolute right-0 top-full mt-1 w-max px-2 py-1 bg-black text-white text-xs rounded opacity-0 group-hover/tooltip:opacity-100 transition-opacity z-20 pointer-events-none">
+                                            {{ $day['special_day']['name'] }}
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Content State -->
+                            <div class="flex flex-col items-center justify-center h-full -mt-6">
+
+                                @if($day['status'] === 'checked')
+                                    <!-- Checked State -->
+                                    <div class="transform group-hover:scale-110 transition-transform duration-200">
+                                        <div
+                                            class="w-12 h-12 bg-green-100 dark:bg-green-600/30 rounded-full flex items-center justify-center mb-1">
+                                            <span class="text-2xl">✅</span>
+                                        </div>
+                                    </div>
+                                    <span
+                                        class="font-bold text-green-600 dark:text-green-400 text-sm drop-shadow-sm">+{{ $day['reward'] }}
+                                        CoinKey</span>
+
+                                @elseif($day['status'] === 'missed')
+                                    <!-- Missed State -->
+                                    <div class="opacity-50 grayscale hover:grayscale-0 transition-all duration-300">
+                                        <div
+                                            class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-1 mx-auto">
+                                            <span class="text-xl">😿</span>
+                                        </div>
+                                        <span class="text-xs font-semibold text-gray-400">Đã lỡ</span>
+                                    </div>
+
+                                @elseif($day['status'] === 'today')
+                                    <!-- Today (Actionable) -->
+                                    <div class="animate-bounce-slow">
+                                        <button onclick="checkin()" id="checkin-btn"
+                                            class="flex flex-col items-center justify-center gap-1 group/btn w-full">
+                                            <div
+                                                class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover/btn:scale-110 group-active/btn:scale-95 transition-all duration-200 border-2 border-blue-200 dark:border-blue-700">
+                                                <span class="text-2xl">👆</span>
+                                            </div>
+                                            <span
+                                                class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full shadow-md group-hover/btn:bg-blue-700 transition">
+                                                Nhận {{ $day['reward'] }}
+                                            </span>
+                                        </button>
+                                    </div>
+
+                                @else
+                                    <!-- Future -->
+                                    <div
+                                        class="opacity-40 hover:opacity-100 transition-opacity duration-300 flex flex-col items-center">
+                                        <div
+                                            class="w-10 h-10 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-full flex items-center justify-center mb-1">
+                                            <span class="text-base">⏳</span>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-500">+{{ $day['reward'] }}</span>
+                                    </div>
+                                @endif
+
+                            </div>
+
+                            <!-- Special Badge for Future/Missed if Special Day -->
+                            @if($day['special_day'] && $day['status'] !== 'checked')
+                                <div class="absolute bottom-1 right-1">
+                                    <span
+                                        class="px-1.5 py-0.5 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 text-[10px] font-bold uppercase rounded border border-yellow-200 dark:border-yellow-800">
+                                        Bonus x{{ $day['special_day']['multiplier'] }}
+                                    </span>
+                                </div>
+                            @endif
+
+                        </div>
+                    @endforeach
+
+                    <!-- Fill remaining cells -->
+                    @php
+                        $totalCells = $calendar['start_day_of_week'] + count($calendar['days']);
+                        $remaining = 7 - ($totalCells % 7);
+                        if ($remaining == 7)
+                            $remaining = 0;
+                    @endphp
+                    @for($i = 0; $i < $remaining; $i++)
+                        <div class="bg-white dark:bg-gray-800 h-32 sm:h-40 opacity-50 bg-diagonal-stripes"></div>
+                    @endfor
+
+                </div>
+            </div>
+
+            <!-- Legend/Footer -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+                <div
+                    class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <span class="text-2xl">✅</span>
+                    <div>
+                        <p class="font-bold text-gray-800 dark:text-white">Đã nhận</p>
+                        <p class="text-xs text-gray-500">Coinkey đã được cộng</p>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <span class="text-2xl">😿</span>
+                    <div>
+                        <p class="font-bold text-gray-800 dark:text-white">Bỏ lỡ</p>
+                        <p class="text-xs text-gray-500">Không điểm danh</p>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <span class="text-2xl">🎉</span>
+                    <div>
+                        <p class="font-bold text-gray-800 dark:text-white">Sự kiện</p>
+                        <p class="text-xs text-gray-500">Ngày lễ thưởng lớn</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        @endif
     </div>
 
     @push('scripts')
-    <script>
-        // Countdown Timer
-        function updateCountdown() {
-            const now = new Date();
-            const tomorrow = new Date(now);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            tomorrow.setHours(0, 0, 0, 0);
-            
-            const diff = tomorrow - now;
-            const hours = Math.floor(diff / 3600000);
-            const minutes = Math.floor((diff % 3600000) / 60000);
-            const seconds = Math.floor((diff % 60000) / 1000);
-            
-            const countdownEl = document.getElementById('countdown');
-            if (countdownEl) {
-                countdownEl.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }
-        }
-        
-        @if(!$stats['can_checkin'])
-            setInterval(updateCountdown, 1000);
-            updateCountdown();
-        @endif
+        <script>
+            async function checkin() {
+                const btn = document.getElementById('checkin-btn');
+                if (!btn) return;
 
-        // Check-in Button Handler
-        const checkinBtn = document.getElementById('checkin-btn');
-        if (checkinBtn) {
-            checkinBtn.addEventListener('click', async function() {
-                this.disabled = true;
-                this.innerHTML = '<svg class="animate-spin h-5 w-5 inline" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Đang xử lý...';
-                
+                // Disable button logic
+                const originalContent = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = `<div class="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>`;
+                btn.classList.add('cursor-not-allowed', 'opacity-75');
+
                 try {
                     const response = await fetch('{{ route("checkin.process") }}', {
                         method: 'POST',
@@ -222,27 +244,58 @@
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
                         }
                     });
-                    
+
                     const data = await response.json();
-                    
+
                     if (data.success) {
-                        // Success animation
-                        this.innerHTML = '✅ Thành công!';
-                        this.classList.remove('bg-white', 'text-green-600');
-                        this.classList.add('bg-green-500', 'text-white');
-                        
-                        // Reload after 1.5s
-                        setTimeout(() => window.location.reload(), 1500);
+                        // Success State
+                        btn.innerHTML = `
+                                                        <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center shadow-lg transform scale-110 transition-transform">
+                                                            <span class="text-white text-2xl">✓</span>
+                                                        </div>
+                                                    `;
+
+                        // Confetti or simple visual feedback could go here
+
+                        setTimeout(() => window.location.reload(), 1000);
                     } else {
-                        throw new Error(data.message);
+                        alert(data.message);
+                        btn.disabled = false;
+                        btn.innerHTML = originalContent;
+                        btn.classList.remove('cursor-not-allowed', 'opacity-75');
                     }
                 } catch (error) {
-                    alert(error.message || 'Có lỗi xảy ra!');
-                    this.disabled = false;
-                    this.innerHTML = '🎉 ĐIỂM DANH NGAY';
+                    console.error(error);
+                    alert('Có lỗi xảy ra, vui lòng thử lại');
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                    btn.classList.remove('cursor-not-allowed', 'opacity-75');
                 }
-            });
-        }
-    </script>
+            }
+        </script>
+        <style>
+            .animate-bounce-slow {
+                animation: bounce 2s infinite;
+            }
+
+            @keyframes bounce {
+
+                0%,
+                100% {
+                    transform: translateY(-5%);
+                    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+                }
+
+                50% {
+                    transform: translateY(0);
+                    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+                }
+            }
+
+            .bg-diagonal-stripes {
+                background-image: linear-gradient(135deg, #f3f4f6 25%, transparent 25%, transparent 50%, #f3f4f6 50%, #f3f4f6 75%, transparent 75%, transparent);
+                background-size: 10px 10px;
+            }
+        </style>
     @endpush
 </x-app-layout>

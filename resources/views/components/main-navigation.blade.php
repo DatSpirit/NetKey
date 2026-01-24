@@ -67,6 +67,23 @@
         }
     }
 
+    // Daily Check-in Notification
+    if (class_exists('\App\Models\DailyCheckin')) {
+        $checkin = \App\Models\DailyCheckin::where('user_id', $user->id)->first();
+        $isCheckedIn = $checkin && $checkin->last_checkin_date && $checkin->last_checkin_date->isToday();
+
+        if (!$isCheckedIn) {
+            $notifications[] = [
+                'type' => 'success', // Use green for positive encouragement
+                'icon' => '🎁',
+                'title' => 'Điểm danh hàng ngày',
+                'message' => 'Bạn chưa điểm danh hôm nay! Nhận Coinkey ngay.',
+                'time' => 'Hôm nay',
+                'link' => route('checkin.index'),
+            ];
+        }
+    }
+
     $hasNotifications = count($notifications) > 0;
 @endphp
 
@@ -188,10 +205,10 @@
                                     <div class="flex-shrink-0 mr-3">
                                         <div
                                             class="w-10 h-10 rounded-full flex items-center justify-center
-                                                                {{ $notif['type'] === 'success' ? 'bg-green-100 dark:bg-green-900/30' : '' }}
-                                                                {{ $notif['type'] === 'error' ? 'bg-red-100 dark:bg-red-900/30' : '' }}
-                                                                {{ $notif['type'] === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/30' : '' }}
-                                                                {{ $notif['type'] === 'info' ? 'bg-blue-100 dark:bg-blue-900/30' : '' }}">
+                                                                        {{ $notif['type'] === 'success' ? 'bg-green-100 dark:bg-green-900/30' : '' }}
+                                                                        {{ $notif['type'] === 'error' ? 'bg-red-100 dark:bg-red-900/30' : '' }}
+                                                                        {{ $notif['type'] === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/30' : '' }}
+                                                                        {{ $notif['type'] === 'info' ? 'bg-blue-100 dark:bg-blue-900/30' : '' }}">
                                             <span class="text-lg">{{ $notif['icon'] }}</span>
                                         </div>
                                     </div>
@@ -268,6 +285,16 @@
                                     @endif
                                 </div>
                             </div>
+
+                            <a href="{{ route('checkin.index') }}"
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <svg class="w-4 h-4 mr-3 text-green-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Daily Check-in
+                            </a>
 
                             <a href="{{ route('profile.edit') }}"
                                 class="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">

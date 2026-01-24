@@ -272,11 +272,11 @@ Route::middleware(['auth', 'verified'])->prefix('wallet')->name('wallet.')->grou
 // ===========================
 // DAILY CHECK-IN SYSTEM
 // ===========================
-// Route::middleware(['auth', 'verified'])->prefix('checkin')->name('checkin.')->group(function () {
-//     Route::get('/', [DailyCheckinController::class, 'index'])->name('index');
-//     Route::post('/process', [DailyCheckinController::class, 'checkin'])->name('process');
-//     Route::get('/status', [DailyCheckinController::class, 'status'])->name('status');
-// });
+Route::middleware(['auth', 'verified'])->prefix('checkin')->name('checkin.')->group(function () {
+    Route::get('/', [DailyCheckinController::class, 'index'])->name('index');
+    Route::post('/process', [DailyCheckinController::class, 'checkin'])->name('process');
+    Route::get('/status', [DailyCheckinController::class, 'status'])->name('status');
+});
 
 // ===========================
 // KEY MANAGEMENT - USER
