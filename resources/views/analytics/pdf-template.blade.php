@@ -1,16 +1,42 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Analytics Report</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #4f46e5; color: white; }
-        .header { text-align: center; margin-bottom: 30px; }
-        .stats { margin: 20px 0; }
+        body {
+            font-family: 'DejaVu Sans', sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4f46e5;
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            margin: 20px 0;
+        }
     </style>
 </head>
+
 <body>
     <div class="header">
         <h1>Analytics Report</h1>
@@ -19,11 +45,13 @@
     </div>
 
     <div class="stats">
-        <h2>Summary</h2>
-        <p>Total Spent: {{ number_format($analytics['total_spent']) }} VND</p>
-        <p>Total Orders: {{ $analytics['total_orders'] }}</p>
-        <p>Average Transaction: {{ number_format($analytics['avg_transaction']) }} VND</p>
-        <p>Success Rate: {{ $analytics['success_rate'] }}%</p>
+        <h2>Summary ({{ \Carbon\Carbon::parse($start_date)->format('d/m/Y') }} -
+            {{ \Carbon\Carbon::parse($end_date)->format('d/m/Y') }})
+        </h2>
+        <p>Total Revenue: {{ number_format($totalRevenue) }}</p>
+        <p>Total Transactions: {{ $transactions->count() }}</p>
+        <p>Successful Transactions: {{ $successCount }}</p>
+        <p>Average Order: {{ $successCount > 0 ? number_format($totalRevenue / $successCount) : 0 }}</p>
     </div>
 
     <h2>Transactions</h2>
@@ -39,15 +67,16 @@
         </thead>
         <tbody>
             @foreach($transactions as $t)
-            <tr>
-                <td>{{ $t->created_at->format('d/m/Y') }}</td>
-                <td>{{ $t->order_code }}</td>
-                <td>{{ $t->product->name ?? 'N/A' }}</td>
-                <td>{{ number_format($t->amount) }}</td>
-                <td>{{ ucfirst($t->status) }}</td>
-            </tr>
+                <tr>
+                    <td>{{ $t->created_at->format('d/m/Y') }}</td>
+                    <td>{{ $t->order_code }}</td>
+                    <td>{{ $t->product->name ?? 'N/A' }}</td>
+                    <td>{{ number_format($t->amount) }} {{ $t->currency }}</td>
+                    <td>{{ ucfirst($t->status) }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>
 </body>
+
 </html>

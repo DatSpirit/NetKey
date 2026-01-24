@@ -109,6 +109,15 @@ Route::middleware(['auth', 'verified', 'check.account'])->group(function () {
     Route::post('/analytics/export/csv', [AnalyticsController::class, 'exportCsv'])
         ->name('analytics.export.csv');
 
+    // Preview
+    Route::post('/analytics/export/preview', [AnalyticsController::class, 'preview'])
+        ->name('analytics.export.preview');
+
+    Route::get('/analytics/export/{id}/download', [AnalyticsController::class, 'download'])
+        ->name('analytics.export.download');
+    Route::delete('/analytics/export/{id}', [AnalyticsController::class, 'destroy'])
+        ->name('analytics.export.destroy');
+
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])
         ->name('settings.index');

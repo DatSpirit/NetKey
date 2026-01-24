@@ -11,22 +11,16 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class AnalyticsExport implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
-    protected $userId;
-    protected $dateRange;
+    protected $transactions;
 
-    public function __construct($userId, $dateRange = 30)
+    public function __construct($transactions)
     {
-        $this->userId = $userId;
-        $this->dateRange = $dateRange;
+        $this->transactions = $transactions;
     }
 
     public function collection()
     {
-        return Transaction::where('user_id', $this->userId)
-            ->where('created_at', '>=', now()->subDays($this->dateRange))
-            ->with('product')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        return $this->transactions;
     }
 
     public function headings(): array
@@ -34,11 +28,11 @@ class AnalyticsExport implements FromCollection, WithHeadings, WithMapping, With
         return [
             'Date',
             'Order Code',
-            'Product Name',
-            'Amount (VND)',
+            'Product',
+            'Amount',
+            'Currency',
             'Status',
-            'Payment Method',
-            'Description',
+            'Customer Email',
         ];
     }
 
@@ -48,10 +42,10 @@ class AnalyticsExport implements FromCollection, WithHeadings, WithMapping, With
             $transaction->created_at->format('Y-m-d H:i:s'),
             $transaction->order_code,
             $transaction->product->name ?? 'N/A',
-            number_format($transaction->amount, 0, ',', '.'),
-            ucfirst($transaction->status),
-            $transaction->payment_method ?? 'N/A',
-            $transaction->description ?? '',
+            $transaction->amount,
+            $transaction->currency,
+            $transaction->status,
+            $transaction->assigned_to_email,
         ];
     }
 

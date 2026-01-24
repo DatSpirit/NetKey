@@ -1,407 +1,452 @@
 <x-app-layout>
-
-    {{-- HEADER --}}
     <x-slot name="header">
         <div class="flex items-center justify-between flex-wrap gap-4">
-
             <div>
-                <h2 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white flex items-center">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center">
                     <svg class="w-8 h-8 mr-3 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    Analytics Dashboard
+                    My Activity
                 </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Insights & reports
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Track your personal spending and account usage
                 </p>
             </div>
 
             <div class="flex items-center space-x-3">
-
                 <select id="time-range" onchange="changeRange(this.value)"
-                    class="px-4 py-2 bg-white dark:bg-gray-700 border rounded-xl text-sm">
+                    class="px-4 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer">
                     <option value="7" {{ $days == 7 ? 'selected' : '' }}>Last 7 days</option>
                     <option value="30" {{ $days == 30 ? 'selected' : '' }}>Last 30 days</option>
-                    <option value="90" {{ $days == 90 ? 'selected' : '' }}>Last 90 days</option>
+                    <option value="90" {{ $days == 90 ? 'selected' : '' }}>Last 3 months</option>
                     <option value="365" {{ $days == 365 ? 'selected' : '' }}>Last year</option>
                 </select>
 
                 <a href="{{ route('analytics.export') }}"
-                    class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium shadow">
+                    class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium shadow-md transition-all hover:shadow-lg">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
                     Export
                 </a>
-
             </div>
-
         </div>
     </x-slot>
 
-    {{-- PAGE CONTAINER --}}
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="space-y-6">
 
-
-        {{-- ========================= --}}
         {{-- KPI CARDS --}}
-        {{-- ========================= --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-            {{-- Total Revenue --}}
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
+            {{-- Total Spent (Split) --}}
+            <div
+                class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-lg p-5 text-white transform hover:scale-105 transition-transform duration-300 relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-indigo-100 text-sm font-medium mb-3">Total Spending</p>
+
+                    <div class="flex items-baseline space-x-1 mb-1">
+                        <span class="text-2xl font-bold">{{ number_format($analytics['totalRevenueVND']) }}</span>
+                        <span class="text-xs font-normal opacity-80">VND</span>
+                    </div>
+                    <div class="flex items-baseline space-x-1">
+                        <span
+                            class="text-xl font-bold text-green-300">{{ number_format($analytics['totalRevenueCoin']) }}</span>
+                        <span class="text-xs font-normal opacity-80">COIN</span>
+                    </div>
+                </div>
+                {{-- Decorative Icon --}}
+                <div class="absolute right-0 top-0 p-4 opacity-10">
+                    <svg class="w-24 h-24 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+
+            {{-- Transactions --}}
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-5">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Total Revenue</p>
-                        <p class="text-2xl font-bold mt-2 dark:text-white">
-                            {{ number_format($analytics['totalRevenue']) }} VND
-                        </p>
-                        <p class="text-xs text-gray-400 mt-1">
-                            {{ $startDate->toDateString() }} → {{ $endDate->toDateString() }}
-                        </p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Transactions</p>
+                        <h3 class="text-2xl font-bold mt-1 dark:text-white">{{ $analytics['ordersTotal'] }}</h3>
                     </div>
-                    <div class="rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 p-3">
-                        <svg class="w-8 h-8 text-green-500 dark:text-emerald-400" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" aria-hidden="true">
-                            <circle cx="12" cy="12" r="8" stroke-width="1.5" />
-                            <path
-                                d="M10.5 9.5c.6-.4 1.6-.6 2.5 0 .9.6 1.5 1.8 1.5 2.5 0 .9-.6 1.9-1.5 2.4-.9.5-1.9.3-2.5 0"
-                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M12 8v8" stroke-width="1.5" stroke-linecap="round" />
+                    <div class="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                         </svg>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center">
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                        <div class="bg-blue-600 h-1.5 rounded-full" style="width: {{ $analytics['successRate'] }}%">
+                        </div>
+                    </div>
+                    <span
+                        class="ml-2 text-xs font-medium text-blue-600 dark:text-blue-400">{{ $analytics['successRate'] }}%
+                        success</span>
+                </div>
+            </div>
+
+            {{-- Coin Activity (Deposit/Spend Ratio) --}}
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-5">
+                <div class="flex justify-between items-start mb-2">
+                    <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Coin Activity</p>
+                    <div class="p-1.5 bg-green-50 dark:bg-green-900/30 rounded-lg">
+                        <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    {{-- Deposited --}}
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-gray-500">Deposited</span>
+                            <span
+                                class="font-bold text-gray-900 dark:text-white">{{ number_format($analytics['walletDeposited']) }}</span>
+                        </div>
+                        <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5">
+                            <div class="bg-gray-400 h-1.5 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    {{-- Spent --}}
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="text-gray-500">Spent</span>
+                            <span class="font-bold text-green-600">{{ number_format($analytics['walletSpent']) }}</span>
+                        </div>
+                        {{-- Calculate percentage of Deposited roughly --}}
+                        @php
+                            $spendPercent = $analytics['walletDeposited'] > 0 ? ($analytics['walletSpent'] / $analytics['walletDeposited']) * 100 : 0;
+                        @endphp
+                        <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5">
+                            <div class="bg-green-500 h-1.5 rounded-full" style="width: {{ min($spendPercent, 100) }}%">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Orders --}}
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
+            {{-- Current Balance --}}
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-5">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Orders</p>
-                        <p class="text-2xl font-bold mt-2 dark:text-white">
-                            Total {{ $analytics['ordersTotal'] }} / Success {{ $analytics['ordersSuccess'] }}
-                        </p>
-                        <p class="text-xs text-gray-400 mt-1">
-                            Success: {{ $analytics['successRate'] }}%
-                        </p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Current Balance</p>
+                        <h3 class="text-2xl font-bold mt-1 text-indigo-600 dark:text-indigo-400">
+                            {{ number_format($analytics['walletBalance']) }} <span
+                                class="text-xs text-gray-400 font-normal">COIN</span></h3>
                     </div>
-                    <div class="rounded-xl bg-gradient-to-br from-blue-400 to-indigo-600 p-3">
-                        <svg class="w-8 h-8 text-slate-600 dark:text-slate-300" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" aria-hidden="true">
-                            <path d="M4 6h16" stroke-width="1.8" stroke-linecap="round" />
-                            <path d="M4 12h16" stroke-width="1.8" stroke-linecap="round" />
-                            <path d="M4 18h16" stroke-width="1.8" stroke-linecap="round" />
+                    <div class="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
+                        <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                         </svg>
                     </div>
                 </div>
+                <p class="mt-4 text-xs text-green-600 font-medium">Available for use</p>
             </div>
-
-            {{-- Avg Order Value --}}
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Avg Order Value</p>
-                        <p class="text-2xl font-bold mt-2 dark:text-white">
-                            {{ number_format($analytics['avgOrder']) }}
-                        </p>
-                        <p class="text-xs text-gray-400 mt-1">Success only</p>
-                    </div>
-                    <div class="rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 p-3">
-                        <svg class="w-8 h-8 text-purple-500 dark:text-pink-400" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" aria-hidden="true">
-                            <path d="M12 5v14" stroke-width="1.8" stroke-linecap="round" />
-                            <path d="M5 12h14" stroke-width="1.8" stroke-linecap="round" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Payment Methods --}}
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Payment Methods</p>
-                        <p class="text-2xl font-bold mt-2 dark:text-white">
-                            {{ $paymentMethods['COINKEY'] }} COINKEY & {{ $paymentMethods['VND'] }} VND
-                        </p>
-                        <p class="text-xs text-gray-400 mt-1">
-                            Total transactions
-                        </p>
-                    </div>
-                    <div class="rounded-xl bg-gradient-to-br from-orange-400 to-red-500 p-3">
-                        <svg class="w-8 h-8 text-orange-400 dark:text-red-500" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" aria-hidden="true">
-                            <path d="M20 6L9 17l-5-5" stroke-width="1.8" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-
-                    </div>
-                </div>
-            </div>
-
         </div>
 
+        {{-- MAIN CHARTS ROW --}}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {{-- ========================= --}}
-        {{-- CHARTS --}}
-        {{-- ========================= --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-
-            {{-- Revenue Trend --}}
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
-                <div class="flex justify-between mb-4">
-                    <h3 class="text-lg font-semibold dark:text-white">Revenue Trend</h3>
-                    <p class="text-sm text-gray-500">
-                        {{ $startDate->toDateString() }} → {{ $endDate->toDateString() }}
-                    </p>
-                </div>
-                <div class="h-64">
+            {{-- Spending Trend (Line) --}}
+            <div
+                class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Spending History</h3>
+                <div class="h-72 w-full">
                     <canvas id="revenueChart"></canvas>
                 </div>
             </div>
 
-            {{-- Payment Methods --}}
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
-                <div class="flex justify-between mb-4">
-                    <h3 class="text-lg font-semibold dark:text-white">Payment Distribution</h3>
-                    <p class="text-sm text-gray-500">COINKEY vs VND</p>
-                </div>
-                <div class="h-64 flex items-center justify-center">
-                    <canvas id="paymentChart" class="max-w-[300px]"></canvas>
+            {{-- Daily Habits (Bar) --}}
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Activity by Day</h3>
+                <div class="h-72 w-full">
+                    <canvas id="dailyChart"></canvas>
                 </div>
             </div>
-
         </div>
 
-
-        {{-- ========================= --}}
-        {{-- HOURLY + TOP PRODUCTS --}}
-        {{-- ========================= --}}
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-
-            {{-- Heatmap --}}
-            <div class="col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
-
-                <div class="flex justify-between mb-4">
-                    <h3 class="text-lg font-semibold dark:text-white">Hourly Activity</h3>
-                    <p class="text-sm text-gray-500">Heatmap</p>
+        {{-- SECONDARY ACTIVITY ROW --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {{-- Currency Distribution --}}
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Wallet Usage</h3>
+                    <span
+                        class="text-xs font-semibold px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-500">Volume</span>
                 </div>
-
-                <div id="heatmap" class="grid grid-cols-12 gap-2"></div>
+                <div class="h-64 flex justify-center relative">
+                    <canvas id="currencyChart"></canvas>
+                    {{-- Center Text Overlay --}}
+                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div class="text-center">
+                            <div class="text-xs text-gray-400">Total</div>
+                            <div class="text-lg font-bold dark:text-white">{{ count($trend) }} <span
+                                    class="text-xs font-normal">Trans</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <p class="text-xs text-gray-500">COINKEY</p>
+                        <p class="font-bold text-green-500">{{ $currencyStats['COINKEY']['count'] }}</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xs text-gray-500">VND</p>
+                        <p class="font-bold text-blue-500">{{ $currencyStats['VND']['count'] }}</p>
+                    </div>
+                </div>
             </div>
 
             {{-- Top Products --}}
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
-                <h3 class="text-lg font-semibold dark:text-white mb-3">Top Products</h3>
-                <div class="space-y-3">
-
-                    @forelse($topProducts as $p)
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-sm font-medium dark:text-white">{{ $p->product_name }}</p>
-                                <p class="text-xs text-gray-500">{{ $p->orders }} orders</p>
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Top Purchases</h3>
+                <div class="space-y-4">
+                    @forelse($topProducts as $index => $p)
+                        <div class="flex items-center">
+                            <div
+                                class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-bold mr-3">
+                                {{ $index + 1 }}
                             </div>
-                            <p class="text-sm font-bold text-green-600 dark:text-green-400">
-                                {{ number_format($p->total) }}
-                            </p>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                    {{ $p->product_name }}
+                                </p>
+                                <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5 mt-1.5">
+                                    <div class="bg-indigo-500 h-1.5 rounded-full"
+                                        style="width: {{ min(($p->orders / ($analytics['ordersSuccess'] ?: 1)) * 100, 100) }}%">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ml-4 text-right">
+                                <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $p->orders }}</p>
+                                <p class="text-xs text-gray-500">times</p>
+                            </div>
                         </div>
                     @empty
-                        <p class="text-xs text-gray-500">No products in this period.</p>
+                        <p class="text-gray-500 text-sm text-center py-4">No purchases yet.</p>
                     @endforelse
-
                 </div>
             </div>
 
-        </div>
-
-
-        {{-- ========================= --}}
-        {{-- TOP CUSTOMERS + COHORT --}}
-        {{-- ========================= --}}
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-
-            {{-- Top customers --}}
-            <div class="col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
-
-                <h3 class="text-lg font-semibold dark:text-white mb-4">
-                    Top Customers
-                </h3>
-
-                <div class="space-y-3">
-                    @foreach ($topCustomers as $c)
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg
-                                            flex items-center justify-center text-sm font-semibold">
-                                    {{ strtoupper(substr($c['name'], 0, 2)) }}
-                                </div>
-                                <div>
-                                    <p class="text-sm font-medium dark:text-white">{{ $c['name'] }}</p>
-                                    <p class="text-xs text-gray-400">{{ $c['orders'] }} orders</p>
-                                </div>
+            {{-- Time Heatmap (Simple CSS Grid) --}}
+            <div
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Peak Activity Hours</h3>
+                <div class="grid grid-cols-6 gap-2">
+                    @foreach($hourly as $h => $count)
+                        <div class="flex flex-col items-center">
+                            <div
+                                class="w-full pt-[100%] relative rounded-md {{ $count == 0 ? 'bg-gray-100 dark:bg-gray-700' : ($count < 3 ? 'bg-indigo-200 dark:bg-indigo-800' : ($count < 6 ? 'bg-indigo-400 dark:bg-indigo-600' : 'bg-indigo-600 dark:bg-indigo-500')) }}">
+                                <span
+                                    class="absolute inset-0 flex items-center justify-center text-[10px] {{ $count > 3 ? 'text-white' : 'text-gray-500 dark:text-gray-300' }}">
+                                    {{ $h }}h
+                                </span>
                             </div>
-                            <p class="text-sm font-bold text-green-600 dark:text-green-400">
-                                {{ number_format($c['total_spent']) }}
-                            </p>
                         </div>
                     @endforeach
                 </div>
-
-            </div>
-
-            {{-- Cohort Summary --}}
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 border">
-
-                <h3 class="text-lg font-semibold dark:text-white mb-3">Cohort Summary</h3>
-
-                <div class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                    <div class="flex justify-between"><span>New users</span><span>{{ $cohort['newUsers'] }}</span>
+                <div class="mt-4 flex items-center justify-between text-xs text-gray-500">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-gray-100 dark:bg-gray-700 rounded mr-1"></div> None
                     </div>
-                    <div class="flex justify-between"><span>Revenue from new
-                            users</span><span>{{ number_format($cohort['newUsersRevenue']) }}</span></div>
-                    <div class="flex justify-between"><span>Repeat purchase
-                            rate</span><span>{{ $cohort['repeatRate'] }}%</span></div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-indigo-200 dark:bg-indigo-800 rounded mr-1"></div> Low
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-indigo-400 dark:bg-indigo-600 rounded mr-1"></div> Med
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-indigo-600 dark:bg-indigo-500 rounded mr-1"></div> High
+                    </div>
                 </div>
-
             </div>
+        </div>
 
+        {{-- Recent Transactions Timeline --}}
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Recent Activity Timeline</h3>
+            <div class="relative border-l-2 border-gray-200 dark:border-gray-700 ml-3 space-y-8">
+                @forelse($transactions->take(10) as $t)
+                    <div class="relative pl-8">
+                        {{-- Timeline Dot --}}
+                        <div
+                            class="absolute -left-[9px] top-0 w-4 h-4 rounded-full {{ $t->status == 'success' ? 'bg-green-500 ring-4 ring-green-100 dark:ring-green-900/30' : 'bg-red-500 ring-4 ring-red-100 dark:ring-red-900/30' }}">
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ $t->product->name ?? 'Wallet Topup' }}
+                                </h4>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    {{ $t->created_at->format('M d, Y • h:i A') }} • Order #{{ substr($t->order_code, -8) }}
+                                </p>
+                            </div>
+                            <div class="text-right">
+                                <span
+                                    class="block text-sm font-bold {{ $t->status == 'success' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                                    {{ $t->status == 'success' ? '-' : '' }}{{ number_format($t->amount) }}
+                                    {{ $t->currency }}
+                                </span>
+                                <span class="text-xs text-gray-400 capitalize">{{ $t->status }}</span>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="pl-8 text-gray-500 text-sm">No recent transactions.</div>
+                @endforelse
+            </div>
+            <div class="mt-6 text-center">
+                <button onclick="window.location.href='{{ route('analytics.export') }}'"
+                    class="text-sm text-indigo-600 hover:text-indigo-800 font-medium">View detailed history in
+                    Exports</button>
+            </div>
         </div>
 
     </div>
 
+    {{-- CHART.JS SCRIPTS --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // ================================
-        // TIME RANGE CHANGE
-        // ================================
-        function changeRange(days) {
-            window.location.href = "?days=" + days;
-        }
-
+        // Common Options
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#9CA3AF';
 
         // ================================
-        // REVENUE TREND CHART
+        // SPENDING TREND (Line)
         // ================================
-        const trendLabels = @json($trend->pluck('date')->toArray());
-        const trendData = @json($trend->pluck('total')->toArray());
+        const trendLabels = @json($trend->pluck('date'));
+        const trendData = @json($trend->pluck('total'));
 
-
-        const ctxRevenue = document.getElementById("revenueChart");
-
-        new Chart(ctxRevenue, {
+        new Chart(document.getElementById("revenueChart"), {
             type: "line",
             data: {
                 labels: trendLabels,
                 datasets: [{
-                    label: "Revenue (VND)",
+                    label: "Spending",
                     data: trendData,
                     tension: 0.4,
                     fill: true,
-                    backgroundColor: function(context) {
-                        const chart = context.chart;
-                        const {
-                            ctx,
-                            chartArea
-                        } = chart;
-                        if (!chartArea) return null;
-
-                        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea
-                            .bottom);
-                        gradient.addColorStop(0, "rgba(99, 102, 241, 0.35)");
+                    backgroundColor: (ctx) => {
+                        const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, 300);
+                        gradient.addColorStop(0, "rgba(99, 102, 241, 0.2)"); // Indigo
                         gradient.addColorStop(1, "rgba(99, 102, 241, 0)");
                         return gradient;
                     },
-                    borderColor: "rgba(99, 102, 241, 1)",
+                    borderColor: "#6366F1",
                     borderWidth: 2,
-                    pointRadius: 3,
+                    pointRadius: 4,
                     pointHoverRadius: 6,
-                    pointBackgroundColor: "rgba(99, 102, 241, 1)",
+                    pointBackgroundColor: "#fff",
+                    pointBorderColor: "#6366F1",
+                    pointBorderWidth: 2
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
                 scales: {
+                    x: { grid: { display: false } },
                     y: {
-                        ticks: {
-                            color: "#9CA3AF"
-                        },
-                        grid: {
-                            color: "rgba(156,163,175,0.2)"
-                        }
-                    },
-                    x: {
-                        ticks: {
-                            color: "#9CA3AF"
-                        },
-                        grid: {
-                            display: false
-                        }
+                        beginAtZero: true,
+                        border: { dash: [4, 4] },
+                        grid: { color: "rgba(156, 163, 175, 0.1)" }
                     }
                 }
             }
         });
 
+        // ================================
+        // DAILY HABITS (Bar)
+        // ================================
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const dailyData = @json($spendingByDay);
+
+        new Chart(document.getElementById("dailyChart"), {
+            type: "bar",
+            data: {
+                labels: days,
+                datasets: [{
+                    label: "Spending",
+                    data: dailyData,
+                    borderRadius: 6,
+                    backgroundColor: [
+                        "rgba(209, 213, 219, 0.5)", // Sun
+                        "#6366F1", // Mon
+                        "#6366F1", // Tue
+                        "#6366F1", // Wed
+                        "#6366F1", // Thu
+                        "#6366F1", // Fri
+                        "rgba(209, 213, 219, 0.5)", // Sat
+                    ],
+                    barThickness: 24
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { display: false }
+                }
+            }
+        });
 
         // ================================
-        // PAYMENT METHOD PIE CHART
+        // WALLET CURRENCY (Doughnut)
         // ================================
-        const ctxPayment = document.getElementById("paymentChart");
-
-        new Chart(ctxPayment, {
+        new Chart(document.getElementById("currencyChart"), {
             type: "doughnut",
             data: {
                 labels: ["COINKEY", "VND"],
                 datasets: [{
-                    data: [
-                        {{ $paymentMethods['COINKEY'] }},
-                        {{ $paymentMethods['VND'] }}
-                    ],
-                    backgroundColor: [
-                        "rgba(52, 211, 153, 0.9)",
-                        "rgba(59, 130, 246, 0.9)"
-                    ],
-                    borderWidth: 0
+                    data: [{{ $currencyStats['COINKEY']['volume'] }}, {{ $currencyStats['VND']['volume'] }}],
+                    backgroundColor: ["#10B981", "#3B82F6"], // Emerald, Blue
+                    borderWidth: 0,
+                    hoverOffset: 4
                 }]
             },
             options: {
-                cutout: "65%",
+                cutout: "75%",
+                responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        position: "bottom",
-                        labels: {
-                            color: "#9CA3AF"
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                let label = context.label || '';
+                                let value = context.raw || 0;
+                                return label + ': ' + new Intl.NumberFormat().format(value);
+                            }
                         }
                     }
                 }
             }
         });
 
-
-        // ================================
-        // HOURLY HEATMAP
-        // ================================
-        const hourlyData = @json($hourly);
-
-        const heatmap = document.getElementById("heatmap");
-
-        for (let h = 0; h < 24; h++) {
-            const count = hourlyData[h] ?? 0;
-
-            // Determine color intensity
-            let bg;
-            if (count === 0) bg = "bg-gray-200 dark:bg-gray-700";
-            else if (count < 3) bg = "bg-green-200 dark:bg-green-700";
-            else if (count < 7) bg = "bg-green-400 dark:bg-green-600";
-            else bg = "bg-green-600 dark:bg-green-500";
-
-            const cell = document.createElement("div");
-            cell.className = `h-10 rounded flex items-center justify-center text-xs text-gray-900 dark:text-white ${bg}`;
-            cell.innerHTML = `<span>${h}:00</span>`;
-            heatmap.appendChild(cell);
+        function changeRange(days) {
+            window.location.href = "?days=" + days;
         }
     </script>
-
-
 </x-app-layout>
