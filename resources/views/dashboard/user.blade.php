@@ -64,7 +64,7 @@
                                 Expiry Date
                             </p>
                             <p id="countdown" class="text-2xl font-mono font-bold text-white drop-shadow-md"
-                                data-expires-at="{{ $user->expires_at }}">
+                                data-expires-at="{{ $user->expires_at->timestamp * 1000 }}">
                                 Loading...
                             </p>
                         </div>
@@ -242,7 +242,6 @@
                             class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition">
                             Đổi biểu đồ
                         </button>
-
                         <select id="chart-range-select"
                             class="px-3 py-1.5 border rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 text-sm">
                             <option value="7days" {{ $currentRange === '7days' ? 'selected' : '' }}>7 ngày</option>
@@ -263,7 +262,6 @@
                 </p>
             </div>
         </div>
-
 
         {{-- Recent Activities & Products --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -391,7 +389,7 @@
             <script>
                 // Lấy timestamp từ thuộc tính data-expires-at
                 const countdownEl = document.getElementById('countdown');
-                const expiresAt = new Date(countdownEl.dataset.expiresAt).getTime();
+                const expiresAt = parseInt(countdownEl.dataset.expiresAt); // Changed key update here
 
                 // Cập nhật đồng hồ đếm ngược mỗi giây
                 const countdownInterval = setInterval(function () {
@@ -498,41 +496,124 @@
 
                 // ============================
                 // Crosshair X + Y
+
+
+                { { --Script cho biểu đồ-- } }
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+                document.addEventListener('DOMContentLoaded', function () {
+
+                    // Gradient TAILWIND (Auto Dark)
+                    function createGradient(ctx, colorFrom, colorTo) {
+                        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+                        gradient.addColorStop(0, colorFrom);
+                        gradient.addColorStop(1, colorTo);
+                        return gradient;
+                    }
+
+                    // Pie Chart
+                    const successCount = {{ $stats['success'] }};
+                const pendingCount = {{ $stats['pending'] }};
+                const failedCount = {{ $stats['failed'] }};
+                // Tính tổng số giao dịch để phục vụ tính toán phần trăm
+                const totalTransactions = successCount + pendingCount + failedCount;
+
+                const pieCtx = document.getElementById('transactionPieChart')?.getContext('2d');
+                if (pieCtx) {
+                    new Chart(pieCtx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Thành công', 'Chờ xử lý', 'Thất bại'],
+                            datasets: [{
+                                data: [successCount, pendingCount, failedCount],
+                                backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                                borderWidth: 2,
+                                hoverOffset: 8
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                    padding: 12,
+                                    cornerRadius: 8,
+                                    titleFont: {
+                                        size: 14,
+                                        weight: 'bold'
+                                    },
+                                    bodyFont: {
+                                        size: 13
+                                    },
+                                    callbacks: {
+                                        label: function (context) {
+                                            const count = context.parsed; // Số lượng giao dịch
+                                            let percentage = 0;
+
+                                            if (totalTransactions > 0) {
+                                                // Tính tỉ lệ phần trăm và làm tròn 1 chữ số thập phân
+                                                percentage = ((count / totalTransactions) * 100).toFixed(1);
+                                            }
+                                            return context.label + ': ' + count + ' GD (' + percentage +
+                                                '%)';
+                                        }
+                                    }
+                                }
+                            },
+                            cutout: '70%'
+                        }
+                    });
+                    }
+
+                // Gradient TAILWIND 
+                function createGradient(ctx, colorFrom, colorTo) {
+                        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+                gradient.addColorStop(0, colorFrom);
+                gradient.addColorStop(1, colorTo);
+                return gradient;
+                    }
+
+                // ============================
+                // Crosshair X + Y
                 // ============================
                 const crosshairPlugin = {
                     id: 'crosshairPlugin',
-                    afterDraw(chart) {
-                        if (!chart.tooltip?._active?.length) return;
+                afterDraw(chart) {
+                            if (!chart.tooltip?._active?.length) return;
 
-                        const ctx = chart.ctx;
-                        const point = chart.tooltip._active[0].element;
-                        const {
-                            top,
-                            bottom,
-                            left,
-                            right
-                        } = chart.chartArea;
+                const ctx = chart.ctx;
+                const point = chart.tooltip._active[0].element;
+                const {
+                    top,
+                    bottom,
+                    left,
+                    right
+                } = chart.chartArea;
 
-                        ctx.save();
-                        ctx.setLineDash([4, 4]);
-                        ctx.lineWidth = 1;
-                        ctx.strokeStyle = '#9ca3af';
+                ctx.save();
+                ctx.setLineDash([4, 4]);
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = '#9ca3af';
 
-                        // Vertical
-                        ctx.beginPath();
-                        ctx.moveTo(point.x, top);
-                        ctx.lineTo(point.x, bottom);
-                        ctx.stroke();
+                // Vertical
+                ctx.beginPath();
+                ctx.moveTo(point.x, top);
+                ctx.lineTo(point.x, bottom);
+                ctx.stroke();
 
-                        // Horizontal
-                        ctx.beginPath();
-                        ctx.moveTo(left, point.y);
-                        ctx.lineTo(right, point.y);
-                        ctx.stroke();
+                // Horizontal
+                ctx.beginPath();
+                ctx.moveTo(left, point.y);
+                ctx.lineTo(right, point.y);
+                ctx.stroke();
 
-                        ctx.restore();
-                    }
-                };
+                ctx.restore();
+                        }
+                    };
 
                 Chart.register(crosshairPlugin);
 
@@ -541,7 +622,7 @@
                 const totals = {!! json_encode($chartTotals) !!};
                 const counts = {!! json_encode($chartCounts) !!};
                 const labels = {!! json_encode($chartLabels) !!};
-                const avg = totals.map((v, i) => counts[i] ? v / counts[i] : 0);
+                    const avg = totals.map((v, i) => counts[i] ? v / counts[i] : 0);
 
                 const ctx = document.getElementById('expenseBarChart').getContext('2d');
 
@@ -549,124 +630,124 @@
 
                 const chart = new Chart(ctx, {
                     type: 'bar',
-                    data: {
-                        labels,
-                        datasets: [{
+                data: {
+                    labels,
+                    datasets: [{
 
-                            label: 'Chi Tiêu / Giao Dịch',
-                            data: avg,
-                            fill: true,
-                            borderColor: '#22c55e',
-                            backgroundColor: 'rgba(14, 165, 233, 0.55)',
-                            tension: 0.4,
-                            borderWidth: 2,
-                            pointRadius: 2,
-                            pointHoverRadius: 5,
-                            yAxisID: "moneyAxis",
-                        },
-                        {
-
-                            label: "Tổng Chi Tiêu (VND)",
-                            data: totals,
-                            borderColor: '#1d4ed8',
-                            backgroundColor: createGradient(
-                                ctx,
-                                'rgba(252, 165, 165, 0.9)',
-                                'rgba(244, 63, 94, 0.7)'
-                            ),
-                            tension: 0.4,
-                            borderWidth: 1.5,
-                            pointRadius: 2,
-                            pointHoverRadius: 5,
-                            yAxisID: "moneyAxis"
-                        },
-                        {
-
-                            label: 'Số Giao Dịch Thành Công',
-                            data: counts,
-                            borderColor: '#f59e0b',
-                            backgroundColor: 'rgba(245, 158, 11, 0.25)',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            yAxisID: "countAxis",
-                            pointRadius: 2,
-                            pointHoverRadius: 5
-                        }
-
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-
-                        animation: {
-                            duration: 600,
-                            easing: 'easeInOutQuart'
-                        },
-
-                        scales: {
-                            moneyAxis: {
-                                position: "left",
-                                ticks: {
-                                    callback: v => v.toLocaleString('vi-VN')
-                                }
+                    label: 'Chi Tiêu / Giao Dịch',
+                data: avg,
+                fill: true,
+                borderColor: '#22c55e',
+                backgroundColor: 'rgba(14, 165, 233, 0.55)',
+                tension: 0.4,
+                borderWidth: 2,
+                pointRadius: 2,
+                pointHoverRadius: 5,
+                yAxisID: "moneyAxis",
                             },
-                            countAxis: {
-                                position: "right",
-                                beginAtZero: true,
-                                grid: {
-                                    display: false
+                {
+
+                    label: "Tổng Chi Tiêu (VND)",
+                data: totals,
+                borderColor: '#1d4ed8',
+                backgroundColor: createGradient(
+                ctx,
+                'rgba(252, 165, 165, 0.9)',
+                'rgba(244, 63, 94, 0.7)'
+                ),
+                tension: 0.4,
+                borderWidth: 1.5,
+                pointRadius: 2,
+                pointHoverRadius: 5,
+                yAxisID: "moneyAxis"
+                            },
+                {
+
+                    label: 'Số Giao Dịch Thành Công',
+                data: counts,
+                borderColor: '#f59e0b',
+                backgroundColor: 'rgba(245, 158, 11, 0.25)',
+                borderWidth: 2,
+                tension: 0.4,
+                yAxisID: "countAxis",
+                pointRadius: 2,
+                pointHoverRadius: 5
+                            }
+
+                ]
+                        },
+                options: {
+                    responsive: true,
+                maintainAspectRatio: false,
+
+                animation: {
+                    duration: 600,
+                easing: 'easeInOutQuart'
+                            },
+
+                scales: {
+                    moneyAxis: {
+                    position: "left",
+                ticks: {
+                    callback: v => v.toLocaleString('vi-VN')
+                                    }
                                 },
-                                ticks: {
-                                    stepSize: 1,
-                                    callback: v => Number.isInteger(v) ? v : ''
+                countAxis: {
+                    position: "right",
+                beginAtZero: true,
+                grid: {
+                    display: false
+                                    },
+                ticks: {
+                    stepSize: 1,
+                                        callback: v => Number.isInteger(v) ? v : ''
+                                    }
+                                }
+                            },
+
+                plugins: {
+                    tooltip: {
+                    enabled: true
+                                },
+                legend: {
+                    position: 'bottom'
                                 }
                             }
-                        },
-
-                        plugins: {
-                            tooltip: {
-                                enabled: true
-                            },
-                            legend: {
-                                position: 'bottom'
-                            }
                         }
-                    }
-                });
+                    });
 
 
                 //  BUTTTON: Toggle Chart Type
                 document.getElementById("toggleChartType")
-                    .addEventListener("click", () => {
+                        .addEventListener("click", () => {
 
-                        // xoay vòng
-                        currentType =
-                            currentType === "bar" ? "line" :
-                                currentType === "line" ? "area" :
-                                    "bar";
+                    // xoay vòng
+                    currentType =
+                    currentType === "bar" ? "line" :
+                        currentType === "line" ? "area" :
+                            "bar";
 
-                        chart.data.datasets.forEach(ds => {
+                            chart.data.datasets.forEach(ds => {
 
-                            if (currentType === "area") {
-                                ds.type = "line";
-                                ds.fill = true;
-                            } else {
-                                ds.type = currentType;
-                                ds.fill = false;
-                            }
+                                if (currentType === "area") {
+                    ds.type = "line";
+                ds.fill = true;
+                                } else {
+                    ds.type = currentType;
+                ds.fill = false;
+                                }
+                            });
+
+                chart.update();
                         });
-
-                        chart.update();
-                    });
 
                 //    --- Logic Chuyển Đổi Phạm Vi ---
                 document.getElementById('chart-range-select')
-                    .addEventListener('change', function () {
-                        const selectedValue = this.value;
-                        window.location.href = `?range=${selectedValue}`;
-                    });
-            });
+                .addEventListener('change', function () {
+                            const selectedValue = this.value;
+                window.location.href = `?range=${selectedValue}`;
+                        });
+                });
         </script>
     @endpush
 </x-app-layout>
