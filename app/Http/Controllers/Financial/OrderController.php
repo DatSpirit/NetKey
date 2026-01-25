@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Services\PayosService;
 use App\Services\KeyManagementService;
 use App\Services\CoinkeyService;
+use App\Services\AccountExpirationService;
 use PayOS\PayOS;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,15 +23,18 @@ class OrderController extends Controller
     protected $payosService;
     protected $keyService;
     protected $coinkeyService;
+    protected $expirationService;
 
     public function __construct(
         PayosService $payosService,
         KeyManagementService $keyService,
-        CoinkeyService $coinkeyService
+        CoinkeyService $coinkeyService,
+        AccountExpirationService $expirationService
     ) {
         $this->payosService = $payosService;
         $this->keyService = $keyService;
         $this->coinkeyService = $coinkeyService;
+        $this->expirationService = $expirationService;
 
         // Khởi tạo PayOS SDK
         $this->payOS = new PayOS(
@@ -103,7 +107,10 @@ class OrderController extends Controller
             $wallet = $user->getOrCreateWallet();
 
             // 1. Tính giá sau giảm giá VIP
-            $discountPercent = $wallet->discount_percent; // Lấy từ Model Attribute
+            // FIX: Sử dụng logic giảm giá của Sản Phẩm (như hiển thị ở Shop) thay vì User Discount
+            // $discountPercent = $wallet->discount_percent; 
+            $discountPercent = $product->vip_discount_percent; // Sử dụng attribute mới từ Product model
+
             $originalPrice = $product->coinkey_amount; // Giá gốc
             $discountAmount = ($originalPrice * $discountPercent) / 100; // Tiền giảm giá
             $finalPrice = $originalPrice - $discountAmount; // Giá sau giảm giá
@@ -149,22 +156,53 @@ class OrderController extends Controller
                     ]
                 ]);
 
-                // 3. Tạo Key
-                $key = $this->keyService->createKeyFromPackage($user, $product, $newTransaction);
-                // 4. CẬP NHẬT key_id vào transaction
+
+
+                // 3. XỬ LÝ DỰA TRÊN LOẠI SẢN PHẨM
+                if ($product->isExtensionPackage()) {
+                    // --- CASE A: GIA HẠN TÀI KHOẢN (AC) ---
+                    $this->expirationService->extendAccountByMinutes(
+                        $user,
+                        $product->duration_minutes,
+                        "Mua gói {$product->name} (Order #{$orderCode})"
+                    );
+
+                    $metadataType = 'package_extension';
+                    $message = 'Account extended automatically';
+                    $extendedMinutes = $product->duration_minutes;
+                } else {
+                    // --- CASE B: MUA KEY (K) ---
+                    // Tạo Key như cũ
+                    $key = $this->keyService->createKeyFromPackage($user, $product, $newTransaction);
+
+                    // Update Transaction Metadata riêng cho Key
+                    $newTransaction->update([
+                        'response_data' => array_merge($newTransaction->response_data ?? [], [
+                            'key_id' => $key->id,
+                            'key_code' => $key->key_code,
+                        ])
+                    ]);
+
+                    // Ghi log Key History
+                    \App\Models\KeyHistory::log($key->id, 'create', "Tạo Key qua Ví - Order Code: {$newTransaction->order_code}", [
+                        'Key_Code' => $key->key_code,
+                        'cost' => $finalPrice . ' Coin',
+                        'duration_minutes' => $product->duration_minutes,
+                        'discount_applied' => $discountPercent . '%'
+                    ]);
+
+                    $metadataType = 'package_purchase';
+                    $message = 'Key created successfully';
+                }
+
+                // 4. Update Transaction Metadata chung
                 $newTransaction->update([
                     'response_data' => array_merge($newTransaction->response_data ?? [], [
-                        'key_id' => $key->id,
-                        'key_code' => $key->key_code,
+                        'type' => $metadataType,
+                        'duration_minutes' => $product->duration_minutes ?? 0,
+                        'message' => $message,
+                        'is_extension' => $product->isExtensionPackage()
                     ])
-                ]);
-
-                // 5. GHI LOG LỊCH SỬ KEY 
-                \App\Models\KeyHistory::log($key->id, 'create', "Tạo Key qua Ví - Order Code: {$newTransaction->order_code}", [
-                    'Key_Code' => $key->key_code,
-                    'cost' => $finalPrice . ' Coin',
-                    'duration_minutes' => $product->duration_minutes,
-                    'discount_applied' => $discountPercent . '%'
                 ]);
 
                 return $newTransaction;
@@ -194,7 +232,17 @@ class OrderController extends Controller
 
             // 2.Xác định suffix cho description dựa vào product_type
             $productType = $product->product_type ?? '';
-            $suffix = $productType === 'package' ? 'K' : ($productType === 'coinkey' ? 'C' : '');
+
+            if ($product->isExtensionPackage()) {
+                $suffix = 'AC'; // Account Extension (Gói Gia Hạn)
+            } elseif ($productType === 'package') {
+                $suffix = 'K';  // Key Package (Mua Key)
+            } elseif ($productType === 'coinkey') {
+                $suffix = 'C';  // Coin Deposit
+            } else {
+                $suffix = '';
+            }
+
             $description = $orderCode . $suffix;
 
             // 3. Chuẩn bị data 
@@ -591,22 +639,45 @@ class OrderController extends Controller
                 return;
             }
 
-            // 5️ XỬ LÝ MUA GÓI KEY THƯỜNG
+            // 5️ XỬ LÝ MUA GÓI (Service Package)
             if ($product?->isServicePackage()) {
-                $keyService = app(\App\Services\KeyManagementService::class);
-                $key = $keyService->createKeyFromPackage($user, $product, $transaction);
 
-                if ($key) {
+                if ($product->isExtensionPackage()) {
+                    // --- CASE A: GIA HẠN (Service Extension) ---
+                    $this->expirationService->extendAccountByMinutes(
+                        $user,
+                        $product->duration_minutes,
+                        "Thanh toán PayOS gói {$product->name} (Order #{$transaction->order_code})"
+                    );
+
                     $transaction->update([
                         'response_data' => array_merge($meta, [
-                            'type' => 'package_purchase',
-                            'key_id' => $key->id,
-                            'key_code' => $key->key_code,
+                            'type' => 'package_extension',
+                            'duration_minutes' => $product->duration_minutes,
+                            'message' => 'Account extended automatically',
+                            'is_extension' => true
                         ])
                     ]);
+                    Log::info("✅ Account extended directly for package purchase (AC)");
 
-                    \App\Models\KeyHistory::log($key->id, 'create', "Mua gói {$product->name}");
-                    Log::info("✅ Package key created");
+                } else {
+                    // --- CASE B: MUA KEY (Existing Logic) ---
+                    $keyService = app(\App\Services\KeyManagementService::class);
+                    $key = $keyService->createKeyFromPackage($user, $product, $transaction);
+
+                    if ($key) {
+                        $transaction->update([
+                            'response_data' => array_merge($meta, [
+                                'type' => 'package_purchase',
+                                'key_id' => $key->id,
+                                'key_code' => $key->key_code,
+                                'is_extension' => false
+                            ])
+                        ]);
+
+                        \App\Models\KeyHistory::log($key->id, 'create', "Mua gói {$product->name}");
+                        Log::info("✅ Package key created (K)");
+                    }
                 }
             }
         } catch (\Exception $e) {

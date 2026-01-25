@@ -47,23 +47,34 @@ class AccountExpirationService
     /**
      * Gia hạn tài khoản
      */
+    /**
+     * Gia hạn tài khoản
+     */
     public function extendAccount(User $user, int $days, string $reason = null): User
+    {
+        return $this->extendAccountByMinutes($user, $days * 24 * 60, $reason);
+    }
+
+    /**
+     * Gia hạn tài khoản theo phút
+     */
+    public function extendAccountByMinutes(User $user, int $minutes, string $reason = null): User
     {
         DB::beginTransaction();
         try {
             if ($user->expires_at && $user->expires_at->isFuture()) {
                 // Nếu còn hạn, cộng thêm
-                $newExpiresAt = $user->expires_at->addDays($days);
+                $newExpiresAt = $user->expires_at->addMinutes($minutes);
             } else {
                 // Nếu hết hạn hoặc chưa có, tính từ hôm nay
-                $newExpiresAt = now()->addDays($days);
+                $newExpiresAt = now()->addMinutes($minutes);
             }
 
             $user->update([
                 'expires_at' => $newExpiresAt,
                 'account_status' => 'active',
                 'account_notes' => ($user->account_notes ?? '') .
-                    "\nExtended {$days} days at " . now()->toDateTimeString() .
+                    "\nExtended {$minutes} minutes at " . now()->toDateTimeString() .
                     ($reason ? " - Reason: {$reason}" : '')
             ]);
 

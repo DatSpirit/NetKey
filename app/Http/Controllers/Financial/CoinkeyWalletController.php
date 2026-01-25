@@ -55,16 +55,20 @@ class CoinkeyWalletController extends Controller
         $wallet = $user->getOrCreateWallet();
         $vipLevel = $wallet->vip_level;
 
-        // Lấy RIÊNG các gói ưu đãi (category = 'vip_package')
-        $products = Product::where('product_type', 'package')
+        // Lấy tất cả gói ưu đãi (category = 'vip_package')
+        $allPackages = Product::where('product_type', 'package')
             ->where('category', 'vip_package')
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->orderBy('price')
             ->get();
 
-        // Xử lý từng gói
-        $vipPackages = $products->map(function ($package) use ($user, $vipLevel) {
+        // Tách gói Gia Hạn và Gói VIP (dựa vào tên)
+        $vipPackagesRaw = $allPackages->filter(fn($p) => !str_contains($p->name, 'Gia Hạn'));
+        $extensionPackagesRaw = $allPackages->filter(fn($p) => str_contains($p->name, 'Gia Hạn'));
+
+        // Helper function for processing
+        $processPackage = function ($package) use ($user, $vipLevel) {
             $requiredVip = $this->calculateRequiredVip($package->price);
             $discountPercent = $this->calculateDiscount($requiredVip);
             $maxBuy = $this->calculateMaxBuy($requiredVip);
@@ -86,9 +90,12 @@ class CoinkeyWalletController extends Controller
                 'can_buy' => $boughtCount < $maxBuy,
                 'is_locked' => $vipLevel < $requiredVip,
             ];
-        });
+        };
 
-        return view('wallet.buy-package', compact('vipPackages', 'wallet', 'vipLevel'));
+        $vipPackages = $vipPackagesRaw->map($processPackage);
+        $extensionPackages = $extensionPackagesRaw->map($processPackage);
+
+        return view('wallet.buy-package', compact('vipPackages', 'extensionPackages', 'wallet', 'vipLevel'));
     }
 
     /**

@@ -3,7 +3,7 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            
+
             {{-- SUCCESS CARD --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 text-center">
@@ -23,9 +23,10 @@
                             Thanh toán thất bại
                         </h2>
                     @endif
-                    
+
                     <p class="text-gray-600 dark:text-gray-400">
-                        Mã đơn hàng: <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded font-mono">{{ $transaction->order_code }}</code>
+                        Mã đơn hàng: <code
+                            class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded font-mono">{{ $transaction->order_code }}</code>
                     </p>
                 </div>
             </div>
@@ -41,13 +42,14 @@
                         <div class="flex justify-between">
                             <span class="text-gray-600 dark:text-gray-400">Số tiền:</span>
                             <span class="font-bold text-green-600">
-                                {{ number_format($transaction->amount) }} 
+                                {{ number_format($transaction->amount) }}
                                 {{ $transaction->currency === 'COINKEY' ? 'Coin' : 'VND' }}
                             </span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600 dark:text-gray-400">Trạng thái:</span>
-                            <span class="font-semibold {{ $transaction->status === 'success' ? 'text-green-600' : 'text-yellow-600' }}">
+                            <span
+                                class="font-semibold {{ $transaction->status === 'success' ? 'text-green-600' : 'text-yellow-600' }}">
                                 {{ ucfirst($transaction->status) }}
                             </span>
                         </div>
@@ -62,10 +64,11 @@
             </div>
 
             {{-- CONTENT BY TYPE (sử dụng METADATA) --}}
-            
+
             {{-- 1️⃣ CUSTOM EXTENSION --}}
             @if($is_custom_extension)
-                <div class="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-6 mb-6">
+                <div
+                    class="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-6 mb-6">
                     <div class="flex items-center gap-3 mb-4">
                         <span class="text-4xl">🎯</span>
                         <div>
@@ -83,18 +86,18 @@
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Key Code:</span>
                                 <code class="block mt-1 bg-white dark:bg-gray-700 px-3 py-2 rounded font-mono font-bold">
-                                    {{ $key_code }}
-                                </code>
+                                            {{ $key_code }}
+                                        </code>
                             </div>
                         @endif
-                        
+
                         @if($package_name)
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Gói gia hạn:</span>
                                 <span class="block mt-1 font-semibold text-indigo-600">{{ $package_name }}</span>
                             </div>
                         @endif
-                        
+
                         @if($days_added)
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Thời gian cộng:</span>
@@ -113,16 +116,17 @@
                     </div>
 
                     @if($key)
-                        <a href="{{ route('keys.keydetails', $key->id) }}" 
-                           class="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition">
+                        <a href="{{ route('keys.keydetails', $key->id) }}"
+                            class="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition">
                             Xem chi tiết Key →
                         </a>
                     @endif
                 </div>
 
-            {{-- 2️⃣ STANDARD EXTENSION --}}
+                {{-- 2️⃣ STANDARD EXTENSION --}}
             @elseif($is_key_extension && !$is_custom_extension)
-                <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 mb-6">
+                <div
+                    class="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 mb-6">
                     <div class="flex items-center gap-3 mb-4">
                         <span class="text-4xl">⏱️</span>
                         <div>
@@ -140,8 +144,8 @@
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Key Code:</span>
                                 <code class="block mt-1 bg-white dark:bg-gray-700 px-3 py-2 rounded font-mono font-bold">
-                                    {{ $key->key_code }}
-                                </code>
+                                            {{ $key->key_code }}
+                                        </code>
                             </div>
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Hết hạn mới:</span>
@@ -151,16 +155,17 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('keys.keydetails', $key->id) }}" 
-                           class="inline-block bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg transition">
+                        <a href="{{ route('keys.keydetails', $key->id) }}"
+                            class="inline-block bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg transition">
                             Xem chi tiết Key →
                         </a>
                     @endif
                 </div>
 
-            {{-- 3️⃣ CUSTOM KEY PURCHASE --}}
+                {{-- 3️⃣ CUSTOM KEY PURCHASE --}}
             @elseif($is_custom_key_purchase)
-                <div class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-6 mb-6">
+                <div
+                    class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-6 mb-6">
                     <div class="flex items-center gap-3 mb-4">
                         <span class="text-4xl">🎨</span>
                         <div>
@@ -178,8 +183,8 @@
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Key Code (Custom):</span>
                                 <code class="block mt-1 bg-purple-100 dark:bg-purple-800 px-3 py-2 rounded font-mono font-bold">
-                                    {{ $key->key_code }}
-                                </code>
+                                            {{ $key->key_code }}
+                                        </code>
                             </div>
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Thời hạn:</span>
@@ -197,35 +202,35 @@
                             @endif
                         </div>
 
-                        <a href="{{ route('keys.keydetails', $key->id) }}" 
-                           class="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition">
+                        <a href="{{ route('keys.keydetails', $key->id) }}"
+                            class="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition">
                             Xem chi tiết Key →
                         </a>
                     @endif
                 </div>
 
-            {{-- 4️⃣ PACKAGE PURCHASE --}}
+                {{-- 4️⃣ PACKAGE PURCHASE --}}
             @elseif($is_package_purchase)
-                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="text-4xl">🔑</span>
-                        <div>
-                            <h3 class="text-xl font-bold text-blue-700 dark:text-blue-400">
-                                Key mới được tạo!
-                            </h3>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                {{ $product?->name ?? 'Package' }}
-                            </p>
+                @if($key)
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-4xl">🔑</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-700 dark:text-blue-400">
+                                    Key mới được tạo!
+                                </h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    {{ $product?->name ?? 'Package' }}
+                                </p>
+                            </div>
                         </div>
-                    </div>
 
-                    @if($key)
                         <div class="grid grid-cols-2 gap-4 text-sm mb-4">
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Key Code:</span>
                                 <code class="block mt-1 bg-white dark:bg-gray-700 px-3 py-2 rounded font-mono font-bold">
-                                    {{ $key->key_code }}
-                                </code>
+                                            {{ $key->key_code }}
+                                        </code>
                             </div>
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Thời hạn:</span>
@@ -243,16 +248,53 @@
                             @endif
                         </div>
 
-                        <a href="{{ route('keys.keydetails', $key->id) }}" 
-                           class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition">
+                        <a href="{{ route('keys.keydetails', $key->id) }}"
+                            class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition">
                             Xem chi tiết Key →
                         </a>
-                    @endif
-                </div>
+                    </div>
+                @else
+                    {{-- Direct Account Extension (No Key) --}}
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="text-4xl">🎉</span>
+                            <div>
+                                <h3 class="text-xl font-bold text-blue-700 dark:text-blue-400">
+                                    Gia hạn tài khoản thành công!
+                                </h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    Thời hạn sử dụng tài khoản của bạn đã được cộng thêm.
+                                </p>
+                            </div>
+                        </div>
 
-            {{-- 5️⃣ COINKEY DEPOSIT --}}
+                        <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                            <div>
+                                <span class="text-gray-600 dark:text-gray-400">Gói gia hạn:</span>
+                                <span class="block mt-1 font-bold text-gray-800 dark:text-white">
+                                    {{ $product?->name ?? 'Service Package' }}
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600 dark:text-gray-400">Thời gian cộng thêm:</span>
+                                <span class="block mt-1 font-semibold text-green-600">
+                                    +{{ number_format($duration_minutes) }} phút
+                                </span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600 dark:text-gray-400">Hết hạn mới:</span>
+                                <span class="block mt-1 font-semibold text-blue-600">
+                                    {{ auth()->user()->expires_at ? auth()->user()->expires_at->format('d/m/Y H:i') : 'N/A' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- 5️⃣ COINKEY DEPOSIT --}}
             @elseif($is_coinkey_deposit)
-                <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-6 mb-6">
+                <div
+                    class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-6 mb-6">
                     <div class="flex items-center gap-3 mb-4">
                         <span class="text-4xl">💰</span>
                         <div>
@@ -269,8 +311,8 @@
                         <p class="text-3xl font-bold text-emerald-600 mb-2">
                             +{{ number_format($product?->coinkey_amount ?? 0) }} Coin
                         </p>
-                        <a href="{{ route('wallet.index') }}" 
-                           class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition">
+                        <a href="{{ route('wallet.index') }}"
+                            class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition">
                             Xem ví của tôi →
                         </a>
                     </div>
@@ -279,12 +321,12 @@
 
             {{-- ACTIONS --}}
             <div class="flex gap-4">
-                <a href="{{ route('dashboard') }}" 
-                   class="flex-1 bg-gray-600 hover:bg-gray-700 text-white text-center py-3 rounded-lg transition">
+                <a href="{{ route('dashboard') }}"
+                    class="flex-1 bg-gray-600 hover:bg-gray-700 text-white text-center py-3 rounded-lg transition">
                     ← Về Dashboard
                 </a>
-                <a href="{{ route('keys.index') }}" 
-                   class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-center py-3 rounded-lg transition">
+                <a href="{{ route('keys.index') }}"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-center py-3 rounded-lg transition">
                     Xem My Keys →
                 </a>
             </div>

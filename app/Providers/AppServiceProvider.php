@@ -71,6 +71,22 @@ class AppServiceProvider extends ServiceProvider
         );
 
 
+        // Share account expiration status with all views
+        view()->composer('*', function ($view) {
+            $user = auth()->user();
+            $accountExpiringSoon = false;
+
+            if ($user && $user->account_expiration) {
+                $daysRemaining = \Carbon\Carbon::now()->diffInDays($user->account_expiration, false);
+                // Alert if expiring in less than 3 days (and not already expired for too long?)
+                // Adjust logic as needed. Here: < 3 days and still active or just expired.
+                if ($daysRemaining < 3 && $daysRemaining > -30) {
+                    $accountExpiringSoon = true;
+                }
+            }
+
+            $view->with('accountExpiringSoon', $accountExpiringSoon);
+        });
     }
 
     /**
