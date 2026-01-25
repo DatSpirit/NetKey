@@ -15,7 +15,8 @@
             </div>
             <div class="text-center sm:text-left">
                 <div class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100" id="total-products">
-                    {{ count($products) }}</div>
+                    {{ count($products) }}
+                </div>
                 <div class="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Sản Phẩm</div>
             </div>
         </div>
@@ -30,7 +31,8 @@
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="space-y-2">
                         <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Cửa Hàng Sản Phẩm</h3>
-                        <p class="text-gray-900 dark:text-white text-opacity-90 text-sm sm:text-base">Khám phá các sản phẩm chất lượng cao
+                        <p class="text-gray-900 dark:text-white text-opacity-90 text-sm sm:text-base">Khám phá các sản
+                            phẩm chất lượng cao
                         </p>
                     </div>
                     <div class="flex items-center space-x-4">
@@ -112,8 +114,8 @@
                                 <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
                                     class="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal">
                             @else
-                                <svg class="w-24 h-24 text-red-100 dark:text-red-400" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-24 h-24 text-red-100 dark:text-red-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                 </svg>
@@ -130,16 +132,19 @@
                         <!-- Product Info -->
                         <div class="p-4 sm:p-5 space-y-3">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 line-clamp-2 min-h-[3.5rem]">
-                                {{ $product['name'] }}</h3>
+                                {{ $product['name'] }}
+                            </h3>
                             @if (isset($product['description']))
                                 <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                                    {{ $product['description'] }}</p>
+                                    {{ $product['description'] }}
+                                </p>
                             @endif
                             <div class="flex flex-col pt-2">
                                 <div>
                                     <p class="text-xs text-gray-500 dark:text-gray-400">Giá tiền mặt</p>
                                     <p class="text-xl font-bold text-blue-600 dark:text-blue-400">
-                                        {{ number_format($product['price']) }}₫</p>
+                                        {{ number_format($product['price']) }}₫
+                                    </p>
                                 </div>
                                 @if (isset($product['product_type']) && $product['product_type'] == 'package' && $product['coinkey_amount'] > 0)
                                     <div class="mt-1">
@@ -159,8 +164,7 @@
                                 <button onclick="openPurchaseModal({{ json_encode($product) }})"
                                     class="flex-1 px-4 py-2.5 bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 dark:from-green-500 dark:to-green-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 text-center text-sm">
                                     <span class="flex items-center justify-center space-x-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                         </svg>
@@ -185,8 +189,7 @@
                                     <a href="{{ route('admin.products.edit', $product['id']) }}"
                                         class="p-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all duration-200"
                                         title="Chỉnh sửa">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3zM4 20h16" />
                                         </svg>
@@ -414,8 +417,8 @@
                                 style="display: none;">
                                 <svg class="animate-spin h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg"
                                     fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10"
-                                        stroke="currentColor" stroke-width="4"></circle>
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
                                     <path class="opacity-75" fill="currentColor"
                                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                                     </path>
@@ -456,7 +459,9 @@
                 if (i > 0 && i % 4 === 0) result += '-';
                 result += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-            document.getElementById('customKeyCode').value = result;
+            const input = document.getElementById('customKeyCode');
+            input.value = result;
+            input.dispatchEvent(new Event('input'));
         }
         document.addEventListener('DOMContentLoaded', () => {
             const currentUserBalance = {{ auth()->check() ? auth()->user()->getOrCreateWallet()->balance : 0 }};
@@ -473,8 +478,20 @@
 
 
             //  1. OPEN PURCHASE MODAL 
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('open_custom_modal') === 'true') {
+                const products = @json($products);
+                const firstPackage = products.find(p => p.product_type === 'package');
 
-            window.openPurchaseModal = function(product) {
+                if (firstPackage) {
+                    setTimeout(() => {
+                        window.openPurchaseModal(firstPackage);
+                        window.switchPurchaseTab('custom');
+                    }, 500);
+                }
+            }
+
+            window.openPurchaseModal = function (product) {
                 currentProduct = product;
                 isKeyValid = false;
 
@@ -541,11 +558,11 @@
                 document.getElementById('purchaseModal').classList.remove('hidden');
             };
 
-            window.closePurchaseModal = function() {
+            window.closePurchaseModal = function () {
                 document.getElementById('purchaseModal').classList.add('hidden');
             };
 
-            window.switchPurchaseTab = function(tab) {
+            window.switchPurchaseTab = function (tab) {
                 const standardForm = document.getElementById('purchaseForm');
                 const customForm = document.getElementById('customKeyForm');
                 const tabStandard = document.getElementById('tab-standard');
@@ -575,7 +592,7 @@
 
             //  2. STANDARD PURCHASE LOGIC
 
-            window.selectPayment = function(method) {
+            window.selectPayment = function (method) {
                 document.getElementById('pmMethod').value = method;
                 const submitBtn = document.getElementById('pmSubmitBtn');
                 const btnWallet = document.getElementById('btn-wallet');
@@ -614,7 +631,7 @@
 
             //  3. CUSTOM KEY LOGIC
 
-            window.selectCustomPayment = function(method) {
+            window.selectCustomPayment = function (method) {
                 document.getElementById('customPaymentMethod').value = method;
                 const form = document.getElementById('customKeyForm');
                 const btnWallet = document.getElementById('btn-custom-wallet');
@@ -659,7 +676,7 @@
                 let debounceTimer;
                 // let isKeyValid = false;
 
-                customKeyInput.addEventListener('input', function() {
+                customKeyInput.addEventListener('input', function () {
                     clearTimeout(debounceTimer);
                     const message = document.getElementById('keyCheckMessage');
                     const loading = document.getElementById('keyLoadingIcon');
@@ -689,19 +706,19 @@
                         try {
                             const response = await fetch(
                                 '{{ route('keys.check-key-code') }}', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Accept': 'application/json',
-                                        'X-CSRF-TOKEN': document.querySelector(
-                                            'meta[name="csrf-token"]')?.getAttribute(
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector(
+                                        'meta[name="csrf-token"]')?.getAttribute(
                                             'content') || ''
-                                    },
-                                    body: JSON.stringify({
-                                        key_code: keyCode
-                                    }),
-                                    credentials: 'same-origin'
-                                });
+                                },
+                                body: JSON.stringify({
+                                    key_code: keyCode
+                                }),
+                                credentials: 'same-origin'
+                            });
 
                             if (!response.ok) {
                                 throw new Error(
@@ -809,7 +826,7 @@
 
 
             //  5. VIEW DETAIL MODAL 
-            window.openModal = function() {
+            window.openModal = function () {
                 const modal = document.getElementById('productModal');
                 const content = document.getElementById('modalContent');
                 modal.classList.remove('hidden');
@@ -818,7 +835,7 @@
                     content.classList.add('scale-100', 'opacity-100');
                 }, 10);
             };
-            window.closeModal = function() {
+            window.closeModal = function () {
                 const modal = document.getElementById('productModal');
                 const content = document.getElementById('modalContent');
                 content.classList.remove('scale-100', 'opacity-100');
@@ -827,7 +844,7 @@
             };
 
             document.querySelectorAll('.view-detail-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
+                btn.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
                     const product = JSON.parse(this.dataset.product);
@@ -846,8 +863,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Cột trái: Ảnh -->
                             <div class="bg-gray-100 dark:bg-gray-700/50 rounded-xl p-4 flex items-center justify-center min-h-[200px]">
-                                ${imageSrc ? `<img src="${imageSrc}" class="max-w-full max-h-[300px] object-contain rounded-lg shadow-sm">` : 
-                                `<svg class="w-32 h-32 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`}
+                                ${imageSrc ? `<img src="${imageSrc}" class="max-w-full max-h-[300px] object-contain rounded-lg shadow-sm">` :
+                            `<svg class="w-32 h-32 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`}
                             </div>
 
                             <!-- Cột phải: Thông tin -->
@@ -881,7 +898,7 @@
                         </div>
                     `;
 
-                    payLink.onclick = function() {
+                    payLink.onclick = function () {
                         closeModal();
                         openPurchaseModal(product);
                     };
