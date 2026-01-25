@@ -139,8 +139,7 @@
                             class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
                             Search
                         </label>
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Order code..."
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Order code..."
                             class="w-full px-4 py-2.5 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all">
                     </div>
 
@@ -148,8 +147,7 @@
                     <div class="flex items-end space-x-2">
                         <button type="submit"
                             class="flex-1 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-indigo-500/50">
-                            <svg class="w-5 h-5 inline mr-1" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
@@ -237,8 +235,8 @@
                                     </div>
                                 </td>
 
-                                <td class="px-3 sm:px-6 py-4 text-left whitespace-nowrap">
-                                    {{--  LOGIC HIỂN THỊ CHI TIẾT THEO LOẠI --}}
+                                <td class="px-3 sm:px-6 py-4 text-left">
+                                    {{-- LOGIC HIỂN THỊ CHI TIẾT THEO LOẠI --}}
                                     @php
                                         $meta = $transaction->response_data ?? [];
                                         $type = $meta['type'] ?? '';
@@ -254,14 +252,14 @@
                                             {{-- Tên sản phẩm gốc --}}
                                             @if ($transaction->product)
                                                 <span class="text-sm font-medium text-gray-900 dark:text-gray-100">
-                                                    {{ Str::limit($transaction->product->name, 30) }}
+                                                    {{ Str::limit($transaction->product->name, 50) }}
                                                 </span>
                                             @else
-                                                <span
-                                                    class="text-sm font-medium text-gray-500 dark:text-gray-400 italic">
+                                                <span class="text-sm font-medium text-gray-500 dark:text-gray-400 italic">
                                                     Custom Extension
                                                 </span>
                                             @endif
+
                                             {{-- 1️ GIA HẠN TÙY CHỈNH (CEX) --}}
                                             @if ($suffix === 'CEX' || $type === 'custom_key_extension')
                                                 <div
@@ -285,26 +283,15 @@
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-indigo-100 dark:bg-indigo-800 px-2 py-1 rounded text-xs font-mono font-bold">
-                                                                    {{ $meta['key_code'] }}
-                                                                </code>
+                                                                                                                    {{ $meta['key_code'] }}
+                                                                                                                </code>
                                                             </div>
                                                         @endif
-                                                        {{-- @if (isset($meta['package_name']))
-                                                            <div class="flex items-center justify-between text-xs">
-                                                                <span
-                                                                    class="text-gray-600 dark:text-gray-400">Gói:</span>
-                                                                <span
-                                                                    class="font-semibold text-purple-600 dark:text-purple-400">
-                                                                    {{ $meta['package_name'] }}
-                                                                </span>
-                                                            </div>
-                                                        @endif --}}
                                                         @if (isset($meta['days_added']))
                                                             <div class="flex items-center justify-between text-xs">
                                                                 <span class="text-gray-600 dark:text-gray-400">Thời
                                                                     gian:</span>
-                                                                <span
-                                                                    class="font-bold text-green-600 dark:text-green-400">
+                                                                <span class="font-bold text-green-600 dark:text-green-400">
                                                                     +{{ $meta['days_added'] }} ngày
                                                                 </span>
                                                             </div>
@@ -336,8 +323,8 @@
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-green-100 dark:bg-green-800 px-2 py-1 rounded text-xs font-mono">
-                                                                    {{ $meta['key_code'] }}
-                                                                </code>
+                                                                                                                    {{ $meta['key_code'] }}
+                                                                                                                </code>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -374,8 +361,8 @@
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-purple-100 dark:bg-purple-800 px-2 py-1 rounded text-xs font-mono font-bold">
-                                                                    {{ $customKey->key_code }}
-                                                                </code>
+                                                                                                                    {{ $customKey->key_code }}
+                                                                                                                </code>
                                                             </div>
                                                         </div>
                                                     @else
@@ -409,8 +396,8 @@
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded text-xs font-mono">
-                                                                    {{ $transaction->productKey->key_code }}
-                                                                </code>
+                                                                                                                    {{ $transaction->productKey->key_code }}
+                                                                                                                </code>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -419,12 +406,22 @@
                                                 {{-- 5️ COINKEY DEPOSIT --}}
                                             @elseif ($lastChar === 'C' || $transaction->product?->product_type === 'coinkey')
                                                 <div
-                                                    class="flex items-center gap-2 p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-700">
-                                                    <span class="text-xl">💰</span>
-                                                    <span
-                                                        class="text-xs font-medium text-yellow-700 dark:text-yellow-400">
-                                                        Nạp ví Coinkey
-                                                    </span>
+                                                    class="flex flex-col mt-1 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-700">
+                                                    <div class="flex items-center gap-2 mb-1">
+                                                        <span
+                                                            class="text-xs font-bold text-yellow-700 dark:text-yellow-400 uppercase tracking-wide">
+                                                            Nạp ví Coinkey
+                                                        </span>
+                                                    </div>
+                                                    @if ($transaction->product && $transaction->product->coinkey_amount)
+                                                        <div class="flex items-center justify-between text-xs mt-1">
+                                                            <span class="text-gray-600 dark:text-gray-400">Số lượng:</span>
+                                                            <span class="font-bold text-yellow-600 dark:text-yellow-400">
+                                                                +{{ number_format($transaction->product->coinkey_amount) }}
+                                                                Coinkey
+                                                            </span>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             @endif
                                         </div>
@@ -520,8 +517,7 @@
                                     <a href="{{ route('transactions.show', $transaction->id) }}"
                                         class="inline-flex p-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white transition-all transform hover:scale-110 shadow-md hover:shadow-lg"
                                         title="View Details">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -587,8 +583,7 @@
                 <span class="font-medium">{{ session('success') }}</span>
                 <button @click="show = false" class="ml-auto hover:bg-white/20 rounded-lg p-1 transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -611,8 +606,7 @@
                 <span class="font-medium">{{ session('error') }}</span>
                 <button @click="show = false" class="ml-auto hover:bg-white/20 rounded-lg p-1 transition">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -634,10 +628,10 @@
                 }, 30000); // 30 seconds
             @endif
 
-            // Print function for invoices (if needed)
-            function printInvoice(transactionId) {
-                window.open(`/my-transactions/${transactionId}/invoice`, '_blank');
-            }
+                // Print function for invoices (if needed)
+                function printInvoice(transactionId) {
+                    window.open(`/my-transactions/${transactionId}/invoice`, '_blank');
+                }
 
             // Quick status filter
             function quickFilter(status) {
@@ -647,7 +641,7 @@
             }
 
             // Keyboard shortcuts
-            document.addEventListener('keydown', function(e) {
+            document.addEventListener('keydown', function (e) {
                 // Ctrl/Cmd + R: Refresh
                 if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
                     e.preventDefault();

@@ -423,16 +423,6 @@
                                                                     </code>
                                                                 </div>
                                                             @endif
-                                                            {{-- @if (isset($meta['package_name']))
-                                                                <div class="flex items-center justify-between text-xs">
-                                                                    <span
-                                                                        class="text-gray-600 dark:text-gray-400">Gói:</span>
-                                                                    <span
-                                                                        class="font-semibold text-purple-600 dark:text-purple-400">
-                                                                        {{ $meta['package_name'] }}
-                                                                    </span>
-                                                                </div>
-                                                            @endif --}}
                                                             @if (isset($meta['days_added']))
                                                                 <div class="flex items-center justify-between text-xs">
                                                                     <span class="text-gray-600 dark:text-gray-400">Thời
@@ -446,12 +436,36 @@
                                                         </div>
                                                     </div>
 
-                                                    {{-- 2️ GIA HẠN THƯỜNG (EX) --}}
+                                                {{-- 2️ GIA HẠN TÀI KHOẢN (AC) --}}
+                                                @elseif ($last2 === 'AC' || $type === 'package_extension' || ($meta['is_extension'] ?? false))
+                                                     <div
+                                                        class="flex flex-col mt-1 p-3 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl border-2 border-indigo-200 dark:border-indigo-700 shadow-sm">
+                                                        <div class="flex items-center gap-2 mb-2">
+                                                            <span
+                                                                class="text-xs font-bold text-indigo-700 dark:text-indigo-300 uppercase tracking-wide">
+                                                                Account Extension
+                                                            </span>
+                                                        </div>
+                                                        <div class="space-y-1">
+                                                            @if (isset($meta['duration_minutes']))
+                                                                <div class="flex items-center justify-between text-xs">
+                                                                    <span class="text-gray-600 dark:text-gray-400">Thời hạn:</span>
+                                                                    <span class="font-bold text-indigo-600 dark:text-indigo-400">
+                                                                        +{{ number_format($meta['duration_minutes'] / 1440, 1) }} ngày
+                                                                    </span>
+                                                                </div>
+                                                            @endif
+                                                            <div class="text-xs text-gray-500 italic">
+                                                                Tự động gia hạn
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- 3️ GIA HẠN THƯỜNG (EX) --}}
                                                 @elseif ($last2 === 'EX' || $type === 'key_extension')
                                                     <div
                                                         class="flex flex-col mt-1 p-3 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border-2 border-green-200 dark:border-green-700 shadow-sm">
                                                         <div class="flex items-center gap-2 mb-2">
-
                                                             <span
                                                                 class="text-xs font-bold text-green-700 dark:text-green-300 uppercase tracking-wide">
                                                                 Extension Key
@@ -553,12 +567,22 @@
                                                     {{-- 5️ COINKEY DEPOSIT --}}
                                                 @elseif ($last1 === 'C' || $transaction->product?->product_type === 'coinkey')
                                                     <div
-                                                        class="flex items-center gap-2 p-2 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-700">
-                                                        <span class="text-xl">💰</span>
-                                                        <span
-                                                            class="text-xs font-medium text-yellow-700 dark:text-yellow-400">
-                                                            Nạp ví Coinkey
-                                                        </span>
+                                                        class="flex flex-col mt-1 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-700">
+                                                        <div class="flex items-center gap-2 mb-1">
+                                                            <span
+                                                                class="text-xs font-bold text-yellow-700 dark:text-yellow-400 uppercase tracking-wide">
+                                                                Nạp ví Coinkey
+                                                            </span>
+                                                        </div>
+                                                        @if ($transaction->product && $transaction->product->coinkey_amount)
+                                                            <div class="flex items-center justify-between text-xs mt-1">
+                                                                <span class="text-gray-600 dark:text-gray-400">Số lượng:</span>
+                                                                <span class="font-bold text-yellow-600 dark:text-yellow-400">
+                                                                    +{{ number_format($transaction->product->coinkey_amount) }}
+                                                                    Coinkey
+                                                                </span>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 @endif
                                             </div>
@@ -595,20 +619,53 @@
                                                 // 1. Xác định hậu tố (Suffix)
                                                 $meta = $transaction->response_data ?? []; // Lấy metadata từ JSON
                                                 $type = $meta['type'] ?? '';
+                                                $description = $transaction->description ?? '';
                                                 $productType = $transaction->product->product_type ?? '';
+                                                
+                                                // Check for "AC" suffix in description or type
+                                                $last2 = substr($description, -2);
+                                                $last3 = substr($description, -3);
+                                                $last1 = substr($description, -1);
 
                                                 $suffix = '';
-                                                if ($type === 'key_extension') {
+
+                                                // 1. GIA HẠN TÀI KHOẢN (AC)
+                                                // Check metadata explicit flag OR description suffix OR product name logic
+                                                $isExtension = $meta['is_extension'] ?? false;
+                                                if ($isExtension || $type === 'package_extension' || $last2 === 'AC') {
+                                                    $suffix = 'AC';
+                                                }
+                                                // 2. GIA HẠN KEY (EX)
+                                                elseif ($type === 'key_extension' || $last2 === 'EX') {
                                                     $suffix = 'EX';
-                                                } elseif ($productType === 'coinkey') {
-                                                    $suffix = 'C';
-                                                } elseif ($productType === 'package') {
+                                                }
+                                                // 3. KEY THƯỜNG (K)
+                                                elseif (($productType === 'package' && !$type) || $last1 === 'K') {
                                                     $suffix = 'K';
-                                                } elseif ($type === 'custom_key_extension') {
+                                                }
+                                                // 4. CUSTOM EXTENSION KEY (CEX)
+                                                elseif ($type === 'custom_key_extension' || $last3 === 'CEX') {
                                                     $suffix = 'CEX';
                                                 }
-
-                                                $finalOrderCode = $transaction->order_code . $suffix;
+                                                // 5. COINKEY / VIP (C)
+                                                elseif ($productType === 'coinkey' || $last1 === 'C') {
+                                                    $suffix = 'C';
+                                                }
+                                                // 6. CUSTOM KEY (K)
+                                                elseif ($type === 'custom_key_purchase') {
+                                                    $suffix = 'K';
+                                                }
+                                                
+                                                // Ensure order code doesn't already have suffix to avoid duplication if stored in DB
+                                                // But usually order_code is just the number.
+                                                // If description is 123456AC, we want to show 123456AC.
+                                                // If order_code is 123456, we append suffix.
+                                                
+                                                $finalOrderCode = $transaction->order_code;
+                                                // Only append if it's not already part of the code (just in case)
+                                                if (!str_ends_with($finalOrderCode, $suffix) && $suffix) {
+                                                     $finalOrderCode .= $suffix;
+                                                }
                                             @endphp
 
                                             {{-- Hiển thị Order Code với Hậu tố chuẩn --}}
