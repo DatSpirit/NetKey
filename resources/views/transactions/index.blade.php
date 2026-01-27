@@ -8,9 +8,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
-                    My Transactions
+                    {{ __('My Transactions') }}
                 </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Quản lý tất cả giao dịch của bạn</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('Manage all your transactions') }}</p>
             </div>
             <button onclick="window.location.reload()"
                 class="hidden sm:flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-all">
@@ -18,7 +18,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                Refresh
+                {{ __('Refresh') }}
             </button>
         </div>
     </x-slot>
@@ -37,9 +37,9 @@
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm opacity-90 uppercase tracking-wider mb-2">Success</p>
+                <p class="text-sm opacity-90 uppercase tracking-wider mb-2">{{ __('Success') }}</p>
                 <p class="text-3xl font-bold">{{ $stats['success'] ?? 0 }}</p>
-                <p class="text-xm opacity-75 mt-2">{{ number_format($stats['success_amount'] ?? 0) }} VND</p>
+                <p class="text-xm opacity-75 mt-2">@price($stats['success_amount'] ?? 0)</p>
             </div>
 
             <div
@@ -52,9 +52,9 @@
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm opacity-90 uppercase tracking-wider mb-2">Pending</p>
+                <p class="text-sm opacity-90 uppercase tracking-wider mb-2">{{ __('Pending') }}</p>
                 <p class="text-3xl font-bold">{{ $stats['pending'] ?? 0 }}</p>
-                <p class="text-xm opacity-75 mt-2">{{ number_format($stats['pending_amount'] ?? 0) }} VND</p>
+                <p class="text-xm opacity-75 mt-2">@price($stats['pending_amount'] ?? 0)</p>
             </div>
 
             <div
@@ -67,9 +67,9 @@
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm opacity-90 uppercase tracking-wider mb-2">Cancelled</p>
+                <p class="text-sm opacity-90 uppercase tracking-wider mb-2">{{ __('Cancelled') }}</p>
                 <p class="text-3xl font-bold">{{ $stats['failed'] ?? 0 }}</p>
-                <p class="text-xm opacity-75 mt-2">Cancelled & Failed</p>
+                <p class="text-xm opacity-75 mt-2">{{ __('Cancelled & Failed') }}</p>
             </div>
 
             <div
@@ -82,7 +82,7 @@
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm opacity-90 uppercase tracking-wider mb-2">Total Spent</p>
+                <p class="text-sm opacity-90 uppercase tracking-wider mb-2">{{ __('Total Spent') }}</p>
                 <p class="text-2xl font-bold">{{ number_format($stats['total_amount'] ?? 0) }}</p>
                 <p class="text-xm opacity-75 mt-2">VND</p>
             </div>
@@ -97,11 +97,11 @@
                     <div>
                         <label
                             class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                            Status
+                            {{ __('Status') }}
                         </label>
                         <select name="status"
                             class="w-full px-4 py-2.5 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all">
-                            <option value="">All Status</option>
+                            <option value="">{{ __('All Status') }}</option>
                             <option value="success" {{ request('status') === 'success' ? 'selected' : '' }}>✅ Success
                             </option>
                             <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>⏳ Pending
@@ -117,7 +117,7 @@
                     <div>
                         <label
                             class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                            From Date
+                            {{ __('From Date') }}
                         </label>
                         <input type="date" name="date_from" value="{{ request('date_from') }}"
                             class="w-full px-4 py-2.5 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all">
@@ -127,7 +127,7 @@
                     <div>
                         <label
                             class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                            To Date
+                            {{ __('To Date') }}
                         </label>
                         <input type="date" name="date_to" value="{{ request('date_to') }}"
                             class="w-full px-4 py-2.5 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all">
@@ -137,9 +137,10 @@
                     <div>
                         <label
                             class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                            Search
+                            {{ __('Search') }}
                         </label>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Order code..."
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="{{ __('Order code...') }}"
                             class="w-full px-4 py-2.5 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all">
                     </div>
 
@@ -151,11 +152,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
-                            Search
+                            {{ __('Search') }}
                         </button>
                         <a href="{{ route('transactions.index') }}"
                             class="px-4 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
-                            Reset
+                            {{ __('Reset') }}
                         </a>
                     </div>
                 </div>
@@ -171,13 +172,16 @@
                         <tr class="bg-gray-100 dark:bg-gray-700 border-b-2 border-gray-200 dark:border-gray-600">
                             <th
                                 class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                                Order</th>
+                                {{ __('Order') }}
+                            </th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
-                                Description</th>
+                                {{ __('Description') }}
+                            </th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                                Product</th>
+                                {{ __('Product') }}
+                            </th>
                             <th
                                 class="px-6 py-4 text-right text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">
                                 Amount </th>
@@ -283,8 +287,8 @@
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-indigo-100 dark:bg-indigo-800 px-2 py-1 rounded text-xs font-mono font-bold">
-                                                                                                                    {{ $meta['key_code'] }}
-                                                                                                                </code>
+                                                                                                                                    {{ $meta['key_code'] }}
+                                                                                                                                </code>
                                                             </div>
                                                         @endif
                                                         @if (isset($meta['days_added']))
@@ -323,8 +327,8 @@
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-green-100 dark:bg-green-800 px-2 py-1 rounded text-xs font-mono">
-                                                                                                                    {{ $meta['key_code'] }}
-                                                                                                                </code>
+                                                                                                                                    {{ $meta['key_code'] }}
+                                                                                                                                </code>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -361,8 +365,8 @@
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-purple-100 dark:bg-purple-800 px-2 py-1 rounded text-xs font-mono font-bold">
-                                                                                                                    {{ $customKey->key_code }}
-                                                                                                                </code>
+                                                                                                                                    {{ $customKey->key_code }}
+                                                                                                                                </code>
                                                             </div>
                                                         </div>
                                                     @else
@@ -396,8 +400,8 @@
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded text-xs font-mono">
-                                                                                                                    {{ $transaction->productKey->key_code }}
-                                                                                                                </code>
+                                                                                                                                    {{ $transaction->productKey->key_code }}
+                                                                                                                                </code>
                                                             </div>
                                                         </div>
                                                     </div>

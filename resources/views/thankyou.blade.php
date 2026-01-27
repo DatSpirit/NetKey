@@ -10,22 +10,22 @@
                     @if($transaction->status === 'success')
                         <div class="text-6xl mb-4">✅</div>
                         <h2 class="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
-                            Thanh toán thành công!
+                            {{ __('Payment Successful') }}
                         </h2>
                     @elseif($transaction->status === 'pending')
                         <div class="text-6xl mb-4">⏳</div>
                         <h2 class="text-2xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">
-                            Đang xử lý thanh toán...
+                            {{ __('Processing Payment') }}
                         </h2>
                     @else
                         <div class="text-6xl mb-4">❌</div>
                         <h2 class="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">
-                            Thanh toán thất bại
+                            {{ __('Payment Failed') }}
                         </h2>
                     @endif
 
                     <p class="text-gray-600 dark:text-gray-400">
-                        Mã đơn hàng: <code
+                        {{ __('Order Code') }}: <code
                             class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded font-mono">{{ $transaction->order_code }}</code>
                     </p>
                 </div>
@@ -35,26 +35,26 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
                     <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
-                        📋 Thông tin giao dịch
+                        📋 {{ __('Transaction Info') }}
                     </h3>
 
                     <div class="space-y-3 text-sm">
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">Số tiền:</span>
+                            <span class="text-gray-600 dark:text-gray-400">{{ __('Amount') }}:</span>
                             <span class="font-bold text-green-600">
                                 {{ number_format($transaction->amount) }}
                                 {{ $transaction->currency === 'COINKEY' ? 'Coin' : 'VND' }}
                             </span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">Trạng thái:</span>
+                            <span class="text-gray-600 dark:text-gray-400">{{ __('Status') }}:</span>
                             <span
                                 class="font-semibold {{ $transaction->status === 'success' ? 'text-green-600' : 'text-yellow-600' }}">
                                 {{ ucfirst($transaction->status) }}
                             </span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600 dark:text-gray-400">Thời gian:</span>
+                            <span class="text-gray-600 dark:text-gray-400">{{ __('Time') }}:</span>
                             <span class="font-semibold">
                                 {{ $transaction->created_at->format('d/m/Y H:i') }}
                             </span>
@@ -73,10 +73,10 @@
                         <span class="text-4xl">🎯</span>
                         <div>
                             <h3 class="text-xl font-bold text-indigo-700 dark:text-indigo-400">
-                                Gia hạn tùy chỉnh thành công!
+                                {{ __('Custom Extension Success') }}
                             </h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
-                                Key đã được gia hạn {{ $days_added ?? 0 }} ngày
+                                {{ __('Key has been extended') }} {{ $days_added ?? 0 }} {{ __('days') }}
                             </p>
                         </div>
                     </div>
@@ -86,8 +86,8 @@
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Key Code:</span>
                                 <code class="block mt-1 bg-white dark:bg-gray-700 px-3 py-2 rounded font-mono font-bold">
-                                            {{ $key_code }}
-                                        </code>
+                                                    {{ $key_code }}
+                                                </code>
                             </div>
                         @endif
 
@@ -118,7 +118,7 @@
                     @if($key)
                         <a href="{{ route('keys.keydetails', $key->id) }}"
                             class="mt-4 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition">
-                            Xem chi tiết Key →
+                            {{ __('View Key Details') }} →
                         </a>
                     @endif
                 </div>
@@ -131,10 +131,11 @@
                         <span class="text-4xl">⏱️</span>
                         <div>
                             <h3 class="text-xl font-bold text-orange-700 dark:text-orange-400">
-                                Gia hạn Key thành công!
+                                {{ __('Key Extension Success') }}
                             </h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
-                                Key đã được cộng thêm {{ number_format($duration_minutes ?? 0) }} phút
+                                {{ __('Key has been extended') }} {{ number_format($duration_minutes ?? 0) }}
+                                {{ __('minutes') }}
                             </p>
                         </div>
                     </div>
@@ -144,8 +145,8 @@
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Key Code:</span>
                                 <code class="block mt-1 bg-white dark:bg-gray-700 px-3 py-2 rounded font-mono font-bold">
-                                            {{ $key->key_code }}
-                                        </code>
+                                                    {{ $key->key_code }}
+                                                </code>
                             </div>
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Hết hạn mới:</span>
@@ -157,7 +158,7 @@
 
                         <a href="{{ route('keys.keydetails', $key->id) }}"
                             class="inline-block bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg transition">
-                            Xem chi tiết Key →
+                            {{ __('View Key Details') }} →
                         </a>
                     @endif
                 </div>
@@ -170,10 +171,10 @@
                         <span class="text-4xl">🎨</span>
                         <div>
                             <h3 class="text-xl font-bold text-purple-700 dark:text-purple-400">
-                                Custom Key tạo thành công!
+                                {{ __('Custom Key Created') }}
                             </h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
-                                Key tùy chỉnh của bạn đã sẵn sàng
+                                {{ __('Your custom key is ready') }}
                             </p>
                         </div>
                     </div>
@@ -183,13 +184,13 @@
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Key Code (Custom):</span>
                                 <code class="block mt-1 bg-purple-100 dark:bg-purple-800 px-3 py-2 rounded font-mono font-bold">
-                                            {{ $key->key_code }}
-                                        </code>
+                                                    {{ $key->key_code }}
+                                                </code>
                             </div>
                             <div>
-                                <span class="text-gray-600 dark:text-gray-400">Thời hạn:</span>
+                                <span class="text-gray-600 dark:text-gray-400">{{ __('Duration') }}:</span>
                                 <span class="block mt-1 font-semibold text-purple-600">
-                                    {{ number_format($duration_minutes ?? 0) }} phút
+                                    {{ number_format($duration_minutes ?? 0) }} {{ __('minutes') }}
                                 </span>
                             </div>
                             @if($key->expires_at)
@@ -204,7 +205,7 @@
 
                         <a href="{{ route('keys.keydetails', $key->id) }}"
                             class="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition">
-                            Xem chi tiết Key →
+                            {{ __('View Key Details') }} →
                         </a>
                     @endif
                 </div>
@@ -217,7 +218,7 @@
                             <span class="text-4xl">🔑</span>
                             <div>
                                 <h3 class="text-xl font-bold text-blue-700 dark:text-blue-400">
-                                    Key mới được tạo!
+                                    {{ __('New Key Created') }}
                                 </h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
                                     {{ $product?->name ?? 'Package' }}
@@ -229,8 +230,8 @@
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Key Code:</span>
                                 <code class="block mt-1 bg-white dark:bg-gray-700 px-3 py-2 rounded font-mono font-bold">
-                                            {{ $key->key_code }}
-                                        </code>
+                                                    {{ $key->key_code }}
+                                                </code>
                             </div>
                             <div>
                                 <span class="text-gray-600 dark:text-gray-400">Thời hạn:</span>
@@ -250,7 +251,7 @@
 
                         <a href="{{ route('keys.keydetails', $key->id) }}"
                             class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition">
-                            Xem chi tiết Key →
+                            {{ __('View Key Details') }} →
                         </a>
                     </div>
                 @else
@@ -260,10 +261,10 @@
                             <span class="text-4xl">🎉</span>
                             <div>
                                 <h3 class="text-xl font-bold text-blue-700 dark:text-blue-400">
-                                    Gia hạn tài khoản thành công!
+                                    {{ __('Account Extension Success') }}
                                 </h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                    Thời hạn sử dụng tài khoản của bạn đã được cộng thêm.
+                                    {{ __('Account usage extended') }}
                                 </p>
                             </div>
                         </div>
@@ -299,10 +300,10 @@
                         <span class="text-4xl">💰</span>
                         <div>
                             <h3 class="text-xl font-bold text-emerald-700 dark:text-emerald-400">
-                                Nạp Coinkey thành công!
+                                {{ __('Coinkey Deposit Success') }}
                             </h3>
                             <p class="text-sm text-gray-600 dark:text-gray-400">
-                                Số dư đã được cập nhật
+                                {{ __('Balance Updated') }}
                             </p>
                         </div>
                     </div>
@@ -313,7 +314,7 @@
                         </p>
                         <a href="{{ route('wallet.index') }}"
                             class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-lg transition">
-                            Xem ví của tôi →
+                            {{ __('View My Wallet') }} →
                         </a>
                     </div>
                 </div>
@@ -323,11 +324,11 @@
             <div class="flex gap-4">
                 <a href="{{ route('dashboard') }}"
                     class="flex-1 bg-gray-600 hover:bg-gray-700 text-white text-center py-3 rounded-lg transition">
-                    ← Về Dashboard
+                    ← {{ __('Go to Dashboard') }}
                 </a>
                 <a href="{{ route('keys.index') }}"
                     class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-center py-3 rounded-lg transition">
-                    Xem My Keys →
+                    {{ __('View My Keys') }} →
                 </a>
             </div>
 

@@ -9,9 +9,9 @@
                     </svg>
                 </a>
                 <div>
-                    <h2 class="font-bold text-2xl text-gray-800 dark:text-white">Lịch sử hoạt động</h2>
+                    <h2 class="font-bold text-2xl text-gray-800 dark:text-white">{{ __('Activity History') }}</h2>
                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                        Key: <code class="font-mono font-bold bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{{ $key->key_code }}</code>
+                        {{ __('Key') }}: <code class="font-mono font-bold bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{{ $key->key_code }}</code>
                     </p>
                 </div>
             </div>
@@ -30,13 +30,13 @@
                     
                     // Màu sắc & Icon dựa theo hành động
                     $config = match($history->action) {
-                        'create' => ['color' => 'blue', 'icon' => '✨', 'title' => 'Tạo mới', 'gradient' => 'from-blue-400 to-blue-600'],
-                        'extend' => ['color' => 'green', 'icon' => '⚡', 'title' => 'Gia hạn', 'gradient' => 'from-green-400 to-green-600'],
-                        'custom_extend' => ['color' => 'indigo', 'icon' => '🎯', 'title' => 'Gia hạn tùy chỉnh', 'gradient' => 'from-indigo-400 to-purple-600'],
-                        'suspend' => ['color' => 'yellow', 'icon' => '⏸️', 'title' => 'Tạm dừng', 'gradient' => 'from-yellow-400 to-yellow-600'],
-                        'activate' => ['color' => 'emerald', 'icon' => '▶️', 'title' => 'Kích hoạt', 'gradient' => 'from-emerald-400 to-emerald-600'],
-                        'revoke' => ['color' => 'red', 'icon' => '🚫', 'title' => 'Thu hồi', 'gradient' => 'from-red-400 to-red-600'],
-                        default => ['color' => 'gray', 'icon' => '📝', 'title' => 'Ghi nhận', 'gradient' => 'from-gray-400 to-gray-600']
+                        'create' => ['color' => 'blue', 'icon' => '✨', 'title' => __('Create'), 'gradient' => 'from-blue-400 to-blue-600'],
+                        'extend' => ['color' => 'green', 'icon' => '⚡', 'title' => __('Standard Extend'), 'gradient' => 'from-green-400 to-green-600'],
+                        'custom_extend' => ['color' => 'indigo', 'icon' => '🎯', 'title' => __('Custom Extension'), 'gradient' => 'from-indigo-400 to-purple-600'],
+                        'suspend' => ['color' => 'yellow', 'icon' => '⏸️', 'title' => __('Suspend'), 'gradient' => 'from-yellow-400 to-yellow-600'],
+                        'activate' => ['color' => 'emerald', 'icon' => '▶️', 'title' => __('Activate'), 'gradient' => 'from-emerald-400 to-emerald-600'],
+                        'revoke' => ['color' => 'red', 'icon' => '🚫', 'title' => __('Revoke'), 'gradient' => 'from-red-400 to-red-600'],
+                        default => ['color' => 'gray', 'icon' => '📝', 'title' => __('Record'), 'gradient' => 'from-gray-400 to-gray-600']
                     };
                 @endphp
 
@@ -80,7 +80,7 @@
                             {{-- Metadata --}}
                             @if($history->meta_data && count($history->meta_data) > 0)
                                 <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 rounded-xl p-4 border border-gray-200 dark:border-gray-600">
-                                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">Chi tiết</p>
+                                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">{{ __('Details') }}</p>
                                     <div class="grid gap-2">
                                         @foreach($history->meta_data as $metaKey => $value)
                                             <div class="flex items-center justify-between text-sm">
@@ -110,8 +110,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
                     </div>
-                    <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">Chưa có lịch sử hoạt động</p>
-                    <p class="text-gray-400 dark:text-gray-500 text-sm mt-2">Các thao tác trên Key sẽ được ghi lại tại đây</p>
+                    <p class="text-gray-500 dark:text-gray-400 text-lg font-medium">{{ __('No activity history') }}</p>
+                    <p class="text-gray-400 dark:text-gray-500 text-sm mt-2">{{ __('Key actions recorded here') }}</p>
                 </div>
             @endforelse
         </div>

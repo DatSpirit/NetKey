@@ -2,8 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Welcome Back!</h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Here's what's happening with your account today
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">{{ __('Welcome Back!') }}</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {{ __("Here's what's happening with your account today") }}
                 </p>
             </div>
         </div>
@@ -25,7 +26,7 @@
                 {{-- Profile Info --}}
                 <div class="text-center lg:text-left space-y-3">
                     <h3 class="text-3xl md:text-5xl font-extrabold tracking-tight">
-                        Welcome, <span
+                        {{ __('Welcome') }}, <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-400">{{ $user->name }}</span>
 
                     </h3>
@@ -37,7 +38,7 @@
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                 </path>
                             </svg>
-                            Join: {{ $user->created_at->format('d/m/Y') }}
+                            {{ __('Join') }}: {{ $user->created_at->format('d/m/Y') }}
                         </span>
                         <span
                             class="flex items-center gap-1 bg-white/10 px-3 py-1 rounded-full text-sm backdrop-blur-sm">
@@ -46,7 +47,7 @@
                                     d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
                                 </path>
                             </svg>
-                            Login: {{ number_format($user->login_count ?? 0) }} times
+                            {{ __('Login') }}: {{ number_format($user->login_count ?? 0) }} {{ __('times') }}
                         </span>
                     </p>
                 </div>
@@ -61,7 +62,7 @@
                                 <svg class="w-3 h-3 animate-pulse text-green-400" fill="currentColor" viewBox="0 0 8 8">
                                     <circle cx="4" cy="4" r="3" />
                                 </svg>
-                                Expiry Date
+                                {{ __('Expiry Date') }}
                             </p>
                             <p id="countdown" class="text-2xl font-mono font-bold text-white drop-shadow-md"
                                 data-expires-at="{{ $user->expires_at->timestamp * 1000 }}">
@@ -72,7 +73,7 @@
 
                     <a href="{{ route('profile.edit') }}"
                         class="group flex items-center gap-2 px-6 py-4 bg-white text-indigo-600 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:bg-gray-50 transition-all transform hover:-translate-y-1">
-                        <span>Cài đặt</span>
+                        <span>{{ __('Settings') }}</span>
                         <svg class="w-5 h-5 group-hover:rotate-90 transition-transform" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -100,11 +101,12 @@
                         </svg>
                     </div>
                 </div>
-                <p class="text-sm text-gray-900 dark:text-white opacity-90 mb-2 uppercase tracking-wider">Tổng Chi Tiêu
+                <p class="text-sm text-gray-900 dark:text-white opacity-90 mb-2 uppercase tracking-wider">
+                    {{ __('Total Spending') }}
                 </p>
                 <p class="text-3xl text-gray-900 dark:text-white font-bold">{{ number_format($stats['total_spend']) }}
                 </p>
-                <p class="text-xs text-gray-900 dark:text-white opacity-75 mt-2">VND (Đã xác nhận)</p>
+                <p class="text-xs text-gray-900 dark:text-white opacity-75 mt-2">VND ({{ __('Success') }})</p>
             </div>
 
             {{-- Success Transactions --}}
@@ -124,9 +126,9 @@
                         {{ $stats['total_transactions'] > 0 ? round(($stats['success'] / $stats['total_transactions']) * 100, 1) : 0 }}%
                     </span>
                 </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium">Thành Công</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium">{{ __('Successful') }}</p>
                 <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ number_format($stats['success']) }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Giao dịch</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">{{ __('Transaction') }}</p>
             </div>
 
             {{-- Pending Transactions --}}
@@ -146,9 +148,9 @@
                         {{ $stats['total_transactions'] > 0 ? round(($stats['pending'] / $stats['total_transactions']) * 100, 1) : 0 }}%
                     </span>
                 </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium">Chờ Thanh Toán</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium">{{ __('Awaiting Payment') }}</p>
                 <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ number_format($stats['pending']) }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Giao dịch</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">{{ __('Transaction') }}</p>
             </div>
 
             {{-- Failed/Cancelled --}}
@@ -168,9 +170,9 @@
                         {{ $stats['total_transactions'] > 0 ? round(($stats['failed'] / $stats['total_transactions']) * 100, 1) : 0 }}%
                     </span>
                 </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium">Thất Bại/Hủy</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium">{{ __('Failed/Cancelled') }}</p>
                 <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ number_format($stats['failed']) }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Giao dịch</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">{{ __('Transaction') }}</p>
             </div>
         </div>
 
@@ -188,7 +190,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
                     </svg>
-                    Thống Kê Đơn Hàng
+                    {{ __('Order Statistics') }}
                 </h3>
                 <div class="relative h-64">
                     <canvas id="transactionPieChart"></canvas>
@@ -198,7 +200,8 @@
                         class="flex items-center justify-between p-2 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800">
                         <div class="flex items-center">
                             <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Thành công</span>
+                            <span
+                                class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Successful') }}</span>
                         </div>
                         <span class="font-bold text-gray-900 dark:text-white">{{ $stats['success'] }}</span>
                     </div>
@@ -206,7 +209,8 @@
                         class="flex items-center justify-between p-2 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800">
                         <div class="flex items-center">
                             <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Chờ xử lý</span>
+                            <span
+                                class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Pending') }}</span>
                         </div>
                         <span class="font-bold text-gray-900 dark:text-white">{{ $stats['pending'] }}</span>
                     </div>
@@ -214,7 +218,7 @@
                         class="flex items-center justify-between p-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
                         <div class="flex items-center">
                             <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span>
-                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Thất bại</span>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Failed') }}</span>
                         </div>
                         <span class="font-bold text-gray-900 dark:text-white">{{ $stats['failed'] }}</span>
                     </div>
@@ -233,20 +237,20 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
-                        Biến Động Chi Tiêu
+                        {{ __('Expenditure Trend') }}
                     </h3>
 
                     <!-- Controls -->
                     <div class="flex items-center gap-2">
                         <button id="toggleChartType"
                             class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition">
-                            Đổi biểu đồ
+                            {{ __('Change chart') }}
                         </button>
                         <select id="chart-range-select"
                             class="px-3 py-1.5 border rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 text-sm">
-                            <option value="7days" {{ $currentRange === '7days' ? 'selected' : '' }}>7 ngày</option>
-                            <option value="month" {{ $currentRange === 'month' ? 'selected' : '' }}>1 tháng</option>
-                            <option value="year" {{ $currentRange === 'year' ? 'selected' : '' }}>1 năm</option>
+                            <option value="7days" {{ $currentRange === '7days' ? 'selected' : '' }}>{{ __('Last 7 days') }}</option>
+                            <option value="month" {{ $currentRange === 'month' ? 'selected' : '' }}>{{ __('Last 30 days') }}</option>
+                            <option value="year" {{ $currentRange === 'year' ? 'selected' : '' }}>{{ __('Last year') }}</option>
                         </select>
                     </div>
                 </div>
@@ -258,7 +262,7 @@
 
                 <!-- Footer -->
                 <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-4">
-                    Thống kê chi tiêu dựa trên các giao dịch thành công
+                    {{ __('Statistics based on successful transactions') }}
                 </p>
             </div>
         </div>
@@ -271,11 +275,11 @@
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center">
-                        🛒 Sản Phẩm Đã Mua
+                        🛒 {{ __('Products Purchased') }}
                     </h3>
                     <a href="{{ route('transactions.index') }}"
                         class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
-                        Xem tất cả →
+                        {{ __('View All') }} →
                     </a>
                 </div>
                 <div class="space-y-3">
@@ -317,11 +321,11 @@
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                 </svg>
                             </div>
-                            <p class="text-gray-500 dark:text-gray-400 font-medium mb-3">Bạn chưa mua sản phẩm nào
+                            <p class="text-gray-500 dark:text-gray-400 font-medium mb-3">{{ __('You have not purchased any products yet') }}
                             </p>
                             <a href="{{ route('products') }}"
                                 class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl transition-all">
-                                Khám phá ngay →
+                                {{ __('Explore now') }} →
                             </a>
                         </div>
                     @endforelse
@@ -333,10 +337,10 @@
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center">
-                        📋 Lịch Sử Hoạt Động
+                                            📋 {{ __('Activity History') }}
                     </h3>
                     <button class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
-                        Làm mới
+                        {{ __('Refresh') }}
                     </button>
                 </div>
                 <div class="space-y-3">
@@ -368,17 +372,17 @@
         <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-xl p-8 text-white">
             <div class="flex flex-col md:flex-row items-center justify-between">
                 <div class="mb-4 md:mb-0 text-center md:text-left">
-                    <h3 class="text-3xl font-bold mb-2">Sẵn sàng khám phá? 🚀</h3>
-                    <p class="text-indigo-100 text-lg">Khám phá sản phẩm và ưu đãi tuyệt vời</p>
+                    <h3 class="text-3xl font-bold mb-2">{{ __('Ready to explore?') }} 🚀</h3>
+                    <p class="text-indigo-100 text-lg">{{ __('Discover amazing products and deals') }}</p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
                     <a href="{{ route('products') }}"
                         class="px-6 py-3 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg transform hover:scale-105 text-center">
-                        🛍️ Xem Sản Phẩm
+                        🛍️ {{ __('View Products') }}
                     </a>
                     <a href="{{ route('profile.edit') }}"
                         class="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-xl font-semibold hover:bg-white/30 transition-all duration-200 text-center">
-                        ⚙️ Cài Đặt
+                        ⚙️ {{ __('Settings') }}
                     </a>
                 </div>
             </div>
@@ -501,253 +505,253 @@
                 { { --Script cho biểu đồ-- } }
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-                document.addEventListener('DOMContentLoaded', function () {
+                        document.addEventListener('DOMContentLoaded', function () {
 
-                    // Gradient TAILWIND (Auto Dark)
-                    function createGradient(ctx, colorFrom, colorTo) {
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+                            // Gradient TAILWIND (Auto Dark)
+                            function createGradient(ctx, colorFrom, colorTo) {
+                                const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+                                gradient.addColorStop(0, colorFrom);
+                                gradient.addColorStop(1, colorTo);
+                                return gradient;
+                            }
+
+                                // Pie Chart
+                                const successCount = {{ $stats['success'] }};
+                        const pendingCount = {{ $stats['pending'] }};
+                        const failedCount = {{ $stats['failed'] }};
+                        // Tính tổng số giao dịch để phục vụ tính toán phần trăm
+                        const totalTransactions = successCount + pendingCount + failedCount;
+
+                        const pieCtx = document.getElementById('transactionPieChart')?.getContext('2d');
+                        if (pieCtx) {
+                            new Chart(pieCtx, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: ['Thành công', 'Chờ xử lý', 'Thất bại'],
+                                    datasets: [{
+                                        data: [successCount, pendingCount, failedCount],
+                                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                                        borderWidth: 2,
+                                        hoverOffset: 8
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: {
+                                        legend: {
+                                            display: false
+                                        },
+                                        tooltip: {
+                                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                            padding: 12,
+                                            cornerRadius: 8,
+                                            titleFont: {
+                                                size: 14,
+                                                weight: 'bold'
+                                            },
+                                            bodyFont: {
+                                                size: 13
+                                            },
+                                            callbacks: {
+                                                label: function (context) {
+                                                    const count = context.parsed; // Số lượng giao dịch
+                                                    let percentage = 0;
+
+                                                    if (totalTransactions > 0) {
+                                                        // Tính tỉ lệ phần trăm và làm tròn 1 chữ số thập phân
+                                                        percentage = ((count / totalTransactions) * 100).toFixed(1);
+                                                    }
+                                                    return context.label + ': ' + count + ' GD (' + percentage +
+                                                        '%)';
+                                                }
+                                            }
+                                        }
+                                    },
+                                    cutout: '70%'
+                                }
+                            });
+                                }
+
+                        // Gradient TAILWIND 
+                        function createGradient(ctx, colorFrom, colorTo) {
+                                    const gradient = ctx.createLinearGradient(0, 0, 0, 350);
                         gradient.addColorStop(0, colorFrom);
                         gradient.addColorStop(1, colorTo);
                         return gradient;
-                    }
+                                }
 
-                    // Pie Chart
-                    const successCount = {{ $stats['success'] }};
-                const pendingCount = {{ $stats['pending'] }};
-                const failedCount = {{ $stats['failed'] }};
-                // Tính tổng số giao dịch để phục vụ tính toán phần trăm
-                const totalTransactions = successCount + pendingCount + failedCount;
+                        // ============================
+                        // Crosshair X + Y
+                        // ============================
+                        const crosshairPlugin = {
+                            id: 'crosshairPlugin',
+                        afterDraw(chart) {
+                                        if (!chart.tooltip?._active?.length) return;
 
-                const pieCtx = document.getElementById('transactionPieChart')?.getContext('2d');
-                if (pieCtx) {
-                    new Chart(pieCtx, {
-                        type: 'doughnut',
+                        const ctx = chart.ctx;
+                        const point = chart.tooltip._active[0].element;
+                        const {
+                            top,
+                            bottom,
+                            left,
+                            right
+                        } = chart.chartArea;
+
+                        ctx.save();
+                        ctx.setLineDash([4, 4]);
+                        ctx.lineWidth = 1;
+                        ctx.strokeStyle = '#9ca3af';
+
+                        // Vertical
+                        ctx.beginPath();
+                        ctx.moveTo(point.x, top);
+                        ctx.lineTo(point.x, bottom);
+                        ctx.stroke();
+
+                        // Horizontal
+                        ctx.beginPath();
+                        ctx.moveTo(left, point.y);
+                        ctx.lineTo(right, point.y);
+                        ctx.stroke();
+
+                        ctx.restore();
+                                    }
+                                };
+
+                        Chart.register(crosshairPlugin);
+
+
+                        // DATA
+                        const totals = {!! json_encode($chartTotals) !!};
+                        const counts = {!! json_encode($chartCounts) !!};
+                        const labels = {!! json_encode($chartLabels) !!};
+                                const avg = totals.map((v, i) => counts[i] ? v / counts[i] : 0);
+
+                        const ctx = document.getElementById('expenseBarChart').getContext('2d');
+
+                        let currentType = "bar"; // bar → line → area
+
+                        const chart = new Chart(ctx, {
+                            type: 'bar',
                         data: {
-                            labels: ['Thành công', 'Chờ xử lý', 'Thất bại'],
+                            labels,
                             datasets: [{
-                                data: [successCount, pendingCount, failedCount],
-                                backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
-                                borderWidth: 2,
-                                hoverOffset: 8
-                            }]
-                        },
+
+                            label: 'Chi Tiêu / Giao Dịch',
+                        data: avg,
+                        fill: true,
+                        borderColor: '#22c55e',
+                        backgroundColor: 'rgba(14, 165, 233, 0.55)',
+                        tension: 0.4,
+                        borderWidth: 2,
+                        pointRadius: 2,
+                        pointHoverRadius: 5,
+                        yAxisID: "moneyAxis",
+                                        },
+                        {
+
+                            label: "Tổng Chi Tiêu (VND)",
+                        data: totals,
+                        borderColor: '#1d4ed8',
+                        backgroundColor: createGradient(
+                        ctx,
+                        'rgba(252, 165, 165, 0.9)',
+                        'rgba(244, 63, 94, 0.7)'
+                        ),
+                        tension: 0.4,
+                        borderWidth: 1.5,
+                        pointRadius: 2,
+                        pointHoverRadius: 5,
+                        yAxisID: "moneyAxis"
+                                        },
+                        {
+
+                            label: 'Số Giao Dịch Thành Công',
+                        data: counts,
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.25)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        yAxisID: "countAxis",
+                        pointRadius: 2,
+                        pointHoverRadius: 5
+                                        }
+
+                        ]
+                                    },
                         options: {
                             responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false
-                                },
-                                tooltip: {
-                                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                    padding: 12,
-                                    cornerRadius: 8,
-                                    titleFont: {
-                                        size: 14,
-                                        weight: 'bold'
-                                    },
-                                    bodyFont: {
-                                        size: 13
-                                    },
-                                    callbacks: {
-                                        label: function (context) {
-                                            const count = context.parsed; // Số lượng giao dịch
-                                            let percentage = 0;
+                        maintainAspectRatio: false,
 
-                                            if (totalTransactions > 0) {
-                                                // Tính tỉ lệ phần trăm và làm tròn 1 chữ số thập phân
-                                                percentage = ((count / totalTransactions) * 100).toFixed(1);
+                        animation: {
+                            duration: 600,
+                        easing: 'easeInOutQuart'
+                                        },
+
+                        scales: {
+                            moneyAxis: {
+                            position: "left",
+                        ticks: {
+                            callback: v => v.toLocaleString('vi-VN')
+                                                }
+                                            },
+                        countAxis: {
+                            position: "right",
+                        beginAtZero: true,
+                        grid: {
+                            display: false
+                                                },
+                        ticks: {
+                            stepSize: 1,
+                                                    callback: v => Number.isInteger(v) ? v : ''
+                                                }
                                             }
-                                            return context.label + ': ' + count + ' GD (' + percentage +
-                                                '%)';
+                                        },
+
+                        plugins: {
+                            tooltip: {
+                            enabled: true
+                                            },
+                        legend: {
+                            position: 'bottom'
+                                            }
                                         }
                                     }
-                                }
-                            },
-                            cutout: '70%'
-                        }
-                    });
-                    }
-
-                // Gradient TAILWIND 
-                function createGradient(ctx, colorFrom, colorTo) {
-                        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
-                gradient.addColorStop(0, colorFrom);
-                gradient.addColorStop(1, colorTo);
-                return gradient;
-                    }
-
-                // ============================
-                // Crosshair X + Y
-                // ============================
-                const crosshairPlugin = {
-                    id: 'crosshairPlugin',
-                afterDraw(chart) {
-                            if (!chart.tooltip?._active?.length) return;
-
-                const ctx = chart.ctx;
-                const point = chart.tooltip._active[0].element;
-                const {
-                    top,
-                    bottom,
-                    left,
-                    right
-                } = chart.chartArea;
-
-                ctx.save();
-                ctx.setLineDash([4, 4]);
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = '#9ca3af';
-
-                // Vertical
-                ctx.beginPath();
-                ctx.moveTo(point.x, top);
-                ctx.lineTo(point.x, bottom);
-                ctx.stroke();
-
-                // Horizontal
-                ctx.beginPath();
-                ctx.moveTo(left, point.y);
-                ctx.lineTo(right, point.y);
-                ctx.stroke();
-
-                ctx.restore();
-                        }
-                    };
-
-                Chart.register(crosshairPlugin);
+                                });
 
 
-                // DATA
-                const totals = {!! json_encode($chartTotals) !!};
-                const counts = {!! json_encode($chartCounts) !!};
-                const labels = {!! json_encode($chartLabels) !!};
-                    const avg = totals.map((v, i) => counts[i] ? v / counts[i] : 0);
+                        //  BUTTTON: Toggle Chart Type
+                        document.getElementById("toggleChartType")
+                                    .addEventListener("click", () => {
 
-                const ctx = document.getElementById('expenseBarChart').getContext('2d');
+                            // xoay vòng
+                            currentType =
+                            currentType === "bar" ? "line" :
+                                currentType === "line" ? "area" :
+                                    "bar";
 
-                let currentType = "bar"; // bar → line → area
+                                        chart.data.datasets.forEach(ds => {
 
-                const chart = new Chart(ctx, {
-                    type: 'bar',
-                data: {
-                    labels,
-                    datasets: [{
+                                            if (currentType === "area") {
+                            ds.type = "line";
+                        ds.fill = true;
+                                            } else {
+                            ds.type = currentType;
+                        ds.fill = false;
+                                            }
+                                        });
 
-                    label: 'Chi Tiêu / Giao Dịch',
-                data: avg,
-                fill: true,
-                borderColor: '#22c55e',
-                backgroundColor: 'rgba(14, 165, 233, 0.55)',
-                tension: 0.4,
-                borderWidth: 2,
-                pointRadius: 2,
-                pointHoverRadius: 5,
-                yAxisID: "moneyAxis",
-                            },
-                {
+                        chart.update();
+                                    });
 
-                    label: "Tổng Chi Tiêu (VND)",
-                data: totals,
-                borderColor: '#1d4ed8',
-                backgroundColor: createGradient(
-                ctx,
-                'rgba(252, 165, 165, 0.9)',
-                'rgba(244, 63, 94, 0.7)'
-                ),
-                tension: 0.4,
-                borderWidth: 1.5,
-                pointRadius: 2,
-                pointHoverRadius: 5,
-                yAxisID: "moneyAxis"
-                            },
-                {
-
-                    label: 'Số Giao Dịch Thành Công',
-                data: counts,
-                borderColor: '#f59e0b',
-                backgroundColor: 'rgba(245, 158, 11, 0.25)',
-                borderWidth: 2,
-                tension: 0.4,
-                yAxisID: "countAxis",
-                pointRadius: 2,
-                pointHoverRadius: 5
-                            }
-
-                ]
-                        },
-                options: {
-                    responsive: true,
-                maintainAspectRatio: false,
-
-                animation: {
-                    duration: 600,
-                easing: 'easeInOutQuart'
-                            },
-
-                scales: {
-                    moneyAxis: {
-                    position: "left",
-                ticks: {
-                    callback: v => v.toLocaleString('vi-VN')
-                                    }
-                                },
-                countAxis: {
-                    position: "right",
-                beginAtZero: true,
-                grid: {
-                    display: false
-                                    },
-                ticks: {
-                    stepSize: 1,
-                                        callback: v => Number.isInteger(v) ? v : ''
-                                    }
-                                }
-                            },
-
-                plugins: {
-                    tooltip: {
-                    enabled: true
-                                },
-                legend: {
-                    position: 'bottom'
-                                }
-                            }
-                        }
-                    });
-
-
-                //  BUTTTON: Toggle Chart Type
-                document.getElementById("toggleChartType")
-                        .addEventListener("click", () => {
-
-                    // xoay vòng
-                    currentType =
-                    currentType === "bar" ? "line" :
-                        currentType === "line" ? "area" :
-                            "bar";
-
-                            chart.data.datasets.forEach(ds => {
-
-                                if (currentType === "area") {
-                    ds.type = "line";
-                ds.fill = true;
-                                } else {
-                    ds.type = currentType;
-                ds.fill = false;
-                                }
+                        //    --- Logic Chuyển Đổi Phạm Vi ---
+                        document.getElementById('chart-range-select')
+                        .addEventListener('change', function () {
+                                        const selectedValue = this.value;
+                        window.location.href = `?range=${selectedValue}`;
+                                    });
                             });
-
-                chart.update();
-                        });
-
-                //    --- Logic Chuyển Đổi Phạm Vi ---
-                document.getElementById('chart-range-select')
-                .addEventListener('change', function () {
-                            const selectedValue = this.value;
-                window.location.href = `?range=${selectedValue}`;
-                        });
-                });
         </script>
     @endpush
 </x-app-layout>

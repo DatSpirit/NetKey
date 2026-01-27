@@ -87,6 +87,16 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('accountExpiringSoon', $accountExpiringSoon);
         });
+
+        // Register @price Blade directive for currency formatting
+        \Illuminate\Support\Facades\Blade::directive('price', function ($expression) {
+            return "<?php echo \App\Helpers\CurrencyHelper::format($expression); ?>";
+        });
+
+        // Register @formatDate Blade directive for timezone-aware date formatting
+        \Illuminate\Support\Facades\Blade::directive('formatDate', function ($expression) {
+            return "<?php echo \App\Helpers\DateHelper::format($expression); ?>";
+        });
     }
 
     /**

@@ -8,19 +8,20 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    My Activity
+                    {{ __('My Activity') }}
                 </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Track your personal spending and account usage
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {{ __('Track your personal spending and account usage') }}
                 </p>
             </div>
 
             <div class="flex items-center space-x-3">
                 <select id="time-range" onchange="changeRange(this.value)"
                     class="px-4 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl text-sm shadow-sm focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer">
-                    <option value="7" {{ $days == 7 ? 'selected' : '' }}>Last 7 days</option>
-                    <option value="30" {{ $days == 30 ? 'selected' : '' }}>Last 30 days</option>
-                    <option value="90" {{ $days == 90 ? 'selected' : '' }}>Last 3 months</option>
-                    <option value="365" {{ $days == 365 ? 'selected' : '' }}>Last year</option>
+                    <option value="7" {{ $days == 7 ? 'selected' : '' }}>{{ __('Last 7 days') }}</option>
+                    <option value="30" {{ $days == 30 ? 'selected' : '' }}>{{ __('Last 30 days') }}</option>
+                    <option value="90" {{ $days == 90 ? 'selected' : '' }}>{{ __('Last 3 months') }}</option>
+                    <option value="365" {{ $days == 365 ? 'selected' : '' }}>{{ __('Last year') }}</option>
                 </select>
 
                 <a href="{{ route('analytics.export') }}"
@@ -29,7 +30,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
-                    Export
+                    {{ __('Export') }}
                 </a>
             </div>
         </div>
@@ -44,7 +45,7 @@
             <div
                 class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-lg p-5 text-white transform hover:scale-105 transition-transform duration-300 relative overflow-hidden">
                 <div class="relative z-10">
-                    <p class="text-indigo-100 text-sm font-medium mb-3">Total Spending</p>
+                    <p class="text-indigo-100 text-sm font-medium mb-3">{{ __('Total Spending') }}</p>
 
                     <div class="flex items-baseline space-x-1 mb-1">
                         <span class="text-2xl font-bold">{{ number_format($analytics['totalRevenueVND']) }}</span>
@@ -70,7 +71,7 @@
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-5">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Transactions</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('Transactions') }}</p>
                         <h3 class="text-2xl font-bold mt-1 dark:text-white">{{ $analytics['ordersTotal'] }}</h3>
                     </div>
                     <div class="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
@@ -88,7 +89,7 @@
                     </div>
                     <span
                         class="ml-2 text-xs font-medium text-blue-600 dark:text-blue-400">{{ $analytics['successRate'] }}%
-                        success</span>
+                        {{ __('success') }}</span>
                 </div>
             </div>
 
@@ -96,7 +97,7 @@
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-5">
                 <div class="flex justify-between items-start mb-2">
-                    <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Coin Activity</p>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('Coin Activity') }}</p>
                     <div class="p-1.5 bg-green-50 dark:bg-green-900/30 rounded-lg">
                         <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
@@ -110,7 +111,7 @@
                     {{-- Deposited --}}
                     <div>
                         <div class="flex justify-between text-xs mb-1">
-                            <span class="text-gray-500">Deposited</span>
+                            <span class="text-gray-500">{{ __('Deposited') }}</span>
                             <span
                                 class="font-bold text-gray-900 dark:text-white">{{ number_format($analytics['walletDeposited']) }}</span>
                         </div>
@@ -121,7 +122,7 @@
                     {{-- Spent --}}
                     <div>
                         <div class="flex justify-between text-xs mb-1">
-                            <span class="text-gray-500">Spent</span>
+                            <span class="text-gray-500">{{ __('Spent') }}</span>
                             <span class="font-bold text-green-600">{{ number_format($analytics['walletSpent']) }}</span>
                         </div>
                         {{-- Calculate percentage of Deposited roughly --}}
@@ -141,10 +142,11 @@
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-5">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Current Balance</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">{{ __('Current Balance') }}</p>
                         <h3 class="text-2xl font-bold mt-1 text-indigo-600 dark:text-indigo-400">
                             {{ number_format($analytics['walletBalance']) }} <span
-                                class="text-xs text-gray-400 font-normal">COIN</span></h3>
+                                class="text-xs text-gray-400 font-normal">COIN</span>
+                        </h3>
                     </div>
                     <div class="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg">
                         <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor"
@@ -154,7 +156,7 @@
                         </svg>
                     </div>
                 </div>
-                <p class="mt-4 text-xs text-green-600 font-medium">Available for use</p>
+                <p class="mt-4 text-xs text-green-600 font-medium">{{ __('Available for use') }}</p>
             </div>
         </div>
 
@@ -164,7 +166,7 @@
             {{-- Spending Trend (Line) --}}
             <div
                 class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Spending History</h3>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ __('Spending History') }}</h3>
                 <div class="h-72 w-full">
                     <canvas id="revenueChart"></canvas>
                 </div>
@@ -173,7 +175,7 @@
             {{-- Daily Habits (Bar) --}}
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Activity by Day</h3>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ __('Activity by Day') }}</h3>
                 <div class="h-72 w-full">
                     <canvas id="dailyChart"></canvas>
                 </div>
@@ -186,7 +188,7 @@
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Wallet Usage</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ __('Wallet Usage') }}</h3>
                     <span
                         class="text-xs font-semibold px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-500">Volume</span>
                 </div>
@@ -216,7 +218,7 @@
             {{-- Top Products --}}
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Top Purchases</h3>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ __('Top Purchases') }}</h3>
                 <div class="space-y-4">
                     @forelse($topProducts as $index => $p)
                         <div class="flex items-center">
@@ -236,7 +238,7 @@
                             </div>
                             <div class="ml-4 text-right">
                                 <p class="text-sm font-bold text-gray-900 dark:text-white">{{ $p->orders }}</p>
-                                <p class="text-xs text-gray-500">times</p>
+                                <p class="text-xs text-gray-500">{{ __('times') }}</p>
                             </div>
                         </div>
                     @empty
@@ -248,7 +250,7 @@
             {{-- Time Heatmap (Simple CSS Grid) --}}
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Peak Activity Hours</h3>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">{{ __('Peak Activity Hours') }}</h3>
                 <div class="grid grid-cols-6 gap-2">
                     @foreach($hourly as $h => $count)
                         <div class="flex flex-col items-center">
@@ -281,7 +283,7 @@
 
         {{-- Recent Transactions Timeline --}}
         <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-6">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Recent Activity Timeline</h3>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">{{ __('Recent Activity Timeline') }}</h3>
             <div class="relative border-l-2 border-gray-200 dark:border-gray-700 ml-3 space-y-8">
                 @forelse($transactions->take(10) as $t)
                     <div class="relative pl-8">

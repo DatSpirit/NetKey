@@ -11,8 +11,8 @@
                     </svg>
                 </a>
                 <div>
-                    <h2 class="font-bold text-2xl text-gray-800 dark:text-white">Xác nhận gia hạn</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Kiểm tra thông tin trước khi thanh toán</p>
+                    <h2 class="font-bold text-2xl text-gray-800 dark:text-white">{{ __('Confirm extension') }}</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('Check info before payment') }}</p>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">
-                         Thông tin Key
+                         {{ __('Key Info') }}
                         </h3>
                     </div>
 
@@ -45,21 +45,21 @@
                             </code>
                         </div>
                         <div class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl">
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Trạng thái:</span>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('Status') }}:</span>
                             <span
                                 class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-sm font-semibold">
                                 {{ ucfirst($key->status) }}
                             </span>
                         </div>
                         <div class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl">
-                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Hết hạn hiện tại:</span>
+                            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('Current Expiry') }}:</span>
                             <span class="font-bold text-red-600 dark:text-red-400">
-                                {{ $current_expiry ? $current_expiry->format('d/m/Y H:i') : 'Vĩnh viễn' }}
+                                {{ $current_expiry ? $current_expiry->format('d/m/Y H:i') : __('Permanent') }}
                             </span>
                         </div>
                         @if ($key->product)
                             <div class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl">
-                                <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Gói sản phẩm:</span>
+                                <span class="text-sm font-medium text-gray-600 dark:text-gray-400">{{ __('Product Package') }}:</span>
                                 <span
                                     class="font-semibold text-gray-900 dark:text-gray-100">{{ $key->product->name }}</span>
                             </div>
@@ -80,27 +80,27 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">
-                         Gói gia hạn đã chọn
+                         {{ __('Selected Extension Package') }}
                         </h3>
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-4">
                         <div class="p-4 bg-white dark:bg-gray-800 rounded-xl">
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Tên gói</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('Package Name') }}</p>
                             <p class="font-bold text-lg text-indigo-600 dark:text-indigo-400">{{ $package->name }}</p>
                         </div>
                         <div class="p-4 bg-white dark:bg-gray-800 rounded-xl">
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Thời gian cộng</p>
-                            <p class="font-bold text-lg text-green-600 dark:text-green-400">+{{ $package->days }} ngày
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('Time to Add') }}</p>
+                            <p class="font-bold text-lg text-green-600 dark:text-green-400">+{{ $package->days }} {{ __('days') }}
                             </p>
                         </div>
                         <div class="p-4 bg-white dark:bg-gray-800 rounded-xl">
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Giá Coinkey</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('Coinkey Price') }}</p>
                             <p class="font-bold text-lg text-purple-600 dark:text-purple-400">
                                 {{ number_format($package->price_coinkey) }} Coin</p>
                         </div>
                         <div class="p-4 bg-white dark:bg-gray-800 rounded-xl">
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Giá VND</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('VND Price') }}</p>
                             <p class="font-bold text-lg text-orange-600 dark:text-orange-400">
                                 {{ number_format($package->price_vnd) }} VND</p>
                         </div>
@@ -110,7 +110,7 @@
                         <div class="mt-4 p-5 bg-gradient-to-r from-green-300 to-emerald-300 dark:from-green-500 dark:to-emerald-500 rounded-xl text-gray-900 dark:text-white shadow-lg">
                             <div class="flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm opacity-90 mb-1">Hết hạn mới sau khi gia hạn</p>
+                                    <p class="text-sm opacity-90 mb-1">{{ __('New Expiry After Extension') }}</p>
                                     <p class="text-2xl font-bold">
                                         {{ $new_expiry->format('d/m/Y H:i') }}
                                     </p>
@@ -138,7 +138,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">
-                            Chọn phương thức thanh toán
+                            {{ __('Select Payment Method') }}
                         </h3>
                     </div>
 
@@ -175,10 +175,9 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <p class="font-bold text-lg text-gray-900 dark:text-gray-100">Ví
-                                                    Coinkey</p>
+                                                <p class="font-bold text-lg text-gray-900 dark:text-gray-100">{{ __('Coinkey Wallet') }}</p>
                                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                                    Số dư: <span
+                                                    {{ __('Balance') }}: <span
                                                         class="font-semibold">{{ number_format($wallet->balance) }}
                                                         Coin</span>
                                                 </p>
@@ -200,8 +199,7 @@
                                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                                                     clip-rule="evenodd" />
                                             </svg>
-                                            <span class="text-red-700 dark:text-red-400 text-sm font-medium">Số dư
-                                                không đủ. Vui lòng nạp thêm Coinkey.</span>
+                                            <span class="text-red-700 dark:text-red-400 text-sm font-medium">{{ __('Insufficient balance please top up') }}</span>
                                         </div>
                                     @endif
                                 </div>
@@ -233,10 +231,8 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <p class="font-bold text-lg text-gray-900 dark:text-gray-100">Chuyển
-                                                    khoản / QR</p>
-                                                <p class="text-sm text-gray-600 dark:text-gray-400">Thanh toán qua
-                                                    PayOS</p>
+                                                <p class="font-bold text-lg text-gray-900 dark:text-gray-100">{{ __('Bank Transfer / QR') }}</p>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Pay via PayOS') }}</p>
                                             </div>
                                         </div>
                                         <div class="text-right">
@@ -269,7 +265,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                                 </svg>
-                                <span>Quay lại</span>
+                                <span>{{ __('Back') }}</span>
                             </a>
                             <button type="submit"
                                 class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] hover:shadow-2xl flex items-center justify-center gap-2">
@@ -277,7 +273,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                <span>Xác nhận thanh toán</span>
+                                <span>{{ __('Confirm Payment') }}</span>
                             </button>
                         </div>
                     </form>

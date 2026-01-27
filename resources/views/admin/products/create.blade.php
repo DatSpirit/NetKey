@@ -11,12 +11,12 @@
                         d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
                 <h2 class="font-bold text-2xl text-gray-800 dark:text-gray-100 tracking-tight">
-                    Add Product
+                    {{ __('Add Product') }}
                 </h2>
             </div>
             <a href="{{ route('products') }}"
                 class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-lg transition-all duration-200">
-                ← Back
+                ← {{ __('Back') }}
             </a>
         </div>
     </x-slot>
@@ -27,8 +27,8 @@
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-600 dark:to-purple-700 p-6">
-                    <h3 class="text-xl font-bold text-white">Thông Tin Sản Phẩm</h3>
-                    <p class="text-white/90 text-sm mt-1">Điền đầy đủ thông tin sản phẩm mới</p>
+                    <h3 class="text-xl font-bold text-white">{{ __('Product Information') }}</h3>
+                    <p class="text-white/90 text-sm mt-1">{{ __('Fill in complete product information') }}</p>
                 </div>
 
                 <form action="{{ route('admin.products.store') }}" method="POST" class="p-6 space-y-6">
@@ -44,14 +44,14 @@
                         </div>
                         <label for="is_active"
                             class="font-medium text-gray-700 dark:text-gray-300 select-none cursor-pointer">
-                            Kích hoạt sản phẩm (Hiển thị ngay trên cửa hàng)
+                            {{ __('Activate product (Display on store immediately)') }}
                         </label>
                     </div>
 
                     <!-- Name -->
                     <div>
                         <label for="name"
-                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Tên Sản Phẩm <span
+                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Product Name') }} <span
                                 class="text-red-500">*</span></label>
                         <input type="text" id="name" name="name" value="{{ old('name') }}" required
                             class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 transition-all">
@@ -60,13 +60,12 @@
                     <!-- Category -->
                     <div>
                         <label for="category"
-                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Danh Mục <span
+                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Category') }} <span
                                 class="text-red-500">*</span></label>
                         <select id="category" name="category" required
                             class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 cursor-pointer">
-                            <option value="Service" {{ old('category') == 'Service' ? 'selected' : '' }}>Service (Gói
-                                dịch vụ)</option>
-                            <option value="Top-up" {{ old('category') == 'Top-up' ? 'selected' : '' }}>Top-up (Nạp tiền)
+                            <option value="Service" {{ old('category') == 'Service' ? 'selected' : '' }}>{{ __('Service (License Package)') }}</option>
+                            <option value="Top-up" {{ old('category') == 'Top-up' ? 'selected' : '' }}>{{ __('Top-up (Recharge)') }}
                             </option>
                         </select>
                     </div>
@@ -74,13 +73,13 @@
                     <!-- Price (VND) -->
                     <div>
                         <label for="price"
-                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Giá Tiền Mặt (VNĐ)
+                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Cash Price') }}
                             <span class="text-red-500">*</span></label>
                         <div class="relative">
                             <input type="number" id="price" name="price" value="{{ old('price') }}" required
                                 min="2000" step="1000"
                                 class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 pl-10"
-                                placeholder="VD: 50000">
+                                placeholder="{{ __('e.g: 50000') }}">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₫</span>
                         </div>
                     </div>
@@ -91,14 +90,12 @@
                         <!-- Product Type -->
                         <div class="md:col-span-2">
                             <label for="product_type"
-                                class="block text-sm font-bold text-indigo-800 dark:text-indigo-300 mb-2">Loại Sản Phẩm
+                                class="block text-sm font-bold text-indigo-800 dark:text-indigo-300 mb-2">{{ __('Product Type') }}
                                 <span class="text-red-500">*</span></label>
                             <select id="product_type" name="product_type" onchange="toggleFields()"
                                 class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-indigo-200 dark:border-indigo-700 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:ring-indigo-500 cursor-pointer">
-                                <option value="package" {{ old('product_type') == 'package' ? 'selected' : '' }}>📦 Gói
-                                    Bản Quyền (Bán Key)</option>
-                                <option value="coinkey" {{ old('product_type') == 'coinkey' ? 'selected' : '' }}>💰 Gói
-                                    Nạp Tiền (Top-up)</option>
+                                <option value="package" {{ old('product_type') == 'package' ? 'selected' : '' }}>📦 {{ __('License Package (Sell Key)') }}</option>
+                                <option value="coinkey" {{ old('product_type') == 'coinkey' ? 'selected' : '' }}>💰 {{ __('Top-up Package') }}</option>
                             </select>
                             <p class="text-xs text-indigo-600 dark:text-indigo-400 mt-2" id="type_hint"></p>
                         </div>
@@ -106,8 +103,7 @@
                         <!-- Coinkey Amount -->
                         <div>
                             <label id="coinkey_label" for="coinkey_amount"
-                                class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Giá
-                                Coin</label>
+                                class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Coin Price') }}</label>
                             <div class="relative">
                                 <input type="number" id="coinkey_amount" name="coinkey_amount"
                                     value="{{ old('coinkey_amount', 0) }}" required min="0"
@@ -120,29 +116,27 @@
                         <!-- Duration -->
                         <div id="duration_field">
                             <label for="duration_minutes"
-                                class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Thời hạn
-                                (Phút)</label>
+                                class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Duration (Minutes)') }}</label>
                             <input type="number" id="duration_minutes" name="duration_minutes"
                                 value="{{ old('duration_minutes', 1440) }}"
                                 class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500">
-                            <p class="text-xs text-gray-500 mt-1">1440 phút = 1 ngày</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ __('1440 minutes = 1 day') }}</p>
                         </div>
                     </div>
 
                     <!-- Description -->
                     <div>
                         <label for="description"
-                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Mô Tả</label>
+                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ __('Description') }}</label>
                         <textarea id="description" name="description" rows="3"
                             class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 resize-none">{{ old('description') }}</textarea>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <button type="submit"
-                            class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all">Lưu
-                            Sản Phẩm</button>
+                            class="flex-1 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all">{{ __('Save Product') }}</button>
                         <a href="{{ route('products') }}"
-                            class="flex-1 px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-bold rounded-xl text-center transition-all">Hủy</a>
+                            class="flex-1 px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white font-bold rounded-xl text-center transition-all">{{ __('Cancel') }}</a>
                     </div>
                 </form>
             </div>
@@ -150,6 +144,15 @@
     </div>
 
     <script>
+        const translations = {
+            coinkeyReceived: @json(__('Coinkey amount RECEIVED')),
+            cashToCoins: @json(__('Customer pays cash -> Receives Coins.')),
+            topupMode: @json(__('Mode: Top-up Package.')),
+            coinPrice: @json(__('Coinkey selling price')),
+            coinToBuy: @json(__('Customer uses Coins to buy.')),
+            licenseMode: @json(__('Mode: License Package (Service).'))
+        };
+
         function toggleFields() {
             const type = document.getElementById('product_type').value;
             const durationField = document.getElementById('duration_field');
@@ -159,14 +162,14 @@
 
             if (type === 'coinkey') {
                 durationField.style.display = 'none';
-                coinkeyLabel.innerText = "Số lượng Coinkey NHẬN ĐƯỢC";
-                coinkeyHint.innerText = "Khách trả tiền mặt -> Nhận Coin vào ví.";
-                typeHint.innerText = "Chế độ: Gói Nạp Tiền (Top-up).";
+                coinkeyLabel.innerText = translations.coinkeyReceived;
+                coinkeyHint.innerText = translations.cashToCoins;
+                typeHint.innerText = translations.topupMode;
             } else {
                 durationField.style.display = 'block';
-                coinkeyLabel.innerText = "Giá bán bằng Coinkey";
-                coinkeyHint.innerText = "Khách dùng Coin trong ví để mua.";
-                typeHint.innerText = "Chế độ: Gói Bản Quyền (Service).";
+                coinkeyLabel.innerText = translations.coinPrice;
+                coinkeyHint.innerText = translations.coinToBuy;
+                typeHint.innerText = translations.licenseMode;
             }
         }
         document.addEventListener('DOMContentLoaded', toggleFields);

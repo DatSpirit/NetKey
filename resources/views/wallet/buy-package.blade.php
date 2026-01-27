@@ -2,27 +2,28 @@
     <x-slot name="header">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h2 class="font-bold text-2xl text-gray-800 dark:text-white">Cửa Hàng VIP</h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Nâng cấp VIP để mở khóa ưu đãi độc quyền</p>
+                <h2 class="font-bold text-2xl text-gray-800 dark:text-white">{{ __('VIP Store') }}</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('Upgrade VIP to unlock exclusive offers') }}
+                </p>
             </div>
 
             <!-- VIP Badge -->
             <div
                 class="flex items-center gap-4 bg-white dark:bg-gray-800 p-3 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                 <div class="text-right">
-                    <p class="text-xs text-gray-500 font-bold uppercase">Cấp độ hiện tại</p>
+                    <p class="text-xs text-gray-500 font-bold uppercase">{{ __('Current Level') }}</p>
                     <p class="text-xl font-black text-yellow-500">VIP {{ $vipLevel }}</p>
                 </div>
                 <div class="w-px h-8 bg-gray-300 dark:bg-gray-600"></div>
                 <div>
-                    <p class="text-xs text-gray-500">Tổng đã nạp: <span
+                    <p class="text-xs text-gray-500">{{ __('Total deposited') }}: <span
                             class="font-bold text-green-600">{{ number_format($wallet->total_deposited) }}</span>
                     </p>
                 </div>
             </div>
             <a href="{{ route('wallet.index') }}"
                 class="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-lg transition-all duration-200">
-                ← Back
+                ← {{ __('Back') }}
             </a>
 
         </div>
@@ -33,7 +34,7 @@
         <div class="mb-12">
             <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
                 <span class="p-2 bg-green-100 text-green-600 rounded-lg">⏳</span>
-                Gói Gia Hạn & Key
+                {{ __('Extension & Key Packages') }}
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @forelse($extensionPackages as $item)
@@ -76,13 +77,13 @@
                                 <input type="hidden" name="payment_method" value="wallet">
                                 <button type="submit"
                                     class="w-full py-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-xl font-bold transition-all">
-                                    Mua Ngay
+                                    {{ __('Buy Now') }}
                                 </button>
                             </form>
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-full text-center py-8 text-gray-500">Chưa có gói gia hạn</div>
+                    <div class="col-span-full text-center py-8 text-gray-500">{{ __('No extension packages yet') }}</div>
                 @endforelse
             </div>
         </div>
@@ -91,7 +92,7 @@
         <div>
             <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6 flex items-center gap-2">
                 <span class="p-2 bg-yellow-100 text-yellow-600 rounded-lg">👑</span>
-                Gói VIP (Ưu đãi đặc quyền)
+                {{ __('VIP Packages (Exclusive Offers)') }}
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @forelse($vipPackages as $item)
@@ -117,15 +118,15 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                 </svg>
-                                <span class="font-bold text-lg">Yêu cầu VIP {{ $requiredVip }}</span>
-                                <span class="text-sm opacity-80">Nạp thêm để mở khóa</span>
+                                <span class="font-bold text-lg">{{ __('Requires VIP') }} {{ $requiredVip }}</span>
+                                <span class="text-sm opacity-80">{{ __('Top up more to unlock') }}</span>
                             </div>
                         @endif
 
                         <!-- Badges -->
                         <div
                             class="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-br-xl z-10">
-                            Giảm {{ $discountPercent }}%
+                            {{ __('Discount') }} {{ $discountPercent }}%
                         </div>
                         <div
                             class="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl z-10">
@@ -148,7 +149,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    <span>{{ round($pkg->duration_minutes / 1440) }} ngày</span>
+                                    <span>{{ round($pkg->duration_minutes / 1440) }} {{ __('days') }}</span>
                                 </div>
                             @endif
 
@@ -173,21 +174,19 @@
                                 <input type="hidden" name="payment_method" value="wallet">
                                 @if ($isLocked)
                                     <button type="button" disabled
-                                        class="w-full py-2.5 bg-gray-300 dark:bg-gray-700 text-gray-500 rounded-xl font-bold cursor-not-allowed">Khóa</button>
+                                        class="w-full py-2.5 bg-gray-300 dark:bg-gray-700 text-gray-500 rounded-xl font-bold cursor-not-allowed">{{ __('Locked') }}</button>
                                 @elseif(!$canBuy)
                                     <button type="button" disabled
-                                        class="w-full py-2.5 bg-gray-300 dark:bg-gray-700 text-gray-500 rounded-xl font-bold cursor-not-allowed">Hết
-                                        lượt mua</button>
+                                        class="w-full py-2.5 bg-gray-300 dark:bg-gray-700 text-gray-500 rounded-xl font-bold cursor-not-allowed">{{ __('Out of purchases') }}</button>
                                 @else
                                     <button type="submit"
-                                        class="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:shadow-indigo-500/50 transition-all">Mua
-                                        Ngay</button>
+                                        class="w-full py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:shadow-indigo-500/50 transition-all">{{ __('Buy Now') }}</button>
                                 @endif
                             </form>
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-full text-center py-8 text-gray-500">Chưa có gói VIP</div>
+                    <div class="col-span-full text-center py-8 text-gray-500">{{ __('No VIP packages yet') }}</div>
                 @endforelse
             </div>
         </div>

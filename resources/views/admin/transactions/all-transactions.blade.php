@@ -13,7 +13,7 @@
                     </svg>
                 </div>
                 <h2 class="font-bold text-2xl text-gray-800 dark:text-white tracking-tight">
-                    Transaction Management
+                    {{ __('Transaction Management') }}
                 </h2>
             </div>
             {{-- 
@@ -54,16 +54,15 @@
             <div class="bg-gradient-to-r from-blue-500 dark:from-blue-700 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="space-y-2">
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Transaction Overview
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">{{ __('Transaction Overview') }}
                         </h3>
-                        <p class="text-blue-800 dark:text-white text-sm sm:text-base">Quản lý tất cả giao dịch
-                            thanh toán</p>
+                        <p class="text-blue-800 dark:text-white text-sm sm:text-base">{{ __('Manage all payment transactions') }}</p>
                     </div>
                     <div class="flex items-center space-x-6">
                         <div class="text-center">
                             <div class="text-3xl font-bold text-gray-800 dark:text-white">{{ $transactions->total() }}
                             </div>
-                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">Tổng GD
+                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">{{ __('Total Trans') }}
                             </div>
                         </div>
                         <div class="h-12 w-px bg-white/30"></div>
@@ -71,7 +70,7 @@
                             <div class="text-3xl font-bold text-gray-800 dark:text-white">
                                 {{ number_format($stats['total_amount'] / 1000) }}K
                             </div>
-                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">Tổng Thu
+                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">{{ __('Total Revenue') }}
                             </div>
                         </div>
                     </div>
@@ -83,10 +82,10 @@
                     class="bg-gradient-to-br from-blue-200 to-blue-600 dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-800 dark:text-white font-medium">Total</p>
+                            <p class="text-xs sm:text-sm text-gray-800 dark:text-white font-medium">{{ __('Total') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">
                                 {{ number_format($stats['total']) }}</p>
-                            <p class="text-xs text-gray-800 dark:text-white mt-2">Today: <span
+                            <p class="text-xs text-gray-800 dark:text-white mt-2">{{ __('Today') }}: <span
                                     class="font-semibold">{{ $stats['today'] }}</span></p>
                         </div>
                         <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
@@ -103,7 +102,7 @@
                     class="bg-gradient-to-br from-green-200 to-green-600 dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-800 dark:text-white font-medium">Success</p>
+                            <p class="text-xs sm:text-sm text-gray-800 dark:text-white font-medium">{{ __('Success') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">
                                 {{ number_format($stats['success']) }}</p>
                             <p class="text-xs text-gray-800 dark:text-white mt-2">
@@ -123,7 +122,7 @@
                     class="bg-gradient-to-br from-yellow-200 to-yellow-600 dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-800 dark:text-white font-medium">Pending</p>
+                            <p class="text-xs sm:text-sm text-gray-800 dark:text-white font-medium">{{ __('Pending') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">
                                 {{ number_format($stats['pending']) }}</p>
                             <p class="text-xs text-gray-800 dark:text-white mt-2">
@@ -143,10 +142,10 @@
                     class="bg-gradient-to-br from-red-200 to-red-600 dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-800 dark:text-white font-medium">Failed</p>
+                            <p class="text-xs sm:text-sm text-gray-800 dark:text-white font-medium">{{ __('Failed') }}</p>
                             <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 mt-1">
                                 {{ number_format($stats['failed'] + $stats['cancelled']) }}</p>
-                            <p class="text-xs text-gray-800 dark:text-white mt-2">Cancelled:
+                            <p class="text-xs text-gray-800 dark:text-white mt-2">{{ __('Cancelled') }}:
                                 {{ $stats['cancelled'] }}</p>
                         </div>
                         <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded-full">
@@ -168,7 +167,7 @@
                         <div>
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                Currency
+                                {{ __('Currency') }}
                             </label>
                             <select name="type"
                                 class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
@@ -181,26 +180,26 @@
                         <div>
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                Status
+                                {{ __('Status') }}
                             </label>
                             <select name="status"
                                 class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
-                                <option value="">All</option>
-                                <option value="pending" {{ ($status ?? '') == 'pending' ? 'selected' : '' }}>Pending
+                                <option value="">{{ __('All') }}</option>
+                                <option value="pending" {{ ($status ?? '') == 'pending' ? 'selected' : '' }}>{{ __('Pending') }}
                                 </option>
-                                <option value="success" {{ ($status ?? '') == 'success' ? 'selected' : '' }}>Success
+                                <option value="success" {{ ($status ?? '') == 'success' ? 'selected' : '' }}>{{ __('Success') }}
                                 </option>
-                                <option value="failed" {{ ($status ?? '') == 'failed' ? 'selected' : '' }}>Failed
+                                <option value="failed" {{ ($status ?? '') == 'failed' ? 'selected' : '' }}>{{ __('Failed') }}
                                 </option>
                                 <option value="cancelled" {{ ($status ?? '') == 'cancelled' ? 'selected' : '' }}>
-                                    Cancelled</option>
+                                    {{ __('Cancelled') }}</option>
                             </select>
                         </div>
 
                         <div>
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                From
+                                {{ __('From') }}
                             </label>
                             <input type="date" name="date_from" value="{{ $dateFrom ?? '' }}"
                                 class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200">
@@ -209,7 +208,7 @@
                         <div>
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                To
+                                {{ __('To') }}
                             </label>
                             <input type="date" name="date_to" value="{{ $dateTo ?? '' }}"
                                 class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200">
@@ -220,37 +219,37 @@
                         <div>
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                Advanced filters
+                                {{ __('Advanced Filters') }}
                             </label>
                             <select name="advanced"
                                 class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
-                                <option value="">All</option>
-                                <option value="order" {{ request('advanced') == 'order' ? 'selected' : '' }}>Order
+                                <option value="">{{ __('All') }}</option>
+                                <option value="order" {{ request('advanced') == 'order' ? 'selected' : '' }}>{{ __('Order') }}
                                 </option>
-                                <option value="user" {{ request('advanced') == 'user' ? 'selected' : '' }}>User
+                                <option value="user" {{ request('advanced') == 'user' ? 'selected' : '' }}>{{ __('User') }}
                                 </option>
                                 <option value="product" {{ request('advanced') == 'product' ? 'selected' : '' }}>
-                                    Product
+                                    {{ __('Product') }}
                                 </option>
-                                <option value="key" {{ request('advanced') == 'key' ? 'selected' : '' }}>Key
+                                <option value="key" {{ request('advanced') == 'key' ? 'selected' : '' }}>{{ __('Key') }}
                                 </option>
                             </select>
                         </div>
                         <div class="pt-6">
                             <a href="{{ route('admin.transactions.all-transactions') }}"
                                 class="w-full flex items-center justify-center px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600 font-medium transition-all duration-200 text-sm h-full">
-                                Reset
+                                {{ __('Reset') }}
                             </a>
                         </div>
 
                         <div class="col-span-2 sm:col-span-3 lg:col-span-2">
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                Search
+                                {{ __('Search') }}
                             </label>
                             <div class="relative">
                                 <input type="text" name="search" value="{{ $search ?? '' }}"
-                                    placeholder="Order , User, Key Code, Sản phẩm..."
+                                    placeholder="{{ __('Order, User, Key Code, Product...') }}"
                                     class="w-full pl-4 pr-12 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200">
                                 <button type="submit"
                                     class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white rounded-lg transition-all duration-200">
@@ -275,35 +274,35 @@
                             <tr class="bg-gray-100 dark:bg-gray-700 border-b-2 border-gray-200 dark:border-gray-600">
                                 <th
                                     class="px-3 sm:px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                                    Order
+                                    {{ __('Order') }}
                                 </th>
                                 <th
                                     class="px-3 sm:px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell">
-                                    User
+                                    {{ __('User') }}
                                 </th>
                                 <th
                                     class="px-3 sm:px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider ">
-                                    Product
+                                    {{ __('Product') }}
                                 </th>
                                 <th
                                     class="px-3 sm:px-6 py-4 text-right text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell">
-                                    Amount
+                                    {{ __('Amount') }}
                                 </th>
                                 <th
                                     class="px-3 sm:px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell">
-                                    Description
+                                    {{ __('Description') }}
                                 </th>
                                 <th
                                     class="px-3 sm:px-6 py-4 text-center text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                                    Status
+                                    {{ __('Status') }}
                                 </th>
                                 <th
                                     class="px-3 sm:px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell">
-                                    Time
+                                    {{ __('Time') }}
                                 </th>
                                 <th
                                     class="px-3 sm:px-6 py-4 text-center text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                                    View
+                                    {{ __('View') }}
                                 </th>
                             </tr>
                         </thead>

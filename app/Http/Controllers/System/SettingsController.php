@@ -34,6 +34,14 @@ class SettingsController extends Controller
             return $this->updateNotifications($request);
         }
 
+        if ($request->has('preference_settings')) {
+            return $this->updatePreferences($request);
+        }
+
+        if ($request->has('security_settings')) {
+            return $this->updateSecurity($request);
+        }
+
         return redirect()->back()->with('error', 'Invalid request');
     }
 
@@ -62,10 +70,12 @@ class SettingsController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
+            'phone_number' => ['nullable', 'string', 'max:20'],
+            'address' => ['nullable', 'string', 'max:255'],
         ]);
 
         $user = Auth::user();
-        $user->update($request->only(['name', 'email', 'phone', 'address']));
+        $user->update($request->only(['name', 'email', 'phone_number', 'address']));
 
         return back()->with('success', 'Profile updated successfully');
     }
@@ -73,11 +83,56 @@ class SettingsController extends Controller
     private function updateNotifications(Request $request)
     {
         $user = Auth::user();
+        $preferences = $user->preferences ?? [];
 
-        // Update notification preferences
-        // You might want to create a separate settings table
-        // or add JSON column to users table
+        $preferences['notifications'] = [
+            'order_updates' => $request->has('order_updates'),
+            'new_products' => $request->has('new_products'),
+            'promotions' => $request->has('promotions'),
+            'newsletter' => $request->has('newsletter'),
+        ];
+
+        $user->preferences = $preferences;
+        $user->save();
 
         return back()->with('success', 'Notification settings updated');
+    }
+
+    private function updatePreferences(Request $request)
+    {
+        $user = Auth::user();
+        $preferences = $user->preferences ?? [];
+
+        $preferences['display'] = [
+            'language' => $request->input('language', 'vi'),
+            'currency' => $request->input('currency', 'VND'),
+            'timezone' => $request->input('timezone', 'UTC+07:00'),
+        ];
+
+        $user->preferences = $preferences;
+        $user->save();
+
+        return back()->with('success', 'Display preferences updated');
+    }
+
+    private function updateSecurity(Request $request)
+    {
+        $user = Auth::user();
+        $preferences = $user->preferences ?? [];
+
+        // Handle 2FA Toggle
+        // Checkbox logic: strictly set true or false based on presence
+        $isEnabled = $request->has('2fa_enabled');
+
+        $preferences['security'] = [
+            '2fa_enabled' => $isEnabled,
+        ];
+
+        $msg = $isEnabled ? 'Two-Factor Authentication Enabled' : 'Two-Factor Authentication Disabled';
+
+        $user->preferences = $preferences;
+        $user->save();
+
+        return back()->with('success', $msg);
     }
 }

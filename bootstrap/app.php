@@ -7,32 +7,33 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
-  
-   ->withMiddleware(function (Middleware $middleware) {
+
+    ->withMiddleware(function (Middleware $middleware) {
         $middleware->web([
-        \App\Http\Middleware\VerifyCsrfToken::class,
-    ]);
+            \App\Http\Middleware\VerifyCsrfToken::class,
+        ]);
 
-    $middleware->appendToGroup('web', [
-        \App\Http\Middleware\CheckAccountStatus::class,
-    ]);
+        $middleware->appendToGroup('web', [
+            \App\Http\Middleware\CheckAccountStatus::class,
+            \App\Http\Middleware\SetSystemPreferences::class,
+        ]);
 
-     // Đăng ký alias cho middleware tuỳ chỉnh
-    $middleware->alias([
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
-        'check.account' => \App\Http\Middleware\CheckAccountStatus::class, // Thêm alias cho middleware kiểm tra expiration
-    ]);
+        // Đăng ký alias cho middleware tuỳ chỉnh
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'check.account' => \App\Http\Middleware\CheckAccountStatus::class, // Thêm alias cho middleware kiểm tra expiration
+        ]);
 
-    // Middleware mặc định của API
-    $middleware->api([
-        \Illuminate\Routing\Middleware\SubstituteBindings::class,
-    ]);
+        // Middleware mặc định của API
+        $middleware->api([
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ]);
 
-   
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -44,6 +44,8 @@ class User extends Authenticatable
         'expires_at',
         'account_status',
         'account_notes',
+        'address',
+        'preferences',
     ];
 
     /**
@@ -67,6 +69,7 @@ class User extends Authenticatable
 
             // Cast quan trọng cho hệ thống expiration
             'expires_at' => 'datetime',
+            'preferences' => 'array',
         ];
     }
 

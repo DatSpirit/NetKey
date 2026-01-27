@@ -13,7 +13,7 @@
                 </a>
                 <div>
                     <h2 class="font-bold text-2xl text-gray-800 dark:text-white tracking-tight leading-tight">
-                        Chi tiết Giao dịch
+                        {{ __('Transaction Details') }}
                     </h2>
                     <p class="text-sm text-gray-500 dark:text-gray-400 font-mono">#{{ $transaction->order_code }}</p>
                 </div>
@@ -70,7 +70,8 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Tổng Thanh Toán</p>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">{{ __('Total Payment') }}
+                        </p>
                         <p class="text-2xl font-extrabold text-gray-900 dark:text-white mt-1">
                             {{ number_format($transaction->amount) }}
                             <span class="text-sm font-medium text-gray-500">{{ $transaction->currency }}</span>
@@ -87,7 +88,7 @@
                         </svg>
                     </div>
                     <div class="overflow-hidden">
-                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Khách Hàng</p>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">{{ __('Customer') }}</p>
                         <p class="text-lg font-bold text-gray-900 dark:text-white truncate mt-1">
                             {{ $transaction->user->name ?? 'Guest User' }}
                         </p>
@@ -104,7 +105,7 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Thời Gian Tạo</p>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">{{ __('Created Time') }}</p>
                         <p class="text-lg font-bold text-gray-900 dark:text-white mt-1">
                             {{ $transaction->created_at->format('H:i:s') }}
                         </p>
@@ -121,7 +122,7 @@
                         <div
                             class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between bg-gray-50/50 dark:bg-gray-800">
                             <h3 class="font-bold text-lg text-gray-800 dark:text-white flex items-center gap-2">
-                                📦 Sản Phẩm & Dịch Vụ
+                                📦 {{ __('Products & Services') }}
                             </h3>
                             <span
                                 class="px-3 py-1 rounded-full text-xs font-bold bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300">
@@ -146,7 +147,7 @@
                                 </div>
                                 <div>
                                     <h4 class="text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                                        {{ $transaction->product->name ?? 'Sản phẩm tùy chỉnh' }}
+                                        {{ $transaction->product->name ?? __('Custom product') }}
                                     </h4>
                                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
                                         {{ $transaction->description }}
@@ -168,20 +169,20 @@
                                     <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
                                         <div class="flex items-center gap-2 mb-3">
                                             <span class="text-2xl">💰</span>
-                                            <h3 class="font-bold text-emerald-700">Nạp Coinkey</h3>
+                                            <h3 class="font-bold text-emerald-700">{{ __('Deposit Coinkey') }}</h3>
                                         </div>
                                         <div class="grid grid-cols-2 gap-3 text-sm">
                                             <div>
-                                                <span class="text-gray-600">Số tiền:</span>
+                                                <span class="text-gray-600">{{ __('Amount') }}:</span>
                                                 <span class="font-bold text-purple-600">
                                                     {{ number_format($meta['amount'] ?? 0) }} VND
                                                 </span>
                                             </div>
                                             @if (isset($meta['currency']))
                                                 <div>
-                                                    <span class="text-gray-600">Phương thức:</span>
+                                                    <span class="text-gray-600">{{ __('Payment Method') }}:</span>
                                                     <span class="font-bold text-green-600">
-                                                        {{ $meta['currency'] === 'wallet' ? '💳 Ví ' : '💵 Chuyển khoản' }}
+                                                        {{ $meta['currency'] === 'wallet' ? '💳 ' . __('Wallet') : '💵 ' . __('Bank Transfer') }}
                                                     </span>
                                                 </div>
                                             @endif
@@ -194,7 +195,7 @@
                                         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                                             <div class="flex items-center gap-2 mb-3">
                                                 <span class="text-2xl">🔑</span>
-                                                <h3 class="font-bold text-blue-700">Tạo Key mới</h3>
+                                                <h3 class="font-bold text-blue-700">{{ __('Create New Key') }}</h3>
                                             </div>
                                             <div class="grid grid-cols-2 gap-3 text-sm">
                                                 <div>
@@ -207,35 +208,35 @@
                                                 <div>
                                                     <span class="text-gray-600">Key Code:</span>
                                                     <code class="bg-gray-100 px-2 py-1 rounded font-mono text-xs">
-                                                        {{ $transaction->productKey->key_code }}
-                                                    </code>
+                                                                                {{ $transaction->productKey->key_code }}
+                                                                            </code>
                                                 </div>
                                                 <div>
-                                                    <span class="text-gray-600">Thời hạn:</span>
+                                                    <span class="text-gray-600">{{ __('Duration') }}:</span>
                                                     <span class="font-semibold text-purple-600">
                                                         {{ number_format($meta['duration_minutes'] ?? $transaction->productKey->duration_minutes) }}
-                                                        phút
+                                                        {{ __('minutes') }}
                                                     </span>
                                                 </div>
                                                 <div>
-                                                    <span class="text-gray-600">Hết hạn:</span>
+                                                    <span class="text-gray-600">{{ __('Expires') }}:</span>
                                                     <span class="font-semibold text-red-600">
-                                                        {{ $transaction->productKey->expires_at ? $transaction->productKey->expires_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i') : 'Vĩnh viễn' }}
+                                                        {{ $transaction->productKey->expires_at ? $transaction->productKey->expires_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i') : __('Permanent') }}
                                                     </span>
                                                 </div>
                                                 @if (isset($meta['payment_method']))
                                                     <div>
-                                                        <span class="text-gray-600">Phương thức:</span>
+                                                        <span class="text-gray-600">{{ __('Payment Method') }}:</span>
                                                         <span class="font-bold text-purple-600">
-                                                            {{ $meta['payment_method'] === 'wallet' ? '💳 Ví Coinkey' : '💵 Chuyển khoản' }}
+                                                            {{ $meta['payment_method'] === 'wallet' ? '💳 ' . __('Coinkey Wallet') : '💵 ' . __('Bank Transfer') }}
                                                         </span>
                                                     </div>
                                                 @endif
                                                 @if (isset($meta['currency']))
                                                     <div>
-                                                        <span class="text-gray-600">Phương thức:</span>
+                                                        <span class="text-gray-600">{{ __('Payment Method') }}:</span>
                                                         <span class="font-bold text-green-600">
-                                                            {{ $meta['currency'] === 'VND' ? '💵 Chuyển khoản' : '💳 Ví Coinkey' }}
+                                                            {{ $meta['currency'] === 'VND' ? '💵 ' . __('Bank Transfer') : '💳 ' . __('Coinkey Wallet') }}
                                                         </span>
                                                     </div>
                                                 @endif
@@ -243,7 +244,8 @@
                                         </div>
                                     @else
                                         <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                                            <p class="text-yellow-700 text-sm">⚠️ Key chưa được tạo hoặc đã bị xóa
+                                            <p class="text-yellow-700 text-sm">⚠️
+                                                {{ __('Key not created or has been deleted') }}
                                             </p>
                                         </div>
                                     @endif
@@ -272,10 +274,9 @@
                                             @endif
                                             <div>
                                                 <span class="text-gray-600">Key Code (Custom):</span>
-                                                <code
-                                                    class="bg-purple-100 px-2 py-1 rounded font-mono text-xs font-bold">
-                                                    {{ $meta['key_code'] ?? 'N/A' }}
-                                                </code>
+                                                <code class="bg-purple-100 px-2 py-1 rounded font-mono text-xs font-bold">
+                                                                {{ $meta['key_code'] ?? 'N/A' }}
+                                                            </code>
                                             </div>
                                             <div>
                                                 <span class="text-gray-600">Thời hạn:</span>
@@ -321,7 +322,7 @@
                                         <div class="flex items-center gap-2 mb-3">
                                             <span class="text-2xl">{{ $isCustomExtension ? '🎯' : '⏱️' }}</span>
                                             <h3 class="font-bold text-orange-700">
-                                                {{ $isCustomExtension ? 'Gia hạn tùy chỉnh' : 'Gia hạn Key' }}
+                                                {{ $isCustomExtension ? __('Custom Extension') : __('Extend Key') }}
                                             </h3>
                                         </div>
                                         <div class="grid grid-cols-2 gap-3 text-sm">
@@ -336,51 +337,50 @@
                                                 <div>
                                                     <span class="text-gray-600">Key Code:</span>
                                                     <code class="bg-gray-100 px-2 py-1 rounded font-mono text-xs">
-                                                        {{ $key->key_code }}
-                                                    </code>
+                                                                                {{ $key->key_code }}
+                                                                            </code>
                                                 </div>
                                             @elseif (isset($meta['key_code']))
                                                 <div>
                                                     <span class="text-gray-600">Key Code:</span>
                                                     <code class="bg-gray-100 px-2 py-1 rounded font-mono text-xs">
-                                                        {{ $meta['key_code'] }}
-                                                    </code>
+                                                                                {{ $meta['key_code'] }}
+                                                                            </code>
                                                 </div>
                                             @endif
 
                                             @if ($isCustomExtension && isset($meta['package_name']))
                                                 <div>
-                                                    <span class="text-gray-600">Gói gia hạn:</span>
+                                                    <span class="text-gray-600">{{ __('Extension Package') }}:</span>
                                                     <span
                                                         class="font-semibold text-indigo-600">{{ $meta['package_name'] }}</span>
                                                 </div>
                                                 <div>
-                                                    <span class="text-gray-600">Thời gian cộng:</span>
-                                                    <span
-                                                        class="font-bold text-green-600">+{{ $meta['days_added'] ?? 0 }}
-                                                        ngày</span>
+                                                    <span class="text-gray-600">{{ __('Time Added') }}:</span>
+                                                    <span class="font-bold text-green-600">+{{ $meta['days_added'] ?? 0 }}
+                                                                {{ __('days') }}</span>
                                                 </div>
                                             @else
                                                 <div>
-                                                    <span class="text-gray-600">Thời gian cộng:</span>
+                                                    <span class="text-gray-600">{{ __('Time Added') }}:</span>
                                                     <span class="font-bold text-green-600">
-                                                        +{{ number_format($meta['duration_minutes'] ?? 0) }} phút
+                                                        +{{ number_format($meta['duration_minutes'] ?? 0) }} {{ __('minutes') }}
                                                     </span>
                                                 </div>
                                             @endif
 
                                             @if (isset($meta['payment_method']))
                                                 <div>
-                                                    <span class="text-gray-600">Phương thức:</span>
+                                                    <span class="text-gray-600">{{ __('Payment Method') }}:</span>
                                                     <span
                                                         class="font-bold {{ $meta['payment_method'] === 'wallet' ? 'text-purple-600' : 'text-green-600' }}">
-                                                        {{ $meta['payment_method'] === 'wallet' ? '💳 Ví Coinkey' : '💵 Chuyển khoản' }}
+                                                        {{ $meta['payment_method'] === 'wallet' ? '💳 ' . __('Coinkey Wallet') : '💵 ' . __('Bank Transfer') }}
                                                     </span>
                                                 </div>
                                             @endif
                                             @if (isset($meta['cost_coinkey']))
                                                 <div>
-                                                    <span class="text-gray-600">Chi phí:</span>
+                                                    <span class="text-gray-600">{{ __('Cost') }}:</span>
                                                     <span class="font-bold text-orange-600">
                                                         {{ number_format($meta['cost_coinkey']) }} Coin
                                                     </span>
@@ -398,27 +398,25 @@
                     <div
                         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                         <h4 class="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            Thông Tin Kỹ Thuật
+                           {{ __('Technical Information') }}
                         </h4>
                         <ul class="space-y-4 text-sm">
                             <li
                                 class="flex justify-between items-center pb-3 border-b border-gray-100 dark:border-gray-700 last:border-0 last:pb-0">
-                                <span class="text-gray-500 dark:text-gray-400">Mã Đơn (Order Code)</span>
+                                <span class="text-gray-500 dark:text-gray-400">{{ __('Order Code') }}</span>
                                 <span
                                     class="font-mono font-bold bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-800 dark:text-gray-200">{{ $transaction->order_code }}</span>
                             </li>
                             <li
                                 class="flex justify-between items-center pb-3 border-b border-gray-100 dark:border-gray-700 last:border-0 last:pb-0">
                                 <span class="text-gray-500 dark:text-gray-400">Transaction ID</span>
-                                <span
-                                    class="font-mono text-gray-700 dark:text-gray-300">#{{ $transaction->id }}</span>
+                                <span class="font-mono text-gray-700 dark:text-gray-300">#{{ $transaction->id }}</span>
                             </li>
                             <li
                                 class="flex justify-between items-center pb-3 border-b border-gray-100 dark:border-gray-700 last:border-0 last:pb-0">
@@ -437,16 +435,14 @@
 
                     @if (!empty($transaction->response_data))
                         <div class="bg-gray-900 rounded-2xl shadow-lg border border-gray-700 overflow-hidden">
-                            <div
-                                class="bg-gray-800 px-4 py-3 border-b border-gray-700 flex justify-between items-center">
+                            <div class="bg-gray-800 px-4 py-3 border-b border-gray-700 flex justify-between items-center">
                                 <div class="flex items-center gap-2">
                                     <h4 class="font-bold text-gray-300 text-xs uppercase tracking-wider">Metadata
                                         (JSON)</h4>
                                 </div>
                                 <button onclick="copyMetadata()"
                                     class="group flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition-all active:scale-95 shadow-lg shadow-indigo-500/20">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                                     </svg>

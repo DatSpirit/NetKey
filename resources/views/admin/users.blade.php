@@ -12,7 +12,7 @@
                     </svg>
                 </div>
                 <h2 class="font-bold text-2xl text-gray-800 dark:text-white tracking-tight">
-                    User Management
+                    {{ __('User Management') }}
                 </h2>
             </div>
         </div>
@@ -25,22 +25,26 @@
             <div class="bg-gradient-to-r from-blue-500 dark:from-blue-700 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="space-y-2">
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">Overview</h3>
-                        <p class="text-blue-800 dark:text-white text-sm sm:text-base">Quản lý tất cả người dùng
-                            trong hệ thống</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">{{ __('Overview') }}
+                        </h3>
+                        <p class="text-blue-800 dark:text-white text-sm sm:text-base">
+                            {{ __('Manage all users in the system') }}
+                        </p>
                     </div>
                     <div class="flex items-center space-x-6">
                         <div class="text-center">
                             <div class="text-3xl font-bold text-gray-800 dark:text-white">{{ $users->total() }}</div>
-                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">Tổng Users
+                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">
+                                {{ __('Total Users Label') }}
                             </div>
                         </div>
                         <div class="h-12 w-px bg-white/30"></div>
                         <div class="text-center">
                             <div class="text-3xl font-bold text-gray-800 dark:text-white">{{ $users->currentPage() }}
                             </div>
-                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">Trang Hiện
-                                Tại</div>
+                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">
+                                {{ __('Current Page') }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -91,21 +95,21 @@
                         <div class="relative flex-shrink-0">
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                Lọc Theo
+                                {{ __('Filter By') }}
                             </label>
-                            <select name="filter" id="filter-select"
-                                class="w-full lg:w-40 px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 
+                            <select name="filter" id="filter-select" class="w-full lg:w-40 px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 
                                        rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100
                                        focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 
                                        transition-all duration-200 cursor-pointer hover:border-indigo-400">
-                                <option value="all" {{ request('filter') === 'all' ? 'selected' : '' }}>🔍 Tất cả
+                                <option value="all" {{ request('filter') === 'all' ? 'selected' : '' }}>🔍 {{ __('All') }}
                                 </option>
-                                <option value="name" {{ request('filter') === 'name' ? 'selected' : '' }}>👤 Tên
+                                <option value="name" {{ request('filter') === 'name' ? 'selected' : '' }}>👤
+                                    {{ __('Name') }}
                                 </option>
                                 <option value="email" {{ request('filter') === 'email' ? 'selected' : '' }}>📧 Email
                                 </option>
-                                <option value="phone_number"
-                                    {{ request('filter') === 'phone_number' ? 'selected' : '' }}>📱 SĐT</option>
+                                <option value="phone_number" {{ request('filter') === 'phone_number' ? 'selected' : '' }}>
+                                    📱 SĐT</option>
                             </select>
                         </div>
 
@@ -113,12 +117,11 @@
                         <div class="flex-1">
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                Tìm Kiếm
+                                {{ __('Search') }}
                             </label>
                             <div class="relative">
                                 <input type="text" name="search" id="search-input" value="{{ request('search') }}"
-                                    placeholder="Nhập từ khóa tìm kiếm..."
-                                    class="w-full pl-4 pr-12 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 
+                                    placeholder="{{ __('Enter search keyword...') }}" class="w-full pl-4 pr-12 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 
                                               rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500
                                               focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 
                                               transition-all duration-200">
@@ -154,14 +157,13 @@
                                     <input type="checkbox" id="select-all"
                                         class="w-4 h-4 text-indigo-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-indigo-500">
                                 </th>
-                                <th
-                                    class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell
                                     {{ $filter === 'id' ? 'bg-indigo-100 dark:bg-indigo-900/30' : '' }}">
                                     <div class="flex items-center space-x-2">
                                         <span>ID</span>
                                         @if ($filter === 'id')
-                                            <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400"
-                                                fill="currentColor" viewBox="0 0 20 20">
+                                            <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="currentColor"
+                                                viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
                                                     clip-rule="evenodd" />
@@ -169,14 +171,13 @@
                                         @endif
                                     </div>
                                 </th>
-                                <th
-                                    class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider
                                     {{ $filter === 'name' ? 'bg-indigo-100 dark:bg-indigo-900/30' : '' }}">
                                     <div class="flex items-center space-x-2">
-                                        <span>Tên</span>
+                                        <span>{{ __('Name') }}</span>
                                         @if ($filter === 'name')
-                                            <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400"
-                                                fill="currentColor" viewBox="0 0 20 20">
+                                            <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="currentColor"
+                                                viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
                                                     clip-rule="evenodd" />
@@ -184,14 +185,13 @@
                                         @endif
                                     </div>
                                 </th>
-                                <th
-                                    class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider
+                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider
                                     {{ $filter === 'email' ? 'bg-indigo-100 dark:bg-indigo-900/30' : '' }}">
                                     <div class="flex items-center space-x-2">
                                         <span>Email</span>
                                         @if ($filter === 'email')
-                                            <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400"
-                                                fill="currentColor" viewBox="0 0 20 20">
+                                            <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="currentColor"
+                                                viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd"
                                                     d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
                                                     clip-rule="evenodd" />
@@ -201,22 +201,21 @@
                                 </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell">
-                                    Số Điện Thoại
+                                    {{ __('Phone') }}
                                 </th>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell">
-                                    Vai Trò
+                                    {{ __('Role') }}
                                 </th>
                                 <th
                                     class="px-6 py-4 text-center text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                                    Hành Động
+                                    {{ __('Actions') }}
                                 </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                             @forelse ($users as $user)
-                                <tr
-                                    class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 group">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 group">
                                     <td class="px-6 py-4 whitespace-nowrap ">
                                         <input type="checkbox"
                                             class="user-checkbox w-4 h-4 text-indigo-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-indigo-500"
@@ -224,7 +223,7 @@
                                     </td>
                                     <td
                                         class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100 hidden lg:table-cell
-                                        {{ $filter === 'id' ? 'bg-indigo-50/50 dark:bg-indigo-900/20' : '' }}">
+                                                                {{ $filter === 'id' ? 'bg-indigo-50/50 dark:bg-indigo-900/20' : '' }}">
                                         <span
                                             class="inline-flex items-center px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-mono text-xs">
                                             #{{ $user->id }}
@@ -232,7 +231,7 @@
                                     </td>
                                     <td
                                         class="px-6 py-4 whitespace-nowrap
-                                        {{ $filter === 'name' ? 'bg-indigo-50/50 dark:bg-indigo-900/20' : '' }}">
+                                                                {{ $filter === 'name' ? 'bg-indigo-50/50 dark:bg-indigo-900/20' : '' }}">
                                         <span class="lg:hidden text-sm font-semibold text-gray-900 dark:text-gray-100">
                                             ID: #{{ $user->id }}
                                         </span>
@@ -243,8 +242,7 @@
                                             @if ($user->is_admin)
                                                 <span
                                                     class="lg:hidden inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300 shadow-sm">
-                                                    <svg class="w-3 h-3 mr-1" fill="currentColor"
-                                                        viewBox="0 0 20 20">
+                                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
                                                             d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
                                                             clip-rule="evenodd" />
@@ -261,7 +259,7 @@
                                     </td>
                                     <td
                                         class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300
-                                        {{ $filter === 'email' ? 'bg-indigo-50/50 dark:bg-indigo-900/20' : '' }}">
+                                                                {{ $filter === 'email' ? 'bg-indigo-50/50 dark:bg-indigo-900/20' : '' }}">
                                         <div class="flex items-center space-x-2">
                                             <svg class="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none"
                                                 stroke="currentColor" viewBox="0 0 24 24">
@@ -311,15 +309,12 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                         <div class="flex items-center justify-center space-x-2">
                                             <!-- View Button -->
-                                            <button type="button" data-id="{{ $user->id }}"
-                                                title="Xem chi tiết"
+                                            <button type="button" data-id="{{ $user->id }}" title="Xem chi tiết"
                                                 class="view-btn p-2.5 rounded-lg bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-200">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                 </svg>
                                             </button>
@@ -327,17 +322,14 @@
                                             <!-- Edit Button -->
                                             <a href="{{ route('admin.users.edit', $user->id) }}" title="Chỉnh sửa"
                                                 class="p-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-200">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                 </svg>
                                             </a>
 
                                             <!-- Delete Button -->
-                                            <form action="{{ route('admin.users.destroy', $user->id) }}"
-                                                method="POST"
+                                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
                                                 onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này không?');">
                                                 @csrf
                                                 @method('DELETE')
@@ -362,8 +354,7 @@
                                                 class="w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
                                                 <svg class="w-12 h-12 text-gray-400 dark:text-gray-500" fill="none"
                                                     stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                                 </svg>
                                             </div>
@@ -411,7 +402,7 @@
                         </svg>
                     </div>
                     <h3 class="text-2xl font-bold text-white">
-                        Thông Tin Chi Tiết
+                        {{ __('User Details') }}
                     </h3>
                 </div>
                 <button onclick="closeModal()" class="p-2 rounded-lg hover:bg-white/20 transition-colors">
@@ -436,7 +427,8 @@
                         class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
                         <div
                             class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
-                            Tên</div>
+                            {{ __('Name') }}
+                        </div>
                         <div id="preview-name" class="text-lg font-bold text-gray-900 dark:text-gray-100"></div>
                     </div>
 
@@ -453,7 +445,8 @@
                         class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm md:col-span-2">
                         <div
                             class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
-                            Số Điện Thoại</div>
+                            {{ __('Phone') }}
+                        </div>
                         <div id="preview-phone" class="text-lg font-bold text-gray-900 dark:text-gray-100"></div>
                     </div>
 
@@ -461,28 +454,32 @@
                         class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
                         <div
                             class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
-                            Vai trò Admin</div>
+                            {{ __('Admin Role') }}
+                        </div>
                         <div id="preview-is-admin" class="text-lg font-bold"></div>
                     </div>
                     <div
                         class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
                         <div
                             class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
-                            Xác thực 2FA</div>
+                            {{ __('2FA Enabled') }}
+                        </div>
                         <div id="preview-2fa" class="text-lg font-bold"></div>
                     </div>
                     <div
                         class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm md:col-span-2">
                         <div
                             class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
-                            Ngày hết hạn TK</div>
+                            {{ __('Account Expiry') }}
+                        </div>
                         <div id="preview-expires-at" class="text-lg font-bold"></div>
                     </div>
                     <div
                         class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm md:col-span-2">
                         <div
                             class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
-                            Ghi Chú</div>
+                            {{ __('Notes') }}
+                        </div>
                         <div id="preview-notes"
                             class="text-base text-gray-700 dark:text-gray-300 italic whitespace-pre-wrap"></div>
                     </div>
@@ -491,14 +488,16 @@
                         class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
                         <div
                             class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
-                            Ngày tham gia</div>
+                            {{ __('Joined Date') }}
+                        </div>
                         <div id="preview-created" class="text-lg font-bold text-gray-900 dark:text-gray-100"></div>
                     </div>
                     <div
                         class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm">
                         <div
                             class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
-                            Cập nhật gần nhất</div>
+                            {{ __('Last Updated') }}
+                        </div>
                         <div id="preview-updated" class="text-lg font-bold text-gray-900 dark:text-gray-100"></div>
                     </div>
                 </div>
@@ -509,7 +508,7 @@
                 class="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-b-2xl">
                 <button onclick="closeModal()"
                     class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 dark:from-indigo-500 dark:to-purple-600 dark:hover:from-indigo-600 dark:hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-                    Đóng
+                    {{ __('Close') }}
                 </button>
             </div>
         </div>
@@ -517,6 +516,23 @@
 
     <!-- Scripts -->
     <script>
+        // Translation strings for JavaScript
+        const translations = {
+            notUpdated: "{{ __('Not updated') }}",
+            noNotes: "{{ __('No notes.') }}",
+            yes: "{{ __('Yes') }}",
+            no: "{{ __('No') }}",
+            unlimited: "{{ __('Unlimited') }}",
+            cannotLoadUser: "{{ __('Cannot load user information') }}",
+            pleaseSelectUser: "{{ __('Please select at least 1 user') }}",
+            pleaseSelectUserToDelete: "{{ __('Please select at least 1 user to delete') }}",
+            canOnlyViewOneUser: "{{ __('Can only view details of 1 user at a time.') }}",
+            deletingUsers: "{{ __('Deleting') }}",
+            users: "{{ __('users') }}",
+            selected: "{{ __('Selected') }}",
+            confirmDeleteUsers: "{{ __('Are you sure you want to delete the selected users?') }}"
+        };
+
         // Toast Notification System
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -564,13 +580,13 @@
             showToast("{{ session('error') }}", 'error');
         @endif
 
-        // Modal Functions
-        function closeModal() {
-            const modal = document.getElementById('previewModal');
-            const content = document.getElementById('modalContent');
-            content.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
+            // Modal Functions
+            function closeModal() {
+                const modal = document.getElementById('previewModal');
+                const content = document.getElementById('modalContent');
+                content.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => modal.classList.add('hidden'), 300);
+            }
 
         function openModal() {
             const modal = document.getElementById('previewModal');
@@ -604,7 +620,7 @@
                 }
             }
 
-            selectAllCheckbox?.addEventListener('change', function() {
+            selectAllCheckbox?.addEventListener('change', function () {
                 userCheckboxes.forEach(checkbox => {
                     checkbox.checked = this.checked;
                 });
@@ -612,7 +628,7 @@
             });
 
             userCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
+                checkbox.addEventListener('change', function () {
                     const allChecked = Array.from(userCheckboxes).every(cb => cb.checked);
                     const someChecked = Array.from(userCheckboxes).some(cb => cb.checked);
 
@@ -712,27 +728,27 @@
                             document.getElementById('preview-email').textContent = user.email ||
                                 'N/A';
                             document.getElementById('preview-phone').textContent = user
-                                .phone_number || 'Chưa cập nhật';
+                                .phone_number || translations.notUpdated;
                             document.getElementById('preview-notes').textContent = user.notes ||
-                                'Không có ghi chú.';
+                                translations.noNotes;
 
                             const isAdmin = user.is_admin || false;
                             const isAdminSpan = document.getElementById('preview-is-admin');
                             isAdminSpan.innerHTML = isAdmin ?
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300">Có</span>' :
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">Không</span>';
+                                `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300">${translations.yes}</span>` :
+                                `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">${translations.no}</span>`;
 
                             const expiresAtValue = user.expires_at;
                             const expiresAtSpan = document.getElementById('preview-expires-at');
                             expiresAtSpan.innerHTML = expiresAtValue ?
                                 `<span class="text-yellow-600 dark:text-yellow-400">${expiresAtValue}</span>` :
-                                '<span class="text-green-600 dark:text-green-400">Không giới hạn</span>';
+                                `<span class="text-green-600 dark:text-green-400">${translations.unlimited}</span>`;
 
                             const twoFaValue = user.two_factor_enabled;
                             const twoFaSpan = document.getElementById('preview-2fa');
                             twoFaSpan.innerHTML = twoFaValue ?
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300">Có</span>' :
-                                '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">Không</span>';
+                                `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-300">${translations.yes}</span>` :
+                                `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">${translations.no}</span>`;
 
                             document.getElementById('preview-created').textContent =
                                 formatDateTime(user.created_at);
@@ -745,14 +761,13 @@
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            showToast('Không thể tải thông tin người dùng', 'error');
+                            showToast(translations.cannotLoadUser, 'error');
                             btn.innerHTML = originalContent;
                             btn.disabled = false;
                         });
                 });
             });
 
-            // Close modal on ESC key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') closeModal();
             });
@@ -763,7 +778,7 @@
             const filterSelect = document.getElementById('filter-select');
             let debounceTimer;
 
-            searchInput.addEventListener('input', function() {
+            searchInput.addEventListener('input', function () {
                 const query = this.value.trim();
                 const filter = filterSelect.value;
 
@@ -776,8 +791,8 @@
                     }
 
                     fetch(
-                            `/admin/users/suggestions?q=${encodeURIComponent(query)}&filter=${filter}`
-                        )
+                        `/admin/users/suggestions?q=${encodeURIComponent(query)}&filter=${filter}`
+                    )
                         .then(response => response.json())
                         .then(data => {
                             suggestionsBox.innerHTML = '';
@@ -818,7 +833,7 @@
                                     searchInput.value = filter === 'email' ?
                                         user.email :
                                         filter === 'phone_number' ? user
-                                        .phone_number : user.name;
+                                            .phone_number : user.name;
                                     suggestionsBox.classList.add('hidden');
                                 });
 

@@ -3,11 +3,11 @@
         <div class="flex items-center justify-between">
             <h2
                 class="font-black text-3xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 flex items-center gap-3">
-                Lịch Điểm Danh Tháng {{ $calendar['month'] }}/{{ $calendar['year'] }}
+                {{ __('Check-in Calendar') }} {{ $calendar['month'] }}/{{ $calendar['year'] }}
             </h2>
             <div
                 class="flex items-center gap-2 text-sm font-medium text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-sm">
-                <span>Hôm nay: {{ now()->format('d/m/Y') }}</span>
+                <span>{{ __('Today') }}: {{ now()->format('d/m/Y') }}</span>
             </div>
         </div>
     </x-slot>
@@ -31,7 +31,7 @@
                             <span class="text-5xl">📅</span>
                         </div>
                         <div>
-                            <p class="text-indigo-100 text-lg font-medium mb-1">Tổng Coinkey Tháng Này</p>
+                            <p class="text-indigo-100 text-lg font-medium mb-1">{{ __('Total Coinkey This Month') }}</p>
                             <h3 class="text-5xl font-black tracking-tight text-white drop-shadow-md">
                                 {{ number_format(collect($calendar['days'])->where('status', 'checked')->sum('reward')) }}
                                 <span class="text-2xl opacity-80 font-bold">Coinkey</span>
@@ -42,7 +42,8 @@
                     <div class="flex gap-4">
                         <div
                             class="text-center px-6 py-4 bg-black/20 backdrop-blur-sm rounded-2xl border border-white/10 hover:bg-black/30 transition">
-                            <p class="text-xs text-indigo-200 uppercase tracking-widest font-bold mb-1">Đã điểm danh</p>
+                            <p class="text-xs text-indigo-200 uppercase tracking-widest font-bold mb-1">
+                                {{ __('Checked in') }}</p>
                             <p class="text-3xl font-black">
                                 {{ collect($calendar['days'])->where('status', 'checked')->count() }}
                                 <span class="text-sm text-indigo-200 font-normal">/
@@ -51,7 +52,8 @@
                         </div>
                         <div
                             class="text-center px-6 py-4 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/10 hover:bg-white/30 transition">
-                            <p class="text-xs text-indigo-100 uppercase tracking-widest font-bold mb-1">Chuỗi hiện tại
+                            <p class="text-xs text-indigo-100 uppercase tracking-widest font-bold mb-1">
+                                {{ __('Current Streak') }}
                             </p>
                             <!-- Note: Streak calculation would need to be passed strictly if accurate streak display is needed here, 
                                  but for monthly view visual summary we can just show a placeholder or calculate loosely -->
@@ -70,7 +72,7 @@
                 <!-- Days of Week Header -->
                 <div
                     class="grid grid-cols-7 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
-                    @foreach(['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'] as $index => $day)
+                    @foreach([__('Sunday'), __('Monday'), __('Tuesday'), __('Wednesday'), __('Thursday'), __('Friday'), __('Saturday')] as $index => $day)
                         <div class="py-4 text-center">
                             <span
                                 class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">{{ $day }}</span>
@@ -88,14 +90,14 @@
 
                     @foreach($calendar['days'] as $day)
                         <div class="relative bg-white dark:bg-gray-800 h-32 sm:h-40 p-3 transition-all duration-200 group hover:z-10 hover:shadow-lg
-                                                            {{ $day['is_today'] ? 'bg-blue-500/30 dark:bg-blue-900/10' : '' }}
-                                                            {{ $day['special_day'] ? 'bg-gradient-to-br from-yellow-500 to-orange-50 dark:from-yellow-900/10 dark:to-orange-900/10' : '' }}
-                                                        ">
+                                                                {{ $day['is_today'] ? 'bg-blue-500/30 dark:bg-blue-900/10' : '' }}
+                                                                {{ $day['special_day'] ? 'bg-gradient-to-br from-yellow-500 to-orange-50 dark:from-yellow-900/10 dark:to-orange-900/10' : '' }}
+                                                            ">
                             <!-- Date Number -->
                             <div class="flex justify-between items-start">
                                 <span
                                     class="text-sm font-bold w-8 h-8 flex items-center justify-center rounded-full transition-colors
-                                                                    {{ $day['is_today'] ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'text-gray-700 dark:text-gray-300 group-hover:bg-gray-100 dark:group-hover:bg-gray-700' }}">
+                                                                        {{ $day['is_today'] ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'text-gray-700 dark:text-gray-300 group-hover:bg-gray-100 dark:group-hover:bg-gray-700' }}">
                                     {{ $day['day'] }}
                                 </span>
 
@@ -133,7 +135,7 @@
                                             class="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-1 mx-auto">
                                             <span class="text-xl">😿</span>
                                         </div>
-                                        <span class="text-xs font-semibold text-gray-400">Đã lỡ</span>
+                                        <span class="text-xs font-semibold text-gray-400">{{ __('Missed') }}</span>
                                     </div>
 
                                 @elseif($day['status'] === 'today')
@@ -147,7 +149,7 @@
                                             </div>
                                             <span
                                                 class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full shadow-md group-hover/btn:bg-blue-700 transition">
-                                                Nhận {{ $day['reward'] }}
+                                                {{ __('Receive') }} {{ $day['reward'] }}
                                             </span>
                                         </button>
                                     </div>
@@ -199,24 +201,24 @@
                     class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <span class="text-2xl">✅</span>
                     <div>
-                        <p class="font-bold text-gray-800 dark:text-white">Đã nhận</p>
-                        <p class="text-xs text-gray-500">Coinkey đã được cộng</p>
+                        <p class="font-bold text-gray-800 dark:text-white">{{ __('Received') }}</p>
+                        <p class="text-xs text-gray-500">{{ __('Coinkey credited') }}</p>
                     </div>
                 </div>
                 <div
                     class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <span class="text-2xl">😿</span>
                     <div>
-                        <p class="font-bold text-gray-800 dark:text-white">Bỏ lỡ</p>
-                        <p class="text-xs text-gray-500">Không điểm danh</p>
+                        <p class="font-bold text-gray-800 dark:text-white">{{ __('Missed') }}</p>
+                        <p class="text-xs text-gray-500">{{ __('No check-in') }}</p>
                     </div>
                 </div>
                 <div
                     class="flex items-center gap-3 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <span class="text-2xl">🎉</span>
                     <div>
-                        <p class="font-bold text-gray-800 dark:text-white">Sự kiện</p>
-                        <p class="text-xs text-gray-500">Ngày lễ thưởng lớn</p>
+                        <p class="font-bold text-gray-800 dark:text-white">{{ __('Event') }}</p>
+                        <p class="text-xs text-gray-500">{{ __('Holiday bonus') }}</p>
                     </div>
                 </div>
             </div>
@@ -250,10 +252,10 @@
                     if (data.success) {
                         // Success State
                         btn.innerHTML = `
-                                                        <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center shadow-lg transform scale-110 transition-transform">
-                                                            <span class="text-white text-2xl">✓</span>
-                                                        </div>
-                                                    `;
+                                                            <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center shadow-lg transform scale-110 transition-transform">
+                                                                <span class="text-white text-2xl">✓</span>
+                                                            </div>
+                                                        `;
 
                         // Confetti or simple visual feedback could go here
 
@@ -266,7 +268,7 @@
                     }
                 } catch (error) {
                     console.error(error);
-                    alert('Có lỗi xảy ra, vui lòng thử lại');
+                    alert('{{ __('Error occurred, please try again') }}');
                     btn.disabled = false;
                     btn.innerHTML = originalContent;
                     btn.classList.remove('cursor-not-allowed', 'opacity-75');

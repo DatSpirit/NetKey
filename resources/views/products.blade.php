@@ -11,13 +11,15 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
-                <h2 class="font-bold text-2xl sm:text-3xl text-gray-800 dark:text-gray-100 tracking-tight">Product</h2>
+                <h2 class="font-bold text-2xl sm:text-3xl text-gray-800 dark:text-gray-100 tracking-tight">
+                    {{ __('Product') }}
+                </h2>
             </div>
             <div class="text-center sm:text-left">
                 <div class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100" id="total-products">
                     {{ count($products) }}
                 </div>
-                <div class="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">Sản Phẩm</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ __('Products') }}</div>
             </div>
         </div>
     </x-slot>
@@ -30,9 +32,11 @@
                 class="bg-gradient-to-r from-blue-200 to-blue-600 dark:from-blue-200 dark:to-blue-600 rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 transition-colors duration-300">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="space-y-2">
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Cửa Hàng Sản Phẩm</h3>
-                        <p class="text-gray-900 dark:text-white text-opacity-90 text-sm sm:text-base">Khám phá các sản
-                            phẩm chất lượng cao
+                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                            {{ __('Product Store') }}
+                        </h3>
+                        <p class="text-gray-900 dark:text-white text-opacity-90 text-sm sm:text-base">
+                            {{ __('Discover high-quality products') }}
                         </p>
                     </div>
                     <div class="flex items-center space-x-4">
@@ -43,7 +47,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                 </svg>
-                                <span>Add Product</span>
+                                <span>{{ __('Add Product') }}</span>
                             </a>
                         @endif
                     </div>
@@ -57,10 +61,9 @@
                     <!-- Search Input -->
                     <div class="lg:col-span-6">
                         <label
-                            class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">Tìm
-                            Kiếm Sản Phẩm</label>
+                            class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">{{ __('Search Products') }}</label>
                         <div class="relative">
-                            <input type="text" id="search-input" placeholder="Nhập tên sản phẩm..."
+                            <input type="text" id="search-input" placeholder="{{ __('Enter product name...') }}"
                                 class="w-full pl-4 pr-12 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200">
                             <button type="button" id="search-btn"
                                 class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white rounded-lg transition-all duration-200">
@@ -74,11 +77,10 @@
                     <!-- Category Filter -->
                     <div class="lg:col-span-4">
                         <label
-                            class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">Danh
-                            Mục</label>
+                            class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">{{ __('Category') }}</label>
                         <select id="category-filter"
                             class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
-                            <option value="">Tất cả danh mục</option>
+                            <option value="">{{ __('All Categories') }}</option>
                             <option value="Service">Service</option>
                             <option value="Top-up">Top-up</option>
                         </select>
@@ -86,15 +88,14 @@
                     <!-- Price Sort -->
                     <div class="lg:col-span-2">
                         <label
-                            class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">Sắp
-                            Xếp</label>
+                            class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">{{ __('Sort By') }}</label>
                         <select id="price-sort"
                             class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
-                            <option value="">Mặc định</option>
-                            <option value="price-asc">Giá tăng dần</option>
-                            <option value="price-desc">Giá giảm dần</option>
-                            <option value="name-asc">Tên A-Z</option>
-                            <option value="name-desc">Tên Z-A</option>
+                            <option value="">{{ __('Default') }}</option>
+                            <option value="price-asc">{{ __('Price Low to High') }}</option>
+                            <option value="price-desc">{{ __('Price High to Low') }}</option>
+                            <option value="name-asc">{{ __('Name A-Z') }}</option>
+                            <option value="name-desc">{{ __('Name Z-A') }}</option>
                         </select>
                     </div>
                 </div>
@@ -141,16 +142,16 @@
                             @endif
                             <div class="flex flex-col pt-2">
                                 <div>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Giá tiền mặt</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('Cash Price') }}</p>
                                     <p class="text-xl font-bold text-blue-600 dark:text-blue-400">
-                                        {{ number_format($product['price']) }}₫
+                                        @price($product['price'])
                                     </p>
                                 </div>
                                 @if (isset($product['product_type']) && $product['product_type'] == 'package' && $product['coinkey_amount'] > 0)
                                     <div class="mt-1">
                                         <span
                                             class="inline-flex items-center gap-1 bg-yellow-100 dark:bg-yellow-900/30 px-2 py-0.5 rounded-full border border-yellow-200 dark:border-yellow-700">
-                                            <span class="text-[10px] text-yellow-700 dark:text-yellow-400">hoặc</span>
+                                            <span class="text-[10px] text-yellow-700 dark:text-yellow-400">{{ __('or') }}</span>
                                             <span
                                                 class="text-sm font-bold text-yellow-600 dark:text-yellow-400">{{ number_format($product['coinkey_amount']) }}
                                                 Coin</span>
@@ -158,6 +159,7 @@
                                     </div>
                                 @endif
                             </div>
+
 
                             <!-- Action Buttons -->
                             <div class="flex gap-2 pt-3 flex-wrap">
@@ -168,14 +170,14 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                         </svg>
-                                        <span>{{ isset($product['product_type']) && $product['product_type'] == 'coinkey' ? 'Nạp Ngay' : 'Mua Ngay' }}</span>
+                                        <span>{{ isset($product['product_type']) && $product['product_type'] == 'coinkey' ? __('Top Up Now') : __('Buy Now') }}</span>
                                     </span>
                                 </button>
 
                                 <!-- Nút Xem Chi Tiết -->
                                 <button type="button"
                                     class="view-detail-btn p-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all duration-200"
-                                    title="Chi tiết sản phẩm" data-product="{{ json_encode($product) }}">
+                                    title="{{ __('View Details') }}" data-product="{{ json_encode($product) }}">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -188,7 +190,7 @@
                                 @if ($isAdmin)
                                     <a href="{{ route('admin.products.edit', $product['id']) }}"
                                         class="p-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all duration-200"
-                                        title="Chỉnh sửa">
+                                        title="{{ __('Edit') }}">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3zM4 20h16" />
@@ -213,9 +215,11 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Không tìm thấy sản phẩm
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                            {{ __('No products found') }}
                         </h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            {{ __('Try changing filters or search keywords') }}
                         </p>
                     </div>
                 </div>
@@ -232,7 +236,7 @@
             <!-- Modal Header -->
             <div
                 class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-t-2xl">
-                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Chi Tiết Sản Phẩm</h3>
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Product Details') }}</h3>
                 <button onclick="closeModal()"
                     class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-500">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,7 +256,7 @@
                 class="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-b-2xl">
                 <button onclick="closeModal()"
                     class="px-6 py-2.5 bg-white border border-gray-300 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-xl transition-all duration-200 shadow-sm">
-                    Đóng
+                    {{ __('Close') }}
                 </button>
                 <a id="modal-pay-link" href="#"
                     class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2">
@@ -260,7 +264,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
-                    Mua Ngay
+                    {{ __('Buy Now') }}
                 </a>
             </div>
         </div>
@@ -274,8 +278,8 @@
             class="relative bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl shadow-2xl transform scale-100 overflow-hidden border border-gray-200 dark:border-gray-700 max-h-[90vh] overflow-y-auto">
             <!-- Header -->
             <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 sticky top-0 z-10 shadow-md">
-                <h3 class="text-2xl font-bold text-white mb-1" id="pmTitle">Xác nhận mua hàng</h3>
-                <p class="text-indigo-100 text-sm" id="pmDesc">Chọn phương thức thanh toán</p>
+                <h3 class="text-2xl font-bold text-white mb-1" id="pmTitle">{{ __('Confirm Purchase') }}</h3>
+                <p class="text-indigo-100 text-sm" id="pmDesc">{{ __('Choose payment method') }}</p>
             </div>
 
             <div class="p-6">
@@ -284,10 +288,10 @@
                     <div class="grid grid-cols-2 gap-2">
                         <button type="button" onclick="switchPurchaseTab('standard')" id="tab-standard"
                             class="py-2.5 px-4 rounded-lg font-bold text-sm transition-all bg-white dark:bg-gray-800 text-indigo-600 shadow-sm ring-1 ring-black/5">📦
-                            Mua Gói Có Sẵn</button>
+                            {{ __('Buy Ready Package') }}</button>
                         <button type="button" onclick="switchPurchaseTab('custom')" id="tab-custom"
                             class="py-2.5 px-4 rounded-lg font-bold text-sm transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900">✨
-                            Tạo Key Tùy Chỉnh</button>
+                            {{ __('Create Custom Key') }}</button>
                     </div>
                 </div>
 
@@ -321,8 +325,9 @@
                                         class="bg-yellow-100 dark:bg-yellow-900/30 p-2.5 rounded-lg text-yellow-600 dark:text-yellow-400">
                                         💰</div>
                                     <div class="text-left">
-                                        <p class="font-bold text-gray-800 dark:text-gray-100">Ví Coinkey</p>
-                                        <p class="text-xs text-gray-500">Số dư: <span
+                                        <p class="font-bold text-gray-800 dark:text-gray-100">{{ __('Coinkey Wallet') }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">{{ __('Balance') }}: <span
                                                 class="font-semibold text-yellow-600">{{ number_format(auth()->user()->getOrCreateWallet()->balance ?? 0) }}</span>
                                         </p>
                                     </div>
@@ -335,7 +340,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                Số dư không đủ
+                                {{ __('Insufficient balance') }}
                             </p>
                         </div>
 
@@ -346,8 +351,9 @@
                                 <div class="bg-indigo-100 dark:bg-indigo-900/30 p-2.5 rounded-lg text-indigo-600">🏦
                                 </div>
                                 <div class="text-left">
-                                    <p class="font-bold text-gray-800 dark:text-gray-100">Chuyển khoản / QR</p>
-                                    <p class="text-xs text-gray-500">Thanh toán qua PayOS</p>
+                                    <p class="font-bold text-gray-800 dark:text-gray-100">{{ __('Bank Transfer / QR') }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">{{ __('Pay via PayOS') }}</p>
                                 </div>
                             </div>
                             <span class="font-bold text-indigo-600" id="pmCashPrice"></span>
@@ -356,10 +362,9 @@
 
                     <div class="flex gap-3 pt-2">
                         <button type="button" onclick="closePurchaseModal()"
-                            class="flex-1 py-3.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl font-bold hover:bg-gray-200 transition">Hủy</button>
+                            class="flex-1 py-3.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl font-bold hover:bg-gray-200 transition">{{ __('Cancel') }}</button>
                         <button type="submit" id="pmSubmitBtn" disabled
-                            class="flex-1 py-3.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition">Xác
-                            Nhận</button>
+                            class="flex-1 py-3.5 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition">{{ __('Confirm') }}</button>
                     </div>
                 </form>
 
@@ -373,7 +378,8 @@
                     <div
                         class="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-xl border border-indigo-100 dark:border-indigo-800">
                         <p class="text-xs text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-wide mb-1">
-                            Gói sản phẩm</p>
+                            {{ __('Product Package') }}
+                        </p>
                         <h4 class="text-lg font-bold text-gray-900 dark:text-white" id="customProductNameDisplay">
                             Loading...</h4>
                         <div class="flex items-center gap-4 mt-2 text-sm">
@@ -385,64 +391,66 @@
                     </div>
 
                     <div class="space-y-3">
-                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">💳 Chọn nguồn
-                            tiền</label>
+                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">💳
+                            {{ __('Choose payment source') }}</label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <button type="button" onclick="selectCustomPayment('wallet')" id="btn-custom-wallet"
                                 class="payment-custom-btn w-full flex flex-col items-center justify-center p-4 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-yellow-500 transition-all group bg-white dark:bg-gray-700">
                                 <div class="bg-yellow-100 dark:bg-yellow-900/30 p-2 rounded-lg text-yellow-600 mb-2">💰
                                 </div>
-                                <span class="font-bold text-gray-800 dark:text-gray-100 text-sm">Ví Coinkey</span>
+                                <span
+                                    class="font-bold text-gray-800 dark:text-gray-100 text-sm">{{ __('Coinkey Wallet') }}</span>
                             </button>
                             <button type="button" onclick="selectCustomPayment('cash')" id="btn-custom-cash"
                                 class="payment-custom-btn w-full flex flex-col items-center justify-center p-4 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-indigo-500 transition-all group bg-white dark:bg-gray-700">
                                 <div class="bg-indigo-100 dark:bg-indigo-900/30 p-2 rounded-lg text-indigo-600 mb-2">🏦
                                 </div>
-                                <span class="font-bold text-gray-800 dark:text-gray-100 text-sm">Tiền mặt / QR</span>
+                                <span
+                                    class="font-bold text-gray-800 dark:text-gray-100 text-sm">{{ __('Cash / QR') }}</span>
                             </button>
                         </div>
                         <p id="customWalletError" class="text-xs text-red-600 mt-1 hidden text-center font-medium">⚠️
-                            Số dư ví không đủ để thanh toán gói này</p>
+                            {{ __('Wallet balance not enough for this package') }}
+                        </p>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">🔑 Đặt tên Key của
-                            bạn</label>
-                        <div class="relative">
-                            <input type="text" name="key_code" id="customKeyCode"
-                                placeholder="VD: MY-SUPER-KEY-01 Or Random"
-                                class="w-full pl-4 pr-10 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl font-medium focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition uppercase"
-                                required>
-                            <div class="absolute right-3 top-1/2 -translate-y-1/2" id="keyLoadingIcon"
-                                style="display: none;">
-                                <svg class="animate-spin h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                        stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                    </path>
-                                </svg>
+                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">🔑
+                        {{ __('Name your Key') }}</label>
+                    <div class="relative">
+                        <input type="text" name="key_code" id="customKeyCode"
+                            placeholder="{{ __('e.g: MY-SUPER-KEY-01 OR RANDOM') }}"
+                            class="w-full pl-4 pr-10 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl font-medium focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 transition uppercase"
+                            required>
+                        <div class="absolute right-3 top-1/2 -translate-y-1/2" id="keyLoadingIcon"
+                            style="display: none;">
+                            <svg class="animate-spin h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
 
-                            </div>
-                            <button type="button" onclick="generateRandomKey()"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-lg font-semibold transition-flex items-center gap-1 flex">
-                                🎲 Random
-                            </button>
                         </div>
-                        <div class="flex justify-between items-start mt-1">
-                            <p class="text-xs text-gray-500">Mã key phải là duy nhất trong hệ thống. Chữ in hoa, số,
-                                gạch ngang (-).</p>
-                            <p id="keyCheckMessage" class="text-xs font-bold"></p>
-                        </div>
+                        <button type="button" onclick="generateRandomKey()"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-lg font-semibold transition-flex items-center gap-1 flex">
+                            🎲 Random
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-start mt-1">
+                        <p class="text-xs text-gray-500">
+                            {{ __('Key code must be unique. Uppercase letters, numbers, dashes only.') }}
+                        </p>
+                        <p id="keyCheckMessage" class="text-xs font-bold"></p>
                     </div>
 
                     <div class="flex gap-3 pt-2">
                         <button type="button" onclick="closePurchaseModal()"
-                            class="flex-1 py-3.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl font-bold hover:bg-gray-200 transition">Hủy</button>
+                            class="flex-1 py-3.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-xl font-bold hover:bg-gray-200 transition">{{ __('Cancel') }}</button>
                         <button type="submit" id="customSubmitBtn" disabled
                             class="flex-1 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-bold hover:from-indigo-700 hover:to-purple-700 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2">
-                            <span> Tạo Key Ngay</span>
+                            <span>{{ __('Create Key Now') }}</span>
                         </button>
                     </div>
                 </form>
@@ -465,6 +473,7 @@
         }
         document.addEventListener('DOMContentLoaded', () => {
             const currentUserBalance = {{ auth()->check() ? auth()->user()->getOrCreateWallet()->balance : 0 }};
+            const userCurrency = "{{ $userCurrency ?? 'VND' }}";
             const routes = {
                 checkKey: "{{ route('keys.check-key-code') }}",
                 createCustomKey: "{{ route('keys.create-custom') }}"
@@ -503,7 +512,7 @@
                 document.getElementById('customProductNameDisplay').innerText = product.name;
 
                 // Prices
-                document.getElementById('pmCashPrice').innerText = `${formatMoney(product.price)} ₫`;
+                document.getElementById('pmCashPrice').innerText = `${formatMoney(product.price)} ${userCurrency}`;
                 if (product.coinkey_amount) {
                     document.getElementById('pmCoinkeyPrice').innerText =
                         `${formatMoney(product.coinkey_amount)} Coin`;
@@ -662,7 +671,7 @@
                     }
                 } else {
                     btnCash.classList.add('border-indigo-500', 'bg-indigo-50', 'ring-2', 'ring-indigo-500/50');
-                    priceDisplay.innerText = `${formatMoney(currentProduct.price)} ₫`;
+                    priceDisplay.innerText = `${formatMoney(currentProduct.price)} ${userCurrency}`;
                     priceDisplay.className = 'font-bold text-indigo-600';
                     walletError.classList.add('hidden');
                 }

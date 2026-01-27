@@ -60,8 +60,8 @@
                     A
                 </div>
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Tổng quan hoạt động hệ thống</p>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{{ __('Admin Dashboard') }}</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('System overview') }}</p>
                 </div>
             </div>
 
@@ -92,8 +92,7 @@
                 <div
                     class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Tổng Người
-                        Dùng</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ __('Total Users') }}</p>
                     <p
                         class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mt-2">
                         {{ number_format($totalUsers) }}</p>
@@ -102,7 +101,7 @@
                             class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium {{ $isGrowth ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' }}">
                             {{ $isGrowth ? '↑' : '↓' }} {{ abs($growthPercentage) }}%
                         </span>
-                        <span class="text-xs text-gray-500">so với tháng trước</span>
+                        <span class="text-xs text-gray-500">{{ __('vs last month') }}</span>
                     </div>
                 </div>
 
@@ -110,8 +109,7 @@
                 <div
                     class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500"></div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Tổng Tiền
-                        Mặt</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ __('Total Cash') }}</p>
                     <p
                         class="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mt-2">
                         {{ number_format($totalCash) }}</p>
@@ -127,14 +125,13 @@
                 <div
                     class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-500 to-amber-500"></div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Tổng Coin
-                    </p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ __('Total Coin') }}</p>
                     <p
                         class="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent mt-2">
                         {{ number_format($totalCoins) }}</p>
-                    <p class="text-xs text-gray-500 mt-3">Đã tiêu: <span
+                    <p class="text-xs text-gray-500 mt-3">{{ __('Used') }}: <span
                             class="font-semibold">{{ number_format($totalspenCoin) }}</span></p>
-                    <p class="text-xs text-gray-500 mt-3">Còn lại: <span
+                    <p class="text-xs text-gray-500 mt-3">{{ __('Remaining') }}: <span
                             class="font-semibold">{{ number_format($remainingCoins) }}</span></p>
                 </div>
 
@@ -142,12 +139,11 @@
                 <div
                     class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Tổng Đơn
-                        Hàng</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ __('Total Orders') }}</p>
                     <p
                         class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mt-2">
                         {{ number_format($transactionStats['total']) }}</p>
-                    <p class="text-xs text-gray-500 mt-3">Thành công: <span
+                    <p class="text-xs text-gray-500 mt-3">{{ __('Successful') }}: <span
                             class="font-semibold text-green-600">{{ number_format($transactionStats['success']) }}</span>
                     </p>
                 </div>
@@ -156,12 +152,11 @@
                 <div
                     class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-red-500"></div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Chờ Xử Lý
-                    </p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ __('Pending Processing') }}</p>
                     <p
                         class="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mt-2">
                         {{ number_format($transactionStats['pending']) }}</p>
-                    <p class="text-xs text-gray-500 mt-3">Thất bại: <span
+                    <p class="text-xs text-gray-500 mt-3">{{ __('Failed') }}: <span
                             class="font-semibold text-red-600">{{ number_format($transactionStats['failed']) }}</span>
                     </p>
                 </div>
@@ -170,7 +165,7 @@
                 <div
                     class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-cyan-500"></div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Tổng Chi Tiêu</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{{ __('Total Spending') }}</p>
                     <p
                         class="text-2xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mt-2">
                         {{ number_format($totalAll) }}</p>
@@ -187,7 +182,7 @@
                 <!-- Chart 1: User Distribution -->
                 <div
                     class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-md">
-                    <h3 class="text-lg font-bold mb-6 text-gray-900 dark:text-white">Phân Loại Người Dùng</h3>
+                    <h3 class="text-lg font-bold mb-6 text-gray-900 dark:text-white">{{ __('User Classification') }}</h3>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-48 h-48 flex-shrink-0">
                             <canvas id="userChart"></canvas>
@@ -196,7 +191,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-blue-500"></span>
-                                    <span class="text-sm text-gray-700 dark:text-gray-300">Mới</span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('New') }}</span>
                                 </div>
                                 <span
                                     class="font-bold text-gray-900 dark:text-white">{{ number_format($userDistribution['new']) }}</span>
@@ -204,7 +199,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                                    <span class="text-sm text-gray-700 dark:text-gray-300">Cũ</span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Old') }}</span>
                                 </div>
                                 <span
                                     class="font-bold text-gray-900 dark:text-white">{{ number_format($userDistribution['existing']) }}</span>
@@ -212,7 +207,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                                    <span class="text-sm text-gray-700 dark:text-gray-300">Hết hạn</span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Expired') }}</span>
                                 </div>
                                 <span
                                     class="font-bold text-gray-900 dark:text-white">{{ number_format($userDistribution['expired']) }}</span>
@@ -220,7 +215,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-gray-500"></span>
-                                    <span class="text-sm text-gray-700 dark:text-gray-300">Đã xóa</span>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">{{ __('Deleted') }}</span>
                                 </div>
                                 <span
                                     class="font-bold text-gray-900 dark:text-white">{{ number_format($userDistribution['deleted']) }}</span>
@@ -232,7 +227,7 @@
                 <!-- Chart 2: Activity Status -->
                 <div
                     class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-md">
-                    <h3 class="text-lg font-bold mb-6 text-gray-900 dark:text-white">Hoạt Động (365 ngày)</h3>
+                    <h3 class="text-lg font-bold mb-6 text-gray-900 dark:text-white">{{ __('Activity (365 days)') }}</h3>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-48 h-48 flex-shrink-0">
                             <canvas id="activityChart"></canvas>
@@ -286,7 +281,7 @@
                 <!-- Chart 3: Spend Distribution -->
                 <div
                     class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-md">
-                    <h3 class="text-lg font-bold mb-6 text-gray-900 dark:text-white">Phân Bổ Chi Tiêu</h3>
+                    <h3 class="text-lg font-bold mb-6 text-gray-900 dark:text-white">{{ __('Expenditure Distribution') }}</h3>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-48 h-48 flex-shrink-0">
                             <canvas id="spendChart"></canvas>
@@ -295,14 +290,14 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
-                                    <span class=" text-gray-700 dark:text-gray-300">Mua Coin</span>
+                                    <span class=" text-gray-700 dark:text-gray-300">{{ __('Buy Coin') }}</span>
                                 </div>
 
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
                                     <span class="w-3 h-3 rounded-full bg-purple-500"></span>
-                                    <span class="text-gray-700 dark:text-gray-300">Mua Key/Package</span>
+                                    <span class="text-gray-700 dark:text-gray-300">{{ __('Buy Key/Package') }}</span>
                                 </div>
 
                             </div>
@@ -315,16 +310,16 @@
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-md">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">Doanh Thu & Người Dùng Mới
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('Revenue & New Users') }}
                         ({{ now()->year }})</h3>
                     <div class="flex gap-4 text-sm">
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded bg-indigo-500"></span>
-                            <span class="text-gray-600 dark:text-gray-400">Doanh thu</span>
+                            <span class="text-gray-600 dark:text-gray-400">{{ __('Revenue') }}</span>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                            <span class="text-gray-600 dark:text-gray-400">Người dùng mới</span>
+                            <span class="text-gray-600 dark:text-gray-400">{{ __('New users') }}</span>
                         </div>
                     </div>
                 </div>
@@ -340,8 +335,8 @@
                     class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md overflow-hidden">
                     <div
                         class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-4 font-semibold text-lg flex items-center justify-between">
-                        <span>🛒 Top Mua Hàng</span>
-                        <span class="text-xs opacity-90">10 người</span>
+                        <span>🛒 {{ __('Top Buyers') }}</span>
+                        <span class="text-xs opacity-90">{{ __('10 users') }}</span>
                     </div>
                     <div class="max-h-96 overflow-y-auto custom-scrollbar">
                         @forelse($topBuyers as $item)
@@ -365,7 +360,7 @@
                                 </div>
                             </div>
                         @empty
-                            <p class="text-center text-gray-500 py-12">Chưa có dữ liệu</p>
+                            <p class="text-center text-gray-500 py-12">{{ __('No data available') }}</p>
                         @endforelse
                     </div>
                 </div>
@@ -375,8 +370,8 @@
                     class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md overflow-hidden">
                     <div
                         class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-4 font-semibold text-lg flex items-center justify-between">
-                        <span>💰 Top Chi Tiêu</span>
-                        <span class="text-xs opacity-90">10 người</span>
+                        <span>💰 {{ __('Top Spenders') }}</span>
+                        <span class="text-xs opacity-90">{{ __('10 users') }}</span>
                     </div>
                     <div class="max-h-96 overflow-y-auto custom-scrollbar">
                         @forelse($topSpenders as $item)
@@ -395,12 +390,12 @@
                                 </div>
                                 <div class="text-right flex-shrink-0">
                                     <p class="font-bold text-green-600">{{ number_format($item['total_spent']) }}đ</p>
-                                    <p class="text-xs text-gray-500">{{ number_format($item['purchase_count']) }} đơn
+                                    <p class="text-xs text-gray-500">{{ number_format($item['purchase_count']) }} {{ __('orders') }}
                                     </p>
                                 </div>
                             </div>
                         @empty
-                            <p class="text-center text-gray-500 py-12">Chưa có dữ liệu</p>
+                            <p class="text-center text-gray-500 py-12">{{ __('No data available') }}</p>
                         @endforelse
                     </div>
                 </div>
@@ -410,8 +405,8 @@
                     class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md overflow-hidden">
                     <div
                         class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-4 font-semibold text-lg flex items-center justify-between">
-                        <span>🔑 Top Giữ Key</span>
-                        <span class="text-xs opacity-90">10 người</span>
+                        <span>🔑 {{ __('Top Key Holders') }}</span>
+                        <span class="text-xs opacity-90">{{ __('10 users') }}</span>
                     </div>
                     <div class="max-h-96 overflow-y-auto custom-scrollbar">
                         @forelse($topKeyHolders as $item)
@@ -434,7 +429,7 @@
                                 </div>
                             </div>
                         @empty
-                            <p class="text-center text-gray-500 py-12">Chưa có dữ liệu</p>
+                            <p class="text-center text-gray-500 py-12">{{ __('No data available') }}</p>
                         @endforelse
                     </div>
                 </div>
@@ -444,8 +439,8 @@
                     class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md overflow-hidden">
                     <div
                         class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-4 font-semibold text-lg flex items-center justify-between">
-                        <span>📦 Top Sản Phẩm</span>
-                        <span class="text-xs opacity-90">10 sản phẩm</span>
+                        <span>📦 {{ __('Top Products') }}</span>
+                        <span class="text-xs opacity-90">{{ __('10 products') }}</span>
                     </div>
                     <div class="max-h-96 overflow-y-auto custom-scrollbar">
                         @forelse($topProducts as $item)
@@ -453,7 +448,7 @@
                                 class="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-700 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200">
                                 <div class="flex-1 min-w-0">
                                     <p class="font-medium text-gray-900 dark:text-white truncate">
-                                        {{ $item['product']->name ?? 'Không xác định' }}</p>
+                                        {{ $item['product']->name ?? __('Unknown') }}</p>
                                     <p class="text-xs text-gray-500">{{ $item['product']->category ?? '' }}</p>
                                 </div>
                                 <div class="text-right flex-shrink-0">
@@ -462,7 +457,7 @@
                                 </div>
                             </div>
                         @empty
-                            <p class="text-center text-gray-500 py-12">Chưa có dữ liệu</p>
+                            <p class="text-center text-gray-500 py-12">{{ __('No data available') }}</p>
                         @endforelse
                     </div>
                 </div>
@@ -473,7 +468,7 @@
                 class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md overflow-hidden">
                 <div
                     class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-4 font-semibold text-lg flex items-center justify-between">
-                    <span>💎 Top Sản Phẩm Coin & Key</span>
+                    <span>💎 {{ __('Top Coin & Key Products') }}</span>
                 </div>
                 <div class="p-6">
                     <div class="flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1 mb-6">
@@ -491,18 +486,18 @@
                                 class="flex justify-between items-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800 hover:shadow-md transition-shadow">
                                 <div class="flex-1 min-w-0">
                                     <p class="font-medium text-gray-900 dark:text-white truncate">
-                                        {{ $item['product']->name ?? 'Không xác định' }}</p>
+                                        {{ $item['product']->name ?? __('Unknown') }}</p>
                                     <p class="text-xs text-gray-500 mt-1">{{ number_format($item['revenue']) }}đ</p>
                                 </div>
                                 <div class="text-right flex-shrink-0 ml-3">
                                     <p class="font-bold text-yellow-600 text-lg">
                                         {{ number_format($item['sales_count']) }}</p>
-                                    <p class="text-xs text-gray-500">bán</p>
+                                    <p class="text-xs text-gray-500">{{ __('sold') }}</p>
                                 </div>
                             </div>
                         @empty
                             <div class="col-span-3 text-center py-12">
-                                <p class="text-gray-500">Chưa có dữ liệu</p>
+                                <p class="text-gray-500">{{ __('No data available') }}</p>
                             </div>
                         @endforelse
                     </div>
@@ -513,18 +508,18 @@
                                 class="flex justify-between items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800 hover:shadow-md transition-shadow">
                                 <div class="flex-1 min-w-0">
                                     <p class="font-medium text-gray-900 dark:text-white truncate">
-                                        {{ $item['product']?->name ?? 'Không xác định' }}</p>
+                                        {{ $item['product']?->name ?? __('Unknown') }}</p>
                                     <p class="text-xs text-gray-500 mt-1">{{ number_format($item['revenue']) }}đ</p>
                                 </div>
                                 <div class="text-right flex-shrink-0 ml-3">
                                     <p class="font-bold text-purple-600 text-lg">
                                         {{ number_format($item['sales_count']) }}</p>
-                                    <p class="text-xs text-gray-500">bán</p>
+                                    <p class="text-xs text-gray-500">{{ __('sold') }}</p>
                                 </div>
                             </div>
                         @empty
                             <div class="col-span-3 text-center py-12">
-                                <p class="text-gray-500">Chưa có dữ liệu</p>
+                                <p class="text-gray-500">{{ __('No data available') }}</p>
                             </div>
                         @endforelse
                     </div>
@@ -545,8 +540,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Doanh Thu 7 Ngày Qua</h3>
-                            <p class="text-sm text-gray-500">Theo dõi xu hướng doanh thu gần đây</p>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('Revenue Last 7 Days') }}</h3>
+                            <p class="text-sm text-gray-500">{{ __('Track recent revenue trends') }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-2 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 rounded-lg">

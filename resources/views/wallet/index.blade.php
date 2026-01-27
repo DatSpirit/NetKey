@@ -11,9 +11,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                         </svg>
-                        My Wallet
+                        {{ __('My Wallet') }}
                     </h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Quản lý số dư và lịch sử giao dịch Coinkey
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        {{ __('Manage your balance and Coinkey transactions') }}
                     </p>
                 </div>
                 <div class="flex gap-3">
@@ -23,7 +24,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
-                        Nạp Coinkey
+                        {{ __('Top Up Coinkey') }}
                     </a>
                 </div>
             </div>
@@ -43,7 +44,7 @@
                         <div>
                             <p
                                 class="text-gray-900 dark:text-blue-200 font-medium text-sm uppercase tracking-wider mb-2">
-                                Số dư hiện tại
+                                {{ __('Current Balance') }}
                             </p>
                             <div class="flex items-baseline gap-2">
                                 <span
@@ -54,14 +55,18 @@
 
                         <div class="mt-8 grid grid-cols-2 gap-8 border-t border-white/20 pt-6">
                             <div>
-                                <p class="text-gray-900 dark:text-gray-100 text-xs uppercase mb-1">Tổng nạp tích lũy</p>
+                                <p class="text-gray-900 dark:text-gray-100 text-xs uppercase mb-1">
+                                    {{ __('Total Deposits') }}
+                                </p>
                                 <p class="text-xl text-blue-600 dark:text-blue-800 font-bold">
                                     {{ number_format($wallet->total_deposited) }} <span
-                                        class="text-xs text-black dark:text-blue-800 font-normal opacity-70">VND</span>
+                                        class="text-xs text-black dark:text-blue-800 font-normal opacity-70">{{ $userCurrency ?? 'VND' }}</span>
                                 </p>
                             </div>
                             <div>
-                                <p class="text-gray-900 dark:text-gray-100 text-xs uppercase mb-1">Tổng đã chi tiêu</p>
+                                <p class="text-gray-900 dark:text-gray-100 text-xs uppercase mb-1">
+                                    {{ __('Total Spent') }}
+                                </p>
                                 <p class="text-xl text-blue-600 dark:text-blue-800 font-bold">
                                     {{ number_format($wallet->total_spent) }} <span
                                         class="text-xs text-black dark:text-blue-800 font-normal opacity-70">Coinkey</span>
@@ -81,15 +86,17 @@
                                     d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
                         </span>
-                        Dịch vụ nổi bật
+                        {{ __('Featured Services') }}
                     </h3>
                     <div class="space-y-3">
                         <a href="{{ route('products', ['open_custom_modal' => 'true']) }}"
                             class="block p-3 rounded-xl bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition group">
                             <div class="flex justify-between items-center">
                                 <div>
-                                    <p class="font-semibold text-gray-900 dark:text-white text-sm">Tạo Key Tùy Chỉnh</p>
-                                    <p class="text-xs text-gray-500">Tự chọn thời hạn sử dụng</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white text-sm">
+                                        {{ __('Create Custom Key') }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">{{ __('Choose your usage time') }}</p>
                                 </div>
                                 <span class="text-gray-400 group-hover:text-indigo-600 transition">→</span>
                             </div>
@@ -98,9 +105,10 @@
                             class="block p-3 rounded-xl bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 transition group">
                             <div class="flex justify-between items-center">
                                 <div>
-                                    <p class="font-semibold text-gray-900 dark:text-white text-sm">Mua Gói Ưu Đãi và Gia
-                                        Hạn Tài Khoản</p>
-                                    <p class="text-xs text-gray-500">Tiết kiệm tới 30%</p>
+                                    <p class="font-semibold text-gray-900 dark:text-white text-sm">
+                                        {{ __('Buy Package & Extend Account') }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">{{ __('Save up to 30%') }}</p>
                                 </div>
                                 <span class="text-gray-400 group-hover:text-indigo-600 transition">→</span>
                             </div>
@@ -122,7 +130,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
-                            Biến động số dư (Coins)
+                            {{ __('Balance Changes (Coins)') }}
                         </button>
                         <button @click="activeTab = 'orders'" :class="activeTab === 'orders' ? 'border-indigo-500 text-indigo-600' :
                                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
@@ -131,7 +139,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
-                            Lịch sử đơn hàng (Tiền mặt)
+                            {{ __('Order History (Cash)') }}
                         </button>
                     </nav>
                 </div>
@@ -139,7 +147,9 @@
                 <!-- Chart Section -->
                 <div
                     class="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 hidden md:block">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Biến động số dư 30 ngày qua</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
+                        {{ __('Balance changes last 30 days') }}
+                    </h3>
                     <div class="relative h-64 w-full">
                         <canvas id="balanceChart"></canvas>
                     </div>
@@ -153,19 +163,19 @@
                                 <tr>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        Thời gian
+                                        {{ __('Time') }}
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        Nội dung
+                                        {{ __('Content') }}
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        Số lượng
+                                        {{ __('Quantity') }}
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        Số dư cuối
+                                        {{ __('Final Balance') }}
                                     </th>
                                 </tr>
                             </thead>

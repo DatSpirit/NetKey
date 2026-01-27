@@ -313,7 +313,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                Daily Check-in
+                                {{ __('Daily Check-in') }}
                             </a>
 
                             <a href="{{ route('profile.edit') }}"
@@ -322,7 +322,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
-                                Profile Settings
+                                {{ __('Profile Settings') }}
                             </a>
 
                             <form method="POST" action="{{ route('logout') }}">
@@ -333,7 +333,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                     </svg>
-                                    Logout
+                                    {{ __('Log Out') }}
                                 </button>
                             </form>
                         </div>
@@ -385,7 +385,7 @@
             {{-- Main Menu Section --}}
             <div class="space-y-1">
                 <p class="px-3 text-xs font-semibold text-gray-800 dark:text-gray-100 uppercase tracking-wider mb-3">
-                    Main Menu</p>
+                {{ __('Main Menu') }}</p>
 
                 <a href="{{ route('dashboard') }}"
                     class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-blue-500/50' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
@@ -393,7 +393,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <span>Home</span>
+                    <span>{{ __('Home') }}</span>
                 </a>
 
                 <a href="{{ route('products') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('products')
@@ -403,7 +403,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
-                    <span>Products</span>
+                    <span>{{ __('Products') }}</span>
                 </a>
 
                 <a href="{{ route('wallet.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('wallet.index')
@@ -413,7 +413,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                     </svg>
-                    <span>My Wallet</span>
+                    <span>{{ __('My Wallet') }}</span>
                 </a>
 
 
@@ -425,7 +425,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>My Transactions</span>
+                    <span>{{ __('My Transactions') }}</span>
                 </a>
 
                 <a href="{{ route('keys.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('keys.index')
@@ -435,7 +435,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                     </svg>
-                    <span>My Keys</span>
+                    <span>{{ __('My Keys') }}</span>
                 </a>
 
 
@@ -446,7 +446,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    <span>Analytics</span>
+                    <span>{{ __('Analytics') }}</span>
                 </a>
 
                 <a href="{{ route('settings.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('settings.index')
@@ -458,7 +458,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span>Settings</span>
+                    <span>{{ __('Settings') }}</span>
                 </a>
             </div>
 
@@ -466,7 +466,7 @@
             @if (Auth::check() && Auth::user()->is_admin)
                     <div class="pt-6 space-y-1">
                         <p class="px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
-                            Administration</p>
+                        {{ __('Administration') }}</p>
 
                         <a href="{{ route('admin.dashboard') }}"
                             class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
@@ -477,7 +477,7 @@
                                 <rect x="3" y="13" width="8" height="8" rx="1" stroke-width="1.5" />
                                 <rect x="13" y="13" width="8" height="8" rx="1" stroke-width="1.5" />
                             </svg>
-                            <span>Admin Dashboard</span>
+                            <span>{{ __('Admin Dashboard') }}</span>
                         </a>
 
                         <a href="{{ route('admin.users') }}"
@@ -486,7 +486,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                             </svg>
-                            <span>User Management</span>
+                            <span>{{ __('User Management') }}</span>
                         </a>
 
                         <a href="{{ route('admin.transactions.all-transactions') }}"
@@ -495,7 +495,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
-                            <span>All Transactions</span>
+                            <span>{{ __('All Transactions') }}</span>
                         </a>
 
                         <a href="{{ route('admin.keys.index') }}" class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('admin.keys.index')
@@ -505,7 +505,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                             </svg>
-                            <span> Keys Management </span>
+                            <span>{{ __('Keys Management') }}</span>
                         </a>
 
 
@@ -516,7 +516,7 @@
             {{-- Help & Support Section --}}
             <div class="pt-6 space-y-1">
                 <p class="px-3 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
-                    Support</p>
+                    {{ __('Support') }}</p>
 
                 <a href="{{ route('support.help_center') }}"
                     class="flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 {{ request()->routeIs('support.help_center') ? 'bg-gradient-to-r from-blue-200 to-blue-600 text-gray-800 dark:text-white shadow-lg shadow-indigo-500/50' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
@@ -524,7 +524,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>Help Center</span>
+                    <span>{{ __('Help Center') }}</span>
                 </a>
 
                 <a href="{{ route('support.contact') }}"
@@ -533,7 +533,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
-                    <span>Contact Support</span>
+                    <span>{{ __('Contact Support') }}</span>
                 </a>
             </div>
         </nav>
