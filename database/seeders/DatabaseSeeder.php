@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             VipPackageSeeder::class, // Tạo các gói VIP
             OptimizeTransactionSeeder::class, // Tạo các giao dịch tối ưu hóa
         ]);  //lệnh gọi seeder: php artisan db:seed
+        //php artisan migrate:fresh --seed
     }
 }
 
