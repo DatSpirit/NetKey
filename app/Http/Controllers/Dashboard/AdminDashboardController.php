@@ -275,26 +275,7 @@ class AdminDashboardController extends Controller
                 'revenue' => $item->revenue
             ]);
 
-        // Top 10 sản phẩm Key/Package
-        $topKeyProducts = Transaction::select('product_id', DB::raw('COUNT(*) as sales_count'), DB::raw('SUM(amount) as revenue'))
-            ->where('status', 'success')
-            ->where(function ($q) {
-                $q->whereHas('product', function ($sub) {
-                    $sub->where('coinkey_amount', '<=', 0)
-                        ->orWhereNull('coinkey_amount');
-                })
-                    ->orWhereNull('product_id');
-            })
-            ->groupBy('product_id')
-            ->orderBy('sales_count', 'desc')
-            ->limit(10)
-            ->with('product')
-            ->get()
-            ->map(fn($item) => [
-                'product' => $item->product ?? null,
-                'sales_count' => $item->sales_count,
-                'revenue' => $item->revenue
-            ]);
+
         // Người có nhiều key nhất (từ ProductKey model)
         $topKeyHolders = ProductKey::select('user_id', DB::raw('COUNT(*) as key_count'))
             ->groupBy('user_id')
@@ -363,7 +344,6 @@ class AdminDashboardController extends Controller
             'remainingCoins',
             'totalCashSpent',
             'topCoinProducts',
-            'topKeyProducts',
             'topKeyHolders',
             'combinedChartData'
         ));

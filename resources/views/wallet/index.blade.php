@@ -1,6 +1,65 @@
+@push('styles')
+<style>
+/* ── WALLET — NETKEY DESIGN OVERRIDES ── */
+
+/* Balance card: cool blue gradient stays; brighten it */
+.lg\:col-span-2.relative.overflow-hidden {
+    background: linear-gradient(135deg, #0a0f1e 0%, #1e3a8a 40%, #2563eb 100%) !important;
+    color: white !important;
+}
+.lg\:col-span-2.relative.overflow-hidden * { color: white !important; opacity: 1 !important; }
+.lg\:col-span-2.relative.overflow-hidden .text-5xl { font-size: 3rem; font-weight: 900; }
+
+/* Balance sub-text adjustments */
+.text-blue-800, .text-blue-600\.dark\:text-blue-800 { color: rgba(255,255,255,0.75) !important; }
+
+/* Quick actions card icon */
+.p-2.bg-yellow-100.text-yellow-600 {
+    background: rgba(37,99,235,0.12) !important;
+    color: #2563eb !important;
+    border-radius: 8px;
+}
+
+/* Tab active: indigo → blue */
+.border-indigo-500.text-indigo-600 {
+    border-color: #2563eb !important;
+    color: #2563eb !important;
+}
+
+/* Chart line color */
+/* Handled via JS — borderColor already a CSS variable */
+
+/* Top-up button: indigo → blue */
+a.bg-indigo-600, button.bg-indigo-600 {
+    background: #2563eb !important;
+}
+a.bg-indigo-600:hover, button.bg-indigo-600:hover {
+    background: #1d4ed8 !important;
+}
+
+/* Quick-action arrows hover */
+.group-hover\:text-indigo-600 { color: #2563eb !important; }
+
+/* Coinkey badge row highlight */
+.border-gray-200.dark\:border-gray-700.p-6 {
+    background: var(--bg-card) !important;
+}
+
+/* Background card */
+.bg-white.dark\:bg-gray-800.rounded-2xl {
+    background: var(--bg-card) !important;
+    border-color: var(--border) !important;
+}
+
+/* Page bg */
+.min-h-screen.bg-gray-50 { background: var(--bg) !important; }
+.dark .min-h-screen.bg-gray-900 { background: var(--bg) !important; }
+</style>
+@endpush
+
 <x-app-layout>
     <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="w-full px-4 sm:px-6 lg:px-8">
 
             <!-- Header Section -->
             <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">

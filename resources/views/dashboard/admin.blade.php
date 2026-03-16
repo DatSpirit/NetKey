@@ -1,3 +1,69 @@
+@push('styles')
+<style>
+/* ── ADMIN DASHBOARD — NETKEY DESIGN OVERRIDES ── */
+
+/* Stat card gradient text → blue */
+.bg-white.rounded-2xl p.text-2xl.font-bold {
+    background: linear-gradient(90deg, #2563eb, #60a5fa) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+/* List headers (Top Buyers, Spenders etc.) — indigo→purple to navy+blue */
+.bg-gradient-to-r.from-indigo-600.to-purple-600 {
+    background: linear-gradient(135deg, #0a0f1e 0%, #2563eb 100%) !important;
+}
+
+/* Top buyer/spender/keyholder avatars */
+.bg-gradient-to-br.from-indigo-500.to-purple-500 { background: #2563eb !important; }
+.bg-gradient-to-br.from-green-500.to-emerald-500 { background: #22c55e !important; }
+.bg-gradient-to-br.from-purple-500.to-pink-500  { background: #7c3aed !important; }
+
+/* Main page background override */
+.bg-gradient-to-br.from-gray-50.via-white.to-gray-50 {
+    background: var(--bg) !important;
+}
+.dark .bg-gradient-to-br.from-gray-900 {
+    background: var(--bg) !important;
+}
+
+/* Revenue chart icon box */
+.w-10.h-10.rounded-xl.bg-gradient-to-br.from-green-500.to-emerald-500 {
+    background: #2563eb !important;
+}
+
+/* Coin product items: yellow → blue */
+.bg-yellow-50 { background: rgba(37,99,235,0.04) !important; }
+.dark .bg-yellow-900\/20 { background: rgba(37,99,235,0.08) !important; }
+.border-yellow-200 { border-color: rgba(37,99,235,0.15) !important; }
+.text-yellow-600 { color: #2563eb !important; }
+
+/* Key product items: purple → navy */
+.bg-purple-50 { background: rgba(30,58,138,0.05) !important; }
+.text-purple-600 { color: #2563eb !important; }
+
+/* Period selector card */
+.bg-white.dark\:bg-gray-800.border.border-gray-200 .font-medium.text-gray-700 {
+    color: var(--fg) !important;
+}
+
+/* Cards base */
+.bg-white.dark\:bg-gray-800.rounded-2xl {
+    background: var(--bg-card) !important;
+    border-color: var(--border) !important;
+}
+
+/* Admin icon "A" badge */
+.bg-gradient-to-br.from-indigo-600.to-purple-600.rounded-xl {
+    background: linear-gradient(135deg, #0a0f1e, #2563eb) !important;
+}
+
+/* Tab buttons */
+#coinTab.bg-white { color: #2563eb !important; }
+</style>
+@endpush
+
 <x-app-layout>
     <style>
         /* Only essential custom styles */
@@ -84,7 +150,7 @@
 
     <div
         class="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 min-h-screen">
-        <div class="max-w-7xl mx-auto space-y-8">
+        <div class="w-full mx-auto space-y-8">
 
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 animate-slide-in">
@@ -463,23 +529,14 @@
                 </div>
             </div>
 
-            <!-- Coin & Key Products - Full Width -->
+            <!-- Coin Products - Full Width -->
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md overflow-hidden">
                 <div
                     class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-4 font-semibold text-lg flex items-center justify-between">
-                    <span>💎 {{ __('Top Coin & Key Products') }}</span>
+                    <span>💎 {{ __('Top Coin Products') }}</span>
                 </div>
                 <div class="p-6">
-                    <div class="flex bg-gray-100 dark:bg-gray-700 rounded-xl p-1 mb-6">
-                        <button id="coinTab"
-                            class="flex-1 py-2.5 px-4 text-center font-medium rounded-lg transition-all duration-200 bg-white dark:bg-gray-800 text-indigo-600 shadow-md">💰
-                            Coin</button>
-                        <button id="keyTab"
-                            class="flex-1 py-2.5 px-4 text-center font-medium rounded-lg transition-all duration-200 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">🔑
-                            Key/Package</button>
-                    </div>
-
                     <div id="coinContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @forelse($topCoinProducts as $item)
                             <div
@@ -491,28 +548,6 @@
                                 </div>
                                 <div class="text-right flex-shrink-0 ml-3">
                                     <p class="font-bold text-yellow-600 text-lg">
-                                        {{ number_format($item['sales_count']) }}</p>
-                                    <p class="text-xs text-gray-500">{{ __('sold') }}</p>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="col-span-3 text-center py-12">
-                                <p class="text-gray-500">{{ __('No data available') }}</p>
-                            </div>
-                        @endforelse
-                    </div>
-
-                    <div id="keyContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 hidden">
-                        @forelse($topKeyProducts as $item)
-                            <div
-                                class="flex justify-between items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-200 dark:border-purple-800 hover:shadow-md transition-shadow">
-                                <div class="flex-1 min-w-0">
-                                    <p class="font-medium text-gray-900 dark:text-white truncate">
-                                        {{ $item['product']?->name ?? __('Unknown') }}</p>
-                                    <p class="text-xs text-gray-500 mt-1">{{ number_format($item['revenue']) }}đ</p>
-                                </div>
-                                <div class="text-right flex-shrink-0 ml-3">
-                                    <p class="font-bold text-purple-600 text-lg">
                                         {{ number_format($item['sales_count']) }}</p>
                                     <p class="text-xs text-gray-500">{{ __('sold') }}</p>
                                 </div>
@@ -598,24 +633,7 @@
             setTimeout(() => toast.remove(), 5000);
         }
 
-        // Tab Switching
-        document.getElementById('coinTab').addEventListener('click', function() {
-            this.className =
-                'flex-1 py-2.5 px-4 text-center font-medium rounded-lg transition-all duration-200 bg-white dark:bg-gray-800 text-indigo-600 shadow-md';
-            document.getElementById('keyTab').className =
-                'flex-1 py-2.5 px-4 text-center font-medium rounded-lg transition-all duration-200 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200';
-            document.getElementById('coinContent').classList.remove('hidden');
-            document.getElementById('keyContent').classList.add('hidden');
-        });
 
-        document.getElementById('keyTab').addEventListener('click', function() {
-            this.className =
-                'flex-1 py-2.5 px-4 text-center font-medium rounded-lg transition-all duration-200 bg-white dark:bg-gray-800 text-indigo-600 shadow-md';
-            document.getElementById('coinTab').className =
-                'flex-1 py-2.5 px-4 text-center font-medium rounded-lg transition-all duration-200 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200';
-            document.getElementById('keyContent').classList.remove('hidden');
-            document.getElementById('coinContent').classList.add('hidden');
-        });
 
         // Chart.js Configurations
         const chartColors = {

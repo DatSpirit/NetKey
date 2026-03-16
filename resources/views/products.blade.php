@@ -1,6 +1,280 @@
+@push('styles')
+    <style>
+        /* ──────────────────────────────────────
+       PRODUCTS PAGE — NETKEY DESIGN SYSTEM
+    ────────────────────────────────────── */
+
+        /* Hero banner */
+        .nk-products-banner {
+            background: linear-gradient(135deg, #0a0f1e 0%, #1a2a4e 60%, #2563eb 100%);
+            border-radius: 18px;
+            padding: 32px 36px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nk-products-banner::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .nk-products-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .nk-products-sub {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.875rem;
+        }
+
+        .nk-add-product-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: white;
+            color: #2563eb;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nk-add-product-btn:hover {
+            background: #f9fafb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Search/Filter bar */
+        .nk-filter-bar {
+            background: var(--bg-card, white);
+            border: 1px solid var(--border, #e5e7eb);
+            border-radius: 14px;
+            padding: 20px 24px;
+        }
+
+        .dark .nk-filter-bar {
+            background: #161b22;
+            border-color: #30363d;
+        }
+
+        .nk-filter-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--fg-muted, #6b7280);
+            margin-bottom: 7px;
+        }
+
+        .nk-filter-bar input[type="text"],
+        .nk-filter-bar select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border, #e5e7eb);
+            border-radius: 10px;
+            background: var(--bg-elevated, white);
+            color: var(--fg, #111827);
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .nk-filter-bar input:focus,
+        .nk-filter-bar select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .dark .nk-filter-bar input,
+        .dark .nk-filter-bar select {
+            background: #21262d;
+            border-color: #30363d;
+            color: #e6edf3;
+        }
+
+        .nk-search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .nk-search-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* Product cards */
+        .product-card {
+            background: var(--bg-card, white) !important;
+            border: 1px solid var(--border, #e5e7eb) !important;
+            border-radius: 16px !important;
+            overflow: hidden !important;
+            transition: transform 0.2s, box-shadow 0.2s !important;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px) !important;
+            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.15) !important;
+            border-color: #93c5fd !important;
+        }
+
+        .dark .product-card {
+            background: #161b22 !important;
+            border-color: #30363d !important;
+        }
+
+        .dark .product-card:hover {
+            border-color: #60a5fa !important;
+            box-shadow: 0 12px 40px rgba(96, 165, 250, 0.1) !important;
+        }
+
+        /* Product image section */
+        .product-card>div:first-child {
+            background: linear-gradient(135deg, #0a0f1e 0%, #1e3a5f 100%) !important;
+        }
+
+        /* Product name */
+        .product-card h3 {
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 700 !important;
+            color: var(--fg, #111827) !important;
+        }
+
+        .dark .product-card h3 {
+            color: #e6edf3 !important;
+        }
+
+        /* Product price */
+        .product-card .text-blue-600,
+        .product-card .text-blue-400 {
+            color: #2563eb !important;
+        }
+
+        .dark .product-card .text-blue-400 {
+            color: #60a5fa !important;
+        }
+
+        /* Buy Now button override */
+        .product-card button[onclick*="openPurchaseModal"] {
+            background: #2563eb !important;
+            background-image: none !important;
+            border-radius: 9px !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 600 !important;
+            transition: all 0.2s !important;
+            padding: 10px 16px !important;
+        }
+
+        .product-card button[onclick*="openPurchaseModal"]:hover {
+            background: #1d4ed8 !important;
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
+        }
+
+        /* View detail + edit buttons */
+        .product-card .view-detail-btn,
+        .product-card a[title] {
+            background: var(--bg-elevated, #f9fafb) !important;
+            border: 1px solid var(--border, #e5e7eb) !important;
+            border-radius: 8px !important;
+            color: var(--fg-muted, #6b7280) !important;
+            transition: all 0.2s !important;
+        }
+
+        .product-card .view-detail-btn:hover,
+        .product-card a[title]:hover {
+            background: rgba(37, 99, 235, 0.08) !important;
+            border-color: #93c5fd !important;
+            color: #2563eb !important;
+        }
+
+        .dark .product-card .view-detail-btn,
+        .dark .product-card a[title] {
+            background: #21262d !important;
+            border-color: #30363d !important;
+            color: #8b949e !important;
+        }
+
+        /* Purchase modal header */
+        #purchaseModal>div:last-child>div>div:first-child {
+            background: linear-gradient(135deg, #0a0f1e, #2563eb) !important;
+        }
+
+        /* Purchase modal submit button */
+        #pmSubmitBtn {
+            background: #2563eb !important;
+            border-radius: 10px !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 700 !important;
+        }
+
+        #pmSubmitBtn:hover:not(:disabled) {
+            background: #1d4ed8 !important;
+        }
+
+        /* Category badge */
+        .product-card span.absolute {
+            background: rgba(255, 255, 255, 0.92) !important;
+            color: #374151 !important;
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            font-family: 'Inter', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 0.7rem !important;
+        }
+
+        /* No results card */
+        #no-results {
+            background: var(--bg-card, white) !important;
+            border: 1px solid var(--border, #e5e7eb) !important;
+            border-radius: 16px !important;
+        }
+
+        .dark #no-results {
+            background: #161b22 !important;
+            border-color: #30363d !important;
+        }
+
+        /* Modal styling */
+        #productModal>div:last-child,
+        #purchaseModal>div:last-child>div {
+            border-radius: 16px !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+    </style>
+@endpush
+
 <x-app-layout>
     <!-- Toast Container -->
     <div id="toast-container" class="fixed top-4 right-4 z-[100] space-y-3"></div>
+
 
     <x-slot name="header">
         <div
@@ -25,38 +299,30 @@
     </x-slot>
 
     <div class="py-6 px-2 sm:px-6 lg:px-8 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="w-full mx-auto space-y-6">
 
             <!-- Header Section -->
-            <div
-                class="bg-gradient-to-r from-blue-200 to-blue-600 dark:from-blue-200 dark:to-blue-600 rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 transition-colors duration-300">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div class="space-y-2">
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
-                            {{ __('Product Store') }}
-                        </h3>
-                        <p class="text-gray-900 dark:text-white text-opacity-90 text-sm sm:text-base">
-                            {{ __('Discover high-quality products') }}
-                        </p>
+            <div class="nk-products-banner" style="position:relative">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                    style="position:relative;z-index:1">
+                    <div>
+                        <h3 class="nk-products-title">{{ __('Product Store') }}</h3>
+                        <p class="nk-products-sub">{{ __('Discover high-quality products') }}</p>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        @if ($isAdmin)
-                            <a href="{{ route('admin.products.create') }}"
-                                class="px-3 py-2 sm:px-4 sm:py-2 bg-white hover:bg-white-400 text-indigo-600 font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 flex items-center space-x-2 text-sm sm:text-base">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                                <span>{{ __('Add Product') }}</span>
-                            </a>
-                        @endif
-                    </div>
+                    @if ($isAdmin)
+                        <a href="{{ route('admin.products.create') }}" class="nk-add-product-btn">
+                            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            {{ __('Add Product') }}
+                        </a>
+                    @endif
                 </div>
             </div>
 
             <!-- Search & Filter Section -->
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <div class="nk-filter-bar">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
                     <!-- Search Input -->
                     <div class="lg:col-span-6">

@@ -1,3 +1,34 @@
+@push('styles')
+<style>
+/* Welcome Banner → navy with blue accent */
+.nk-welcome-banner {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0f1e 0%, #1a2a4e 60%, #2563eb 100%);
+    border-radius: 20px;
+    padding: 40px;
+    color: white;
+    box-shadow: 0 20px 60px rgba(37,99,235,0.2);
+}
+.nk-welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(37,99,235,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.nk-welcome-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(96,165,250,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+</style>
+@endpush
+
 <x-app-layout>
     <!-- Toast Container -->
     <div id="toast-container" class="fixed top-4 right-4 z-[100] space-y-3"></div>
@@ -19,30 +50,28 @@
     </x-slot>
 
     <div class="py-8 px-4 sm:px-6 lg:px-8 min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="space-y-6">
 
             <!-- Header Section with Stats -->
-            <div class="bg-gradient-to-r from-blue-500 dark:from-blue-700 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
+            <div class="nk-welcome-banner !p-6 sm:!p-8">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="space-y-2">
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">{{ __('Overview') }}
-                        </h3>
-                        <p class="text-blue-800 dark:text-white text-sm sm:text-base">
+                        <h3 class="text-xl sm:text-2xl font-black text-white">{{ __('Overview') }}</h3>
+                        <p class="text-white/70 text-sm sm:text-base">
                             {{ __('Manage all users in the system') }}
                         </p>
                     </div>
                     <div class="flex items-center space-x-6">
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-gray-800 dark:text-white">{{ $users->total() }}</div>
-                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">
+                            <div class="text-3xl font-black text-white">{{ $users->total() }}</div>
+                            <div class="text-[10px] text-white/50 uppercase tracking-[2px] font-bold">
                                 {{ __('Total Users Label') }}
                             </div>
                         </div>
-                        <div class="h-12 w-px bg-white/30"></div>
+                        <div class="h-10 w-px bg-white/10"></div>
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-gray-800 dark:text-white">{{ $users->currentPage() }}
-                            </div>
-                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">
+                            <div class="text-3xl font-black text-white">{{ $users->currentPage() }}</div>
+                            <div class="text-[10px] text-white/50 uppercase tracking-[2px] font-bold">
                                 {{ __('Current Page') }}
                             </div>
                         </div>
@@ -52,10 +81,10 @@
 
             <!-- Bulk Actions Bar (Hidden by default) -->
             <div id="bulk-actions-bar"
-                class="hidden bg-indigo-600 dark:bg-indigo-700 rounded-2xl shadow-lg p-4 transition-all duration-300">
+                class="hidden bg-[#0a0f1e] border border-blue-500/30 rounded-2xl shadow-lg p-4 transition-all duration-300">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex items-center space-x-3">
-                        <span class="text-white font-semibold">Đã chọn: <span id="selected-count">0</span> người
+                        <span class="text-white/90 font-semibold">Đã chọn: <span id="selected-count" class="text-blue-400 font-black">0</span> người
                             dùng</span>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -89,18 +118,17 @@
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 transition-all duration-300 hover:shadow-xl">
                 <form method="GET" action="{{ route('admin.users') }}" class="space-y-4">
-                    <div class="flex flex-col lg:flex-row gap-4">
+                    <div class="flex flex-col lg:flex-row items-end gap-4">
 
                         <!-- Filter Dropdown -->
-                        <div class="relative flex-shrink-0">
+                        <div class="relative flex-shrink-0 w-full lg:w-40">
                             <label
-                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
+                                class="nk-section-label block mb-2">
                                 {{ __('Filter By') }}
                             </label>
-                            <select name="filter" id="filter-select" class="w-full lg:w-40 px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 
+                            <select name="filter" id="filter-select" class="w-full px-4 py-3 bg-white dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 
                                        rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100
-                                       focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 
-                                       transition-all duration-200 cursor-pointer hover:border-indigo-400">
+                                       focus:border-blue-500 transition-all duration-200 cursor-pointer h-[46px]">
                                 <option value="all" {{ request('filter') === 'all' ? 'selected' : '' }}>🔍 {{ __('All') }}
                                 </option>
                                 <option value="name" {{ request('filter') === 'name' ? 'selected' : '' }}>👤
@@ -114,32 +142,24 @@
                         </div>
 
                         <!-- Search Input with Button Inside -->
-                        <div class="flex-1">
-                            <label
-                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
+                        <div class="flex-1 w-full">
+                            <label class="nk-section-label block mb-2">
                                 {{ __('Search') }}
                             </label>
-                            <div class="relative">
+                            <div class="relative h-[46px]">
                                 <input type="text" name="search" id="search-input" value="{{ request('search') }}"
-                                    placeholder="{{ __('Enter search keyword...') }}" class="w-full pl-4 pr-12 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 
-                                              rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500
-                                              focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 
-                                              transition-all duration-200">
+                                    placeholder="{{ __('Enter search keyword...') }}" class="w-full pl-4 pr-12 py-3 h-full bg-white dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 
+                                              rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400
+                                              focus:border-blue-500 transition-all duration-200">
 
                                 <!-- Search Button Inside Input -->
                                 <button type="submit"
-                                    class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white rounded-lg transition-all duration-200">
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                 </button>
-
-                                <!-- Suggestions Dropdown -->
-                                <ul id="suggestions"
-                                    class="absolute z-50 mt-2 w-full bg-white dark:bg-gray-800 
-                                    border-2 border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl hidden overflow-hidden">
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -152,73 +172,46 @@
                 <div class="overflow-x-auto">
                     <table class="w-full">
                         <thead>
-                            <tr class="bg-gray-100 dark:bg-gray-700 border-b-2 border-gray-200 dark:border-gray-600">
-                                <th class="px-6 py-4 text-left">
+                            <tr class="bg-[#0a0f1e] text-white">
+                                <th class="px-6 py-5 text-left">
                                     <input type="checkbox" id="select-all"
-                                        class="w-4 h-4 text-indigo-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-indigo-500">
+                                        class="w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-300 rounded focus:ring-blue-500">
                                 </th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell
-                                    {{ $filter === 'id' ? 'bg-indigo-100 dark:bg-indigo-900/30' : '' }}">
+                                <th class="px-6 py-5 text-left text-[10px] font-black uppercase tracking-[2px] opacity-50 hidden lg:table-cell">
                                     <div class="flex items-center space-x-2">
                                         <span>ID</span>
-                                        @if ($filter === 'id')
-                                            <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="currentColor"
-                                                viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        @endif
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider
-                                    {{ $filter === 'name' ? 'bg-indigo-100 dark:bg-indigo-900/30' : '' }}">
+                                <th class="px-6 py-5 text-left text-[10px] font-black uppercase tracking-[2px] opacity-50">
                                     <div class="flex items-center space-x-2">
                                         <span>{{ __('Name') }}</span>
-                                        @if ($filter === 'name')
-                                            <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="currentColor"
-                                                viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        @endif
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider
-                                    {{ $filter === 'email' ? 'bg-indigo-100 dark:bg-indigo-900/30' : '' }}">
+                                         <th class="px-6 py-5 text-left text-[10px] font-black uppercase tracking-[2px] opacity-50">
                                     <div class="flex items-center space-x-2">
                                         <span>Email</span>
-                                        @if ($filter === 'email')
-                                            <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="currentColor"
-                                                viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        @endif
                                     </div>
                                 </th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell">
+                                    class="px-6 py-5 text-left text-[10px] font-black uppercase tracking-[2px] opacity-50 hidden lg:table-cell">
                                     {{ __('Phone') }}
                                 </th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden lg:table-cell">
+                                    class="px-6 py-5 text-left text-[10px] font-black uppercase tracking-[2px] opacity-50 hidden lg:table-cell">
                                     {{ __('Role') }}
                                 </th>
                                 <th
-                                    class="px-6 py-4 text-center text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                                    class="px-6 py-5 text-center text-[10px] font-black uppercase tracking-[2px] opacity-50">
                                     {{ __('Actions') }}
                                 </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                             @forelse ($users as $user)
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150 group">
+                                <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors duration-150 group">
                                     <td class="px-6 py-4 whitespace-nowrap ">
                                         <input type="checkbox"
-                                            class="user-checkbox w-4 h-4 text-indigo-600 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-indigo-500"
+                                            class="user-checkbox w-4 h-4 text-blue-600 bg-white dark:bg-gray-700 border-gray-100 rounded focus:ring-blue-500"
                                             data-user-id="{{ $user->id }}">
                                     </td>
                                     <td
@@ -310,7 +303,7 @@
                                         <div class="flex items-center justify-center space-x-2">
                                             <!-- View Button -->
                                             <button type="button" data-id="{{ $user->id }}" title="Xem chi tiết"
-                                                class="view-btn p-2.5 rounded-lg bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-200">
+                                                class="view-btn p-2.5 rounded-lg bg-[#0a0f1e] hover:bg-blue-600 text-white shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-200">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -321,7 +314,7 @@
 
                                             <!-- Edit Button -->
                                             <a href="{{ route('admin.users.edit', $user->id) }}" title="Chỉnh sửa"
-                                                class="p-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-200">
+                                                class="p-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-200">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -330,11 +323,11 @@
 
                                             <!-- Delete Button -->
                                             <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-                                                onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này không?');">
+                                                class="inline" onsubmit="return confirm('Bạn có chắc muốn xóa người dùng này không?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" title="Xóa"
-                                                    class="p-2.5 rounded-lg bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700 text-white shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-200">
+                                                    class="p-2.5 rounded-lg bg-red-500 hover:bg-red-600 text-white shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-200">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -393,20 +386,20 @@
 
             <!-- Modal Header -->
             <div
-                class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-600 dark:to-purple-700 rounded-t-2xl">
+                class="flex items-center justify-between p-6 border-b border-white/10 bg-[#0a0f1e] rounded-t-2xl">
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center">
+                        <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-white">
+                    <h3 class="text-2xl font-black text-white">
                         {{ __('User Details') }}
                     </h3>
                 </div>
-                <button onclick="closeModal()" class="p-2 rounded-lg hover:bg-white/20 transition-colors">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button onclick="closeModal()" class="p-2 rounded-lg hover:bg-white/10 transition-colors text-white/50 hover:text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>

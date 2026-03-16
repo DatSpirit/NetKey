@@ -52,41 +52,55 @@
                 </div>
             @endif
 
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+            {{-- === PACKAGES LIST === --}}
+            <div class="bg-white dark:bg-[#161b22] rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-[#30363d] overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left">
-                        <thead
-                            class="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-700/50 dark:text-gray-400">
-                            <tr>
-                                <th class="px-6 py-4 font-semibold">{{ __('Package Name / Time') }}</th>
-                                <th class="px-6 py-4 font-semibold">{{ __('Coinkey Price') }}</th>
-                                <th class="px-6 py-4 font-semibold">{{ __('VND Price (PayOS)') }}</th>
-                                <th class="px-6 py-4 font-semibold text-center">{{ __('Status') }}</th>
-                                <th class="px-6 py-4 text-center font-semibold">{{ __('Actions') }}</th>
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50/50 dark:bg-[#1c2128] border-b border-gray-50 dark:border-[#30363d]">
+                                <th class="px-8 py-5 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('Package Name') }}</th>
+                                <th class="px-8 py-5 text-center text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('Duration') }}</th>
+                                <th class="px-8 py-5 text-center text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('Status') }}</th>
+                                <th class="px-8 py-5 text-right text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('Price Tiers') }}</th>
+                                <th class="px-8 py-5 text-right text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('Actions') }}</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        <tbody class="divide-y divide-gray-100 dark:divide-[#30363d]">
                             @foreach($packages as $package)
-                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-[#21262d] transition-colors duration-200">
                                     <td class="px-6 py-4">
-                                        <div class="flex flex-col">
-                                            <span
-                                                class="font-bold text-gray-900 dark:text-white text-base">{{ $package->name }}</span>
-                                            <span
-                                                class="text-indigo-600 dark:text-indigo-400 font-medium">+{{ $package->days }}
-                                                {{ __('days extension') }}</span>
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center rounded-xl bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-bold border border-indigo-200 dark:border-indigo-800/50">
+                                                ID: {{ $package->id }}
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-bold text-gray-900 dark:text-white">
+                                                    {{ $package->name }}
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full font-bold text-xs border border-yellow-200 dark:border-yellow-800">
-                                            {{ number_format($package->price_coinkey) }} Coin
+                                    <td class="px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded-full font-bold text-xs border border-blue-200 dark:border-blue-800">
+                                            +{{ $package->extension_days }} {{ __('days') }}
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="font-mono font-bold text-gray-700 dark:text-gray-300">{{ number_format($package->price_vnd) }}đ</span>
+                                    <td class="px-6 py-4 text-center">
+                                        @if($package->is_active)
+                                            <span class="px-2.5 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded-full">ACTIVE</span>
+                                        @else
+                                            <span class="px-2.5 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-xs font-bold rounded-full">HIDDEN</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <div class="flex flex-col items-end gap-1">
+                                            <span class="inline-flex items-center px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded text-xs font-bold border border-yellow-200 dark:border-yellow-800/50">
+                                                {{ number_format($package->price_coinkey) }} Coin
+                                            </span>
+                                            <span class="font-mono font-bold text-gray-700 dark:text-gray-300 text-sm">
+                                                {{ number_format($package->price_vnd) }}đ
+                                            </span>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         @if($package->is_active)

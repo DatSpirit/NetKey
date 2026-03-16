@@ -1,25 +1,26 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <svg class="w-7 h-7 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                </svg>
-                <h2 class="font-bold text-2xl text-gray-800 dark:text-white">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="p-2 bg-blue-600 rounded-xl shadow-lg shadow-blue-500/20">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                    </svg>
+                </div>
+                <h2 class="font-black text-2xl text-gray-800 dark:text-white tracking-tight">
                     {{ __('Key Details (View Only)') }}
                 </h2>
                 @if($key->trashed())
                     <span
-                        class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-sm rounded-lg font-bold">
+                        class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-[10px] font-black uppercase tracking-wider rounded-full border border-red-200 dark:border-red-800">
                         {{ __('DELETED') }}
                     </span>
                 @endif
             </div>
-            <div class="flex gap-2">
+            <div class="flex items-center gap-3">
                 <a href="{{ route('admin.keys.index') }}"
-                    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg shadow hover:bg-gray-300 transition">
+                    class="px-4 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-bold rounded-xl hover:bg-gray-200 transition-all duration-200 text-xs uppercase tracking-wider">
                     ← {{ __('Go Back') }}
                 </a>
             </div>
@@ -29,43 +30,44 @@
     <div class="py-8 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
 
         {{-- Key Info Card --}}
-        <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6 border border-gray-200 dark:border-gray-700 mb-6">
+        <div class="bg-white dark:bg-[#161b22] shadow-xl rounded-2xl overflow-hidden border border-gray-100 dark:border-[#30363d] mb-6">
 
-            <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
-                🔑 {{ __('Key Information') }}
-            </h3>
+            <div class="bg-[#0a0f1e] p-6 border-b border-white/5">
+                <h3 class="text-xl font-black text-white flex items-center gap-2">
+                    🔑 {{ __('Key Information') }}
+                </h3>
+            </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">Key Code</p>
-                    <p class="font-mono text-lg font-bold text-indigo-600 dark:text-indigo-400 select-all break-all">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+                <div class="p-5 bg-gray-50/50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-200 hover:shadow-md">
+                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-wider mb-2">Key Code</p>
+                    <p class="font-mono text-xl font-black text-blue-600 dark:text-blue-400 select-all break-all">
                         {{ $key->key_code }}
                     </p>
                 </div>
 
-                <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">{{ __('Status') }}
+                <div class="p-5 bg-gray-50/50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-200 hover:hover:shadow-md">
+                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-wider mb-2">{{ __('Status') }}
                     </p>
                     @if ($key->status == 'active')
                         <span
-                            class="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm rounded-lg font-semibold">
-                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 text-[10px] font-black uppercase tracking-wider rounded-full border border-green-100 dark:border-green-900/30">
+                            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
                             Active
                         </span>
                     @elseif($key->status == 'expired')
                         <span
-                            class="px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm rounded-lg font-semibold">
+                            class="px-4 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-wider rounded-full border border-gray-200 dark:border-gray-600">
                             Expired
                         </span>
                     @elseif($key->status == 'suspended')
                         <span
-                            class="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-sm rounded-lg font-semibold">
+                            class="px-4 py-1.5 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 text-[10px] font-black uppercase tracking-wider rounded-full border border-amber-100 dark:border-amber-900/30">
                             Suspended
                         </span>
                     @else
                         <span
-                            class="px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-300 text-sm rounded-lg font-semibold">
+                            class="px-4 py-1.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-[10px] font-black uppercase tracking-wider rounded-full border border-red-100 dark:border-red-900/30">
                             {{ ucfirst($key->status) }}
                         </span>
                     @endif
@@ -139,7 +141,7 @@
                 <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
                     <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">{{ __('Cost') }}
                     </p>
-                    <p class="font-bold text-yellow-600 dark:text-yellow-400">{{ number_format($key->key_cost) }} 🪙</p>
+                    <p class="font-bold text-yellow-600 dark:text-yellow-400">{{ number_format((float)($key->key_cost ?? 0)) }} 🪙</p>
                 </div>
 
                 <div class="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
@@ -182,44 +184,42 @@
         </div>
 
         {{-- Validation Stats --}}
-        <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6 border border-gray-200 dark:border-gray-700 mb-6">
+        <div class="bg-white dark:bg-[#161b22] shadow-xl rounded-2xl overflow-hidden border border-gray-100 dark:border-[#30363d] mb-6">
+            <div class="bg-[#0a0f1e] p-6 border-b border-white/5">
+                <h3 class="text-xl font-black text-white flex items-center gap-2">
+                    📊 {{ __('Validation Statistics') }}
+                </h3>
+            </div>
 
-            <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
-                📊 {{ __('Validation Statistics') }}
-            </h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div
-                    class="p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <p class="text-xs text-blue-600 dark:text-blue-400 uppercase font-semibold">{{ __('Total') }}</p>
-                    <p class="text-3xl font-bold text-blue-700 dark:text-blue-300 mt-1">
+            <div class="p-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="nk-stat-card">
+                    <div class="nk-stat-accent-stripe !bg-blue-500"></div>
+                    <p class="nk-stat-label">{{ __('Total') }}</p>
+                    <p class="nk-stat-value">
                         {{ number_format($validationStats['total_validations']) }}
                     </p>
                 </div>
 
-                <div
-                    class="p-4 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-lg border border-green-200 dark:border-green-800">
-                    <p class="text-xs text-green-600 dark:text-green-400 uppercase font-semibold">{{ __('Success') }}
-                    </p>
-                    <p class="text-3xl font-bold text-green-700 dark:text-green-300 mt-1">
+                <div class="nk-stat-card">
+                    <div class="nk-stat-accent-stripe stripe-green"></div>
+                    <p class="nk-stat-label">{{ __('Success') }}</p>
+                    <p class="nk-stat-value !text-green-600 dark:!text-green-400">
                         {{ number_format($validationStats['success_count']) }}
                     </p>
                 </div>
 
-                <div
-                    class="p-4 bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-lg border border-red-200 dark:border-red-800">
-                    <p class="text-xs text-red-600 dark:text-red-400 uppercase font-semibold">{{ __('Failed') }}</p>
-                    <p class="text-3xl font-bold text-red-700 dark:text-red-300 mt-1">
+                <div class="nk-stat-card">
+                    <div class="nk-stat-accent-stripe stripe-red"></div>
+                    <p class="nk-stat-label">{{ __('Failed') }}</p>
+                    <p class="nk-stat-value !text-red-600 dark:!text-red-400">
                         {{ number_format($validationStats['failed_count']) }}
                     </p>
                 </div>
 
-                <div
-                    class="p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                    <p class="text-xs text-purple-600 dark:text-purple-400 uppercase font-semibold">
-                        {{ __('Unique IPs') }}
-                    </p>
-                    <p class="text-3xl font-bold text-purple-700 dark:text-purple-300 mt-1">
+                <div class="nk-stat-card">
+                    <div class="nk-stat-accent-stripe !bg-purple-500"></div>
+                    <p class="nk-stat-label">{{ __('Unique IPs') }}</p>
+                    <p class="nk-stat-value !text-purple-600 dark:!text-purple-400">
                         {{ number_format($validationStats['unique_ips']) }}
                     </p>
                 </div>
@@ -227,20 +227,21 @@
         </div>
 
         {{-- Recent Validations --}}
-        <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-
-            <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white flex items-center gap-2">
-                🕒 {{ __('Recent Validation History') }}
-            </h3>
+        <div class="bg-white dark:bg-[#161b22] shadow-xl rounded-2xl overflow-hidden border border-gray-100 dark:border-[#30363d]">
+            <div class="bg-[#0a0f1e] p-6 border-b border-white/5">
+                <h3 class="text-xl font-black text-white flex items-center gap-2">
+                    🕒 {{ __('Recent Validation History') }}
+                </h3>
+            </div>
 
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
-                    <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs uppercase">
+                    <thead class="bg-gray-50 dark:bg-gray-800/80 text-gray-500 dark:text-gray-400">
                         <tr>
-                            <th class="px-4 py-3 text-left">{{ __('IP Address') }}</th>
-                            <th class="px-4 py-3 text-left">{{ __('Device Info') }}</th>
-                            <th class="px-4 py-3 text-left">{{ __('Result') }}</th>
-                            <th class="px-4 py-3 text-left">{{ __('Time') }}</th>
+                            <th class="px-6 py-4 text-left text-[10px] font-black uppercase tracking-[2px] opacity-70">{{ __('IP Address') }}</th>
+                            <th class="px-6 py-4 text-left text-[10px] font-black uppercase tracking-[2px] opacity-70">{{ __('Device Info') }}</th>
+                            <th class="px-6 py-4 text-left text-[10px] font-black uppercase tracking-[2px] opacity-70">{{ __('Result') }}</th>
+                            <th class="px-6 py-4 text-left text-[10px] font-black uppercase tracking-[2px] opacity-70">{{ __('Time') }}</th>
                         </tr>
                     </thead>
 

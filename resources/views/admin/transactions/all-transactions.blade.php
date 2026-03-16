@@ -49,7 +49,7 @@
     </x-slot>
 
     <div class="py-8 px-4 sm:px-6 lg:px-8 min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="w-full mx-auto space-y-6">
 
             <div class="bg-gradient-to-r from-blue-500 dark:from-blue-700 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -162,67 +162,26 @@
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 transition-all duration-300 hover:shadow-xl">
                 <form method="GET" action="{{ route('admin.transactions.all-transactions') }}" class="space-y-4">
-                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-end gap-3 sm:gap-4">
                         {{-- Currency Filter --}}
-                        <div>
+                        <div class="h-[70px] flex flex-col justify-end">
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
                                 {{ __('Currency') }}
                             </label>
-                            <select name="type"
-                                class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
-                                <option value="cash" {{ request('type', 'cash') === 'cash' ? 'selected' : '' }}>
-                                    Cash</option>
-                                <option value="coinkey" {{ request('type') === 'coinkey' ? 'selected' : '' }}>
-                                    Coinkey</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label
-                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                {{ __('Status') }}
-                            </label>
-                            <select name="status"
-                                class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
+                            <select name="type" class="w-full px-3 py-2 h-[42px] bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
                                 <option value="">{{ __('All') }}</option>
-                                <option value="pending" {{ ($status ?? '') == 'pending' ? 'selected' : '' }}>{{ __('Pending') }}
-                                </option>
-                                <option value="success" {{ ($status ?? '') == 'success' ? 'selected' : '' }}>{{ __('Success') }}
-                                </option>
-                                <option value="failed" {{ ($status ?? '') == 'failed' ? 'selected' : '' }}>{{ __('Failed') }}
-                                </option>
-                                <option value="cancelled" {{ ($status ?? '') == 'cancelled' ? 'selected' : '' }}>
-                                    {{ __('Cancelled') }}</option>
+                                <option value="cash" {{ request('type') == 'cash' ? 'selected' : '' }}>Tiền mặt</option>
+                                <option value="coinkey" {{ request('type') == 'coinkey' ? 'selected' : '' }}>Coinkey</option>
                             </select>
                         </div>
-
-                        <div>
-                            <label
-                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                {{ __('From') }}
-                            </label>
-                            <input type="date" name="date_from" value="{{ $dateFrom ?? '' }}"
-                                class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200">
-                        </div>
-
-                        <div>
-                            <label
-                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
-                                {{ __('To') }}
-                            </label>
-                            <input type="date" name="date_to" value="{{ $dateTo ?? '' }}"
-                                class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200">
-                        </div>
-
-
-
-                        <div>
+                        <div class="h-[70px] flex flex-col justify-end">
                             <label
                                 class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
                                 {{ __('Advanced Filters') }}
                             </label>
                             <select name="advanced"
-                                class="w-full px-3 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
+                                class="w-full px-3 py-2 h-[42px] bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200 cursor-pointer">
                                 <option value="">{{ __('All') }}</option>
                                 <option value="order" {{ request('advanced') == 'order' ? 'selected' : '' }}>{{ __('Order') }}
                                 </option>
@@ -235,33 +194,31 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="pt-6">
-                            <a href="{{ route('admin.transactions.all-transactions') }}"
-                                class="w-full flex items-center justify-center px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600 font-medium transition-all duration-200 text-sm h-full">
-                                {{ __('Reset') }}
-                            </a>
-                        </div>
 
-                        <div class="col-span-2 sm:col-span-3 lg:col-span-2">
+                        <div class="col-span-1 lg:col-span-1 h-[70px] flex flex-col justify-end">
                             <label
-                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide">
+                                class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-wide opacity-0 hidden lg:block">
                                 {{ __('Search') }}
                             </label>
-                            <div class="relative">
+                            <div class="relative h-[42px]">
                                 <input type="text" name="search" value="{{ $search ?? '' }}"
                                     placeholder="{{ __('Order, User, Key Code, Product...') }}"
-                                    class="w-full pl-4 pr-12 py-2 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200">
+                                    class="w-full pl-4 pr-12 h-full bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-sm font-medium text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-200">
                                 <button type="submit"
-                                    class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white rounded-lg transition-all duration-200">
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 p-2 h-[30px] w-[30px] flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white rounded-lg transition-all duration-200">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                 </button>
                             </div>
-
                         </div>
-
+                        <div class="h-[70px] flex flex-col justify-end">
+                            <a href="{{ route('admin.transactions.all-transactions') }}"
+                                class="w-full h-[42px] flex items-center justify-center px-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-600 font-medium transition-all duration-200 text-sm">
+                                {{ __('Reset') }}
+                            </a>
+                        </div>
                     </div>
                 </form>
             </div>

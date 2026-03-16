@@ -1,29 +1,29 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center space-x-3">
-            <div class="p-2 bg-blue-600 rounded-lg shadow-lg shadow-blue-500/30">
+            <div class="p-2 bg-blue-600 rounded-xl shadow-lg shadow-blue-500/20">
                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
             </div>
-            <h2 class="font-bold text-2xl text-gray-800 dark:text-white tracking-tight">
+            <h2 class="font-black text-2xl text-gray-800 dark:text-white tracking-tight">
                 {{ __('Edit User') }}
             </h2>
         </div>
     </x-slot>
 
     <div class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 min-h-screen">
-        <div class="max-w-4xl mx-auto">
+        <div class="space-y-6">
 
             <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                class="bg-white dark:bg-[#161b22] rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-[#30363d]">
 
                 <div
-                    class="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 p-6 sm:p-8">
-                    <h3 class="text-2xl font-bold text-white">{{ __('Update Information') }}</h3>
-                    <p class="text-blue-100 text-sm mt-1">{{ __('Edit details for user') }}:
-                        <strong>{{ $user->name }}</strong></p>
+                    class="bg-[#0a0f1e] p-6 sm:p-8 border-b border-white/5">
+                    <h3 class="text-2xl font-black text-white">{{ __('Update Information') }}</h3>
+                    <p class="text-white/60 text-sm mt-1">{{ __('Edit details for user') }}:
+                        <strong class="text-blue-400 font-bold">{{ $user->name }}</strong></p>
                 </div>
 
                 <div class="p-6 sm:p-8">
@@ -128,13 +128,13 @@
                         </div>
 
                         <div
-                            class="flex items-center justify-end gap-4 pt-6 border-t border-gray-100 dark:border-gray-700">
+                            class="flex items-center justify-end gap-4 pt-6 border-t border-gray-100 dark:border-gray-800">
                             <a href="{{ route('admin.users') }}"
-                                class="px-6 py-3 bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200">
+                                class="px-6 py-3 bg-white border-2 border-gray-100 dark:bg-gray-800 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-bold rounded-xl shadow-sm hover:bg-gray-50 transition-all duration-200 uppercase tracking-wider text-xs">
                                 {{ __('Cancel') }}
                             </a>
                             <button type="submit"
-                                class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium rounded-xl shadow-lg transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200">
+                                class="px-8 py-3 bg-[#2563eb] hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 uppercase tracking-wider text-xs">
                                 {{ __('Save Changes') }}
                             </button>
                         </div>

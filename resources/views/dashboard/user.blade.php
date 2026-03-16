@@ -1,3 +1,410 @@
+@push('styles')
+    <style>
+        /* ──────────────────────────────────────
+       USER DASHBOARD — NETKEY DESIGN SYSTEM
+    ────────────────────────────────────── */
+
+        /* Welcome Banner → navy with blue accent */
+        .nk-welcome-banner {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a0f1e 0%, #1a2a4e 60%, #2563eb 100%);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            box-shadow: 0 20px 60px rgba(37, 99, 235, 0.2);
+        }
+
+        .nk-welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .nk-welcome-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -40px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* Stat cards */
+        .nk-stat-card {
+            background: var(--bg-card, white);
+            border: 1px solid var(--border, #e5e7eb);
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nk-stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .nk-stat-card {
+            background: var(--bg-card, #161b22);
+            border-color: var(--border, #30363d);
+        }
+
+        .nk-stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .nk-stat-icon-blue {
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .nk-stat-icon-green {
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .nk-stat-icon-amber {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .nk-stat-icon-red {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .nk-stat-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--fg-muted, #6b7280);
+            margin-bottom: 6px;
+        }
+
+        .nk-stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--fg, #111827);
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -1px;
+        }
+
+        .dark .nk-stat-value {
+            color: #e6edf3;
+        }
+
+        .nk-stat-sub {
+            font-size: 0.75rem;
+            color: var(--fg-muted, #6b7280);
+            margin-top: 6px;
+        }
+
+        .nk-stat-accent-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 16px 0 0 16px;
+        }
+
+        .stripe-blue {
+            background: #2563eb;
+        }
+
+        .stripe-green {
+            background: #22c55e;
+        }
+
+        .stripe-amber {
+            background: #f59e0b;
+        }
+
+        .stripe-red {
+            background: #ef4444;
+        }
+
+        /* Chart cards */
+        .nk-chart-card {
+            background: var(--bg-card, white);
+            border: 1px solid var(--border, #e5e7eb);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .dark .nk-chart-card {
+            background: #161b22;
+            border-color: #30363d;
+        }
+
+        .nk-chart-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--fg, #111827);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dark .nk-chart-title {
+            color: #e6edf3;
+        }
+
+        /* Quick actions banner */
+        .nk-cta-banner {
+            background: linear-gradient(135deg, #0a0f1e 0%, #2563eb 100%);
+            border-radius: 16px;
+            padding: 36px 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nk-cta-banner::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .nk-cta-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .nk-cta-sub {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .nk-cta-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 22px;
+            background: white;
+            color: #2563eb;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nk-cta-btn-primary:hover {
+            background: #f9fafb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .nk-cta-btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 22px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nk-cta-btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        /* Timeline items */
+        .nk-timeline-item {
+            display: flex;
+            gap: 14px;
+            padding: 12px;
+            border-radius: 10px;
+            transition: background 0.15s;
+            border: 1px solid transparent;
+        }
+
+        .nk-timeline-item:hover {
+            background: var(--bg-elevated, #f9fafb);
+            border-color: var(--border, #e5e7eb);
+        }
+
+        .dark .nk-timeline-item:hover {
+            background: #1f2937;
+            border-color: #30363d;
+        }
+
+        /* Recent products items */
+        .nk-product-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border, #f3f4f6);
+            transition: all 0.15s;
+        }
+
+        .nk-product-item:hover {
+            background: var(--accent-light, #eff6ff);
+            border-color: #93c5fd;
+        }
+
+        .dark .nk-product-item {
+            border-color: #21262d;
+        }
+
+        .dark .nk-product-item:hover {
+            background: rgba(96, 165, 250, 0.08);
+            border-color: #60a5fa;
+        }
+
+        .nk-product-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(37, 99, 235, 0.1);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Countdown box */
+        .nk-countdown-box {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 16px 22px;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .nk-countdown-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 4px;
+        }
+
+        .nk-countdown-value {
+            font-size: 1.1rem;
+            font-family: monospace;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        /* Settings button in banner */
+        .nk-settings-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: white;
+            color: #2563eb;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nk-settings-btn:hover {
+            background: #f9fafb;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+        }
+
+        /* Link overrides */
+        .nk-link-blue {
+            color: #2563eb;
+            font-weight: 500;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+
+        .nk-link-blue:hover {
+            text-decoration: underline;
+        }
+
+        .dark .nk-link-blue {
+            color: #60a5fa;
+        }
+
+        /* Chart toggle button override */
+        #toggleChartType {
+            background: #2563eb !important;
+            color: white !important;
+            border-color: #2563eb !important;
+            border-radius: 8px;
+        }
+
+        #toggleChartType:hover {
+            background: #1d4ed8 !important;
+        }
+
+        /* Section card title */
+        .nk-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--fg, #111827);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dark .nk-section-title {
+            color: #e6edf3;
+        }
+
+        /* Stat entry card (legend below pie) */
+        .nk-legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.825rem;
+        }
+
+        .nk-legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+    </style>
+@endpush
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
@@ -12,8 +419,7 @@
 
     <div class="space-y-6">
         {{-- Welcome Banner --}}
-        <div
-            class="relative overflow-hidden bg-gradient-to-r from-indigo-700 to-blue-600 rounded-3xl shadow-2xl p-6 sm:p-10 text-white">
+        <div class="nk-welcome-banner">
             {{-- Decorative Background Circles --}}
             <div
                 class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-white opacity-5 blur-3xl pointer-events-none">
@@ -91,88 +497,65 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
             {{-- Total Spend Card --}}
-            <div
-                class="bg-gradient-to-br from-blue-600 to-blue-200 dark:from-blue-200 dark:to-blue-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="p-3 bg-white/20 dark:bg-blue-200 backdrop-blur-sm rounded-xl">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
+            <div class="nk-stat-card">
+                <div class="nk-stat-accent-stripe stripe-blue"></div>
+                <div class="nk-stat-icon nk-stat-icon-blue">
+                    <svg width="22" height="22" fill="none" stroke="#2563eb" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
-                <p class="text-sm text-gray-900 dark:text-white opacity-90 mb-2 uppercase tracking-wider">
-                    {{ __('Total Spending') }}
-                </p>
-                <p class="text-3xl text-gray-900 dark:text-white font-bold">{{ number_format($stats['total_spend']) }}
-                </p>
-                <p class="text-xs text-gray-900 dark:text-white opacity-75 mt-2">VND ({{ __('Success') }})</p>
+                <p class="nk-stat-label">{{ __('Total Spending') }}</p>
+                <p class="nk-stat-value">{{ number_format($stats['total_spend']) }}</p>
+                <p class="nk-stat-sub">VND &mdash; {{ __('Successful') }}</p>
             </div>
 
             {{-- Success Transactions --}}
-            <div
-                class="bg-gradient-to-br from-green-200 to-green-600 dark:from-green-200 dark:to-green-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
-                <div class="flex items-center justify-between mb-4">
-                    <div
-                        class="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <span
-                        class="text-xs font-semibold text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-3 py-1.5 rounded-full">
-                        {{ $stats['total_transactions'] > 0 ? round(($stats['success'] / $stats['total_transactions']) * 100, 1) : 0 }}%
-                    </span>
+            <div class="nk-stat-card">
+                <div class="nk-stat-accent-stripe stripe-green"></div>
+                <div class="nk-stat-icon nk-stat-icon-green">
+                    <svg width="22" height="22" fill="none" stroke="#22c55e" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium">{{ __('Successful') }}</p>
-                <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ number_format($stats['success']) }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">{{ __('Transaction') }}</p>
+                <p class="nk-stat-label">{{ __('Successful') }}</p>
+                <p class="nk-stat-value">{{ number_format($stats['success']) }}</p>
+                <p class="nk-stat-sub">{{ __('Transaction') }} &mdash;
+                    {{ $stats['total_transactions'] > 0 ? round(($stats['success'] / $stats['total_transactions']) * 100, 1) : 0 }}%
+                </p>
             </div>
 
             {{-- Pending Transactions --}}
-            <div
-                class="bg-gradient-to-br from-yellow-600 to-yellow-200 dark:from-yellow-200 dark:to-yellow-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
-                <div class="flex items-center justify-between mb-4">
-                    <div
-                        class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <span
-                        class="text-xs font-semibold text-yellow-600 dark:text-yellow-400 bg-yellow-100 dark:bg-yellow-900/30 px-3 py-1.5 rounded-full">
-                        {{ $stats['total_transactions'] > 0 ? round(($stats['pending'] / $stats['total_transactions']) * 100, 1) : 0 }}%
-                    </span>
+            <div class="nk-stat-card">
+                <div class="nk-stat-accent-stripe stripe-amber"></div>
+                <div class="nk-stat-icon nk-stat-icon-amber">
+                    <svg width="22" height="22" fill="none" stroke="#f59e0b" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium">{{ __('Awaiting Payment') }}</p>
-                <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ number_format($stats['pending']) }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">{{ __('Transaction') }}</p>
+                <p class="nk-stat-label">{{ __('Awaiting Payment') }}</p>
+                <p class="nk-stat-value">{{ number_format($stats['pending']) }}</p>
+                <p class="nk-stat-sub">{{ __('Transaction') }} &mdash;
+                    {{ $stats['total_transactions'] > 0 ? round(($stats['pending'] / $stats['total_transactions']) * 100, 1) : 0 }}%
+                </p>
             </div>
 
             {{-- Failed/Cancelled --}}
-            <div
-                class="bg-gradient-to-br from-red-200 to-red-600 dark:from-red-200 dark:to-red-600 rounded-2xl shadow-xl p-6 text-white transform hover:scale-105 transition-all duration-300">
-                <div class="flex items-center justify-between mb-4">
-                    <div
-                        class="p-3 bg-red-100 dark:bg-red-900/30 rounded-xl group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </div>
-                    <span
-                        class="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-3 py-1.5 rounded-full">
-                        {{ $stats['total_transactions'] > 0 ? round(($stats['failed'] / $stats['total_transactions']) * 100, 1) : 0 }}%
-                    </span>
+            <div class="nk-stat-card">
+                <div class="nk-stat-accent-stripe stripe-red"></div>
+                <div class="nk-stat-icon nk-stat-icon-red">
+                    <svg width="22" height="22" fill="none" stroke="#ef4444" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 font-medium">{{ __('Failed/Cancelled') }}</p>
-                <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ number_format($stats['failed']) }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">{{ __('Transaction') }}</p>
+                <p class="nk-stat-label">{{ __('Failed/Cancelled') }}</p>
+                <p class="nk-stat-value">{{ number_format($stats['failed']) }}</p>
+                <p class="nk-stat-sub">{{ __('Transaction') }} &mdash;
+                    {{ $stats['total_transactions'] > 0 ? round(($stats['failed'] / $stats['total_transactions']) * 100, 1) : 0 }}%
+                </p>
             </div>
         </div>
 
@@ -248,9 +631,12 @@
                         </button>
                         <select id="chart-range-select"
                             class="px-3 py-1.5 border rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 text-sm">
-                            <option value="7days" {{ $currentRange === '7days' ? 'selected' : '' }}>{{ __('Last 7 days') }}</option>
-                            <option value="month" {{ $currentRange === 'month' ? 'selected' : '' }}>{{ __('Last 30 days') }}</option>
-                            <option value="year" {{ $currentRange === 'year' ? 'selected' : '' }}>{{ __('Last year') }}</option>
+                            <option value="7days" {{ $currentRange === '7days' ? 'selected' : '' }}>
+                                {{ __('Last 7 days') }}</option>
+                            <option value="month" {{ $currentRange === 'month' ? 'selected' : '' }}>
+                                {{ __('Last 30 days') }}</option>
+                            <option value="year" {{ $currentRange === 'year' ? 'selected' : '' }}>{{ __('Last year') }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -321,7 +707,8 @@
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                 </svg>
                             </div>
-                            <p class="text-gray-500 dark:text-gray-400 font-medium mb-3">{{ __('You have not purchased any products yet') }}
+                            <p class="text-gray-500 dark:text-gray-400 font-medium mb-3">
+                                {{ __('You have not purchased any products yet') }}
                             </p>
                             <a href="{{ route('products') }}"
                                 class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl transition-all">
@@ -337,7 +724,7 @@
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center">
-                                            📋 {{ __('Activity History') }}
+                        📋 {{ __('Activity History') }}
                     </h3>
                     <button class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
                         {{ __('Refresh') }}
@@ -369,19 +756,18 @@
         </div>
 
         {{-- Quick Actions Banner --}}
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-xl p-8 text-white">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="mb-4 md:mb-0 text-center md:text-left">
-                    <h3 class="text-3xl font-bold mb-2">{{ __('Ready to explore?') }} 🚀</h3>
-                    <p class="text-indigo-100 text-lg">{{ __('Discover amazing products and deals') }}</p>
+        <div class="nk-cta-banner">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6"
+                style="position:relative;z-index:1">
+                <div>
+                    <h3 class="nk-cta-title">{{ __('Ready to explore?') }}</h3>
+                    <p class="nk-cta-sub">{{ __('Discover amazing products and deals') }}</p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <a href="{{ route('products') }}"
-                        class="px-6 py-3 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg transform hover:scale-105 text-center">
-                        🛍️ {{ __('View Products') }}
+                    <a href="{{ route('products') }}" class="nk-cta-btn-primary">
+                        {{ __('View Products') }}
                     </a>
-                    <a href="{{ route('profile.edit') }}"
-                        class="px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-xl font-semibold hover:bg-white/30 transition-all duration-200 text-center">
+                    <a href="{{ route('profile.edit') }}" class="nk-cta-btn-ghost">
                         ⚙️ {{ __('Settings') }}
                     </a>
                 </div>
@@ -515,8 +901,8 @@
                                 return gradient;
                             }
 
-                                // Pie Chart
-                                const successCount = {{ $stats['success'] }};
+                                    // Pie Chart
+                                    const successCount = {{ $stats['success'] }};
                         const pendingCount = {{ $stats['pending'] }};
                         const failedCount = {{ $stats['failed'] }};
                         // Tính tổng số giao dịch để phục vụ tính toán phần trăm
@@ -571,15 +957,15 @@
                                     cutout: '70%'
                                 }
                             });
-                                }
+                                    }
 
                         // Gradient TAILWIND 
                         function createGradient(ctx, colorFrom, colorTo) {
-                                    const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+                                        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
                         gradient.addColorStop(0, colorFrom);
                         gradient.addColorStop(1, colorTo);
                         return gradient;
-                                }
+                                    }
 
                         // ============================
                         // Crosshair X + Y
@@ -587,7 +973,7 @@
                         const crosshairPlugin = {
                             id: 'crosshairPlugin',
                         afterDraw(chart) {
-                                        if (!chart.tooltip?._active?.length) return;
+                                            if (!chart.tooltip?._active?.length) return;
 
                         const ctx = chart.ctx;
                         const point = chart.tooltip._active[0].element;
@@ -616,8 +1002,8 @@
                         ctx.stroke();
 
                         ctx.restore();
-                                    }
-                                };
+                                        }
+                                    };
 
                         Chart.register(crosshairPlugin);
 
@@ -626,7 +1012,7 @@
                         const totals = {!! json_encode($chartTotals) !!};
                         const counts = {!! json_encode($chartCounts) !!};
                         const labels = {!! json_encode($chartLabels) !!};
-                                const avg = totals.map((v, i) => counts[i] ? v / counts[i] : 0);
+                                    const avg = totals.map((v, i) => counts[i] ? v / counts[i] : 0);
 
                         const ctx = document.getElementById('expenseBarChart').getContext('2d');
 
@@ -648,7 +1034,7 @@
                         pointRadius: 2,
                         pointHoverRadius: 5,
                         yAxisID: "moneyAxis",
-                                        },
+                                            },
                         {
 
                             label: "Tổng Chi Tiêu (VND)",
@@ -664,7 +1050,7 @@
                         pointRadius: 2,
                         pointHoverRadius: 5,
                         yAxisID: "moneyAxis"
-                                        },
+                                            },
                         {
 
                             label: 'Số Giao Dịch Thành Công',
@@ -676,10 +1062,10 @@
                         yAxisID: "countAxis",
                         pointRadius: 2,
                         pointHoverRadius: 5
-                                        }
+                                            }
 
                         ]
-                                    },
+                                        },
                         options: {
                             responsive: true,
                         maintainAspectRatio: false,
@@ -687,43 +1073,43 @@
                         animation: {
                             duration: 600,
                         easing: 'easeInOutQuart'
-                                        },
+                                            },
 
                         scales: {
                             moneyAxis: {
                             position: "left",
                         ticks: {
                             callback: v => v.toLocaleString('vi-VN')
-                                                }
-                                            },
+                                                    }
+                                                },
                         countAxis: {
                             position: "right",
                         beginAtZero: true,
                         grid: {
                             display: false
-                                                },
+                                                    },
                         ticks: {
                             stepSize: 1,
-                                                    callback: v => Number.isInteger(v) ? v : ''
+                                                        callback: v => Number.isInteger(v) ? v : ''
+                                                    }
                                                 }
-                                            }
-                                        },
+                                            },
 
                         plugins: {
                             tooltip: {
                             enabled: true
-                                            },
+                                                },
                         legend: {
                             position: 'bottom'
+                                                }
                                             }
                                         }
-                                    }
-                                });
+                                    });
 
 
                         //  BUTTTON: Toggle Chart Type
                         document.getElementById("toggleChartType")
-                                    .addEventListener("click", () => {
+                                        .addEventListener("click", () => {
 
                             // xoay vòng
                             currentType =
@@ -731,27 +1117,27 @@
                                 currentType === "line" ? "area" :
                                     "bar";
 
-                                        chart.data.datasets.forEach(ds => {
+                                            chart.data.datasets.forEach(ds => {
 
-                                            if (currentType === "area") {
+                                                if (currentType === "area") {
                             ds.type = "line";
                         ds.fill = true;
-                                            } else {
+                                                } else {
                             ds.type = currentType;
                         ds.fill = false;
-                                            }
-                                        });
+                                                }
+                                            });
 
                         chart.update();
-                                    });
+                                        });
 
                         //    --- Logic Chuyển Đổi Phạm Vi ---
                         document.getElementById('chart-range-select')
                         .addEventListener('change', function () {
-                                        const selectedValue = this.value;
+                                            const selectedValue = this.value;
                         window.location.href = `?range=${selectedValue}`;
-                                    });
-                            });
+                                        });
+                                });
         </script>
     @endpush
 </x-app-layout>

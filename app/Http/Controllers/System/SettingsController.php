@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 
 class SettingsController extends Controller
 {
@@ -22,14 +20,6 @@ class SettingsController extends Controller
         $user = Auth::user();
 
         // Handle different settings updates
-        if ($request->has('current_password')) {
-            return $this->updatePassword($request);
-        }
-
-        if ($request->has('name')) {
-            return $this->updateProfile($request);
-        }
-
         if ($request->has('notification_settings')) {
             return $this->updateNotifications($request);
         }
@@ -38,46 +28,7 @@ class SettingsController extends Controller
             return $this->updatePreferences($request);
         }
 
-        if ($request->has('security_settings')) {
-            return $this->updateSecurity($request);
-        }
-
         return redirect()->back()->with('error', 'Invalid request');
-    }
-
-    private function updatePassword(Request $request)
-    {
-        $request->validate([
-            'current_password' => ['required'],
-            'password' => ['required', 'confirmed', Password::defaults()],
-        ]);
-
-        $user = Auth::user();
-
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->with('error', 'Current password is incorrect');
-        }
-
-        $user->update([
-            'password' => Hash::make($request->password)
-        ]);
-
-        return back()->with('success', 'Password updated successfully');
-    }
-
-    private function updateProfile(Request $request)
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255'],
-            'phone_number' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string', 'max:255'],
-        ]);
-
-        $user = Auth::user();
-        $user->update($request->only(['name', 'email', 'phone_number', 'address']));
-
-        return back()->with('success', 'Profile updated successfully');
     }
 
     private function updateNotifications(Request $request)
@@ -113,26 +64,5 @@ class SettingsController extends Controller
         $user->save();
 
         return back()->with('success', 'Display preferences updated');
-    }
-
-    private function updateSecurity(Request $request)
-    {
-        $user = Auth::user();
-        $preferences = $user->preferences ?? [];
-
-        // Handle 2FA Toggle
-        // Checkbox logic: strictly set true or false based on presence
-        $isEnabled = $request->has('2fa_enabled');
-
-        $preferences['security'] = [
-            '2fa_enabled' => $isEnabled,
-        ];
-
-        $msg = $isEnabled ? 'Two-Factor Authentication Enabled' : 'Two-Factor Authentication Disabled';
-
-        $user->preferences = $preferences;
-        $user->save();
-
-        return back()->with('success', $msg);
     }
 }

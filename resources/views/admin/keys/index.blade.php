@@ -1,14 +1,96 @@
+@push('styles')
+<style>
+/* Welcome Banner → navy with blue accent */
+.nk-welcome-banner {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0f1e 0%, #1a2a4e 60%, #2563eb 100%);
+    border-radius: 20px;
+    padding: 40px;
+    color: white;
+    box-shadow: 0 20px 60px rgba(37,99,235,0.2);
+}
+.nk-welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(37,99,235,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.nk-welcome-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(96,165,250,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+/* Stat cards */
+.nk-stat-card {
+    background: var(--bg-card, white);
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 16px;
+    padding: 24px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+.nk-stat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+.dark .nk-stat-card { background: var(--bg-card, #161b22); border-color: var(--border, #30363d); }
+
+.nk-stat-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+}
+.nk-stat-icon-blue  { background: rgba(37,99,235,0.1); }
+.nk-stat-icon-green { background: rgba(34,197,94,0.1); }
+.nk-stat-icon-amber { background: rgba(245,158,11,0.1); }
+.nk-stat-icon-red   { background: rgba(239,68,68,0.1); }
+
+.nk-stat-label {
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--fg-muted, #6b7280); margin-bottom: 6px;
+}
+.nk-stat-value {
+    font-size: 2rem; font-weight: 900;
+    color: var(--fg, #111827);
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -1px;
+}
+.dark .nk-stat-value { color: #e6edf3; }
+
+.nk-stat-sub {
+    font-size: 0.75rem; color: var(--fg-muted, #6b7280);
+    margin-top: 6px;
+}
+
+.nk-stat-accent-stripe {
+    position: absolute; top: 0; left: 0; bottom: 0; width: 4px;
+    border-radius: 16px 0 0 16px;
+}
+.stripe-blue  { background: #2563eb; }
+.stripe-green { background: #22c55e; }
+.stripe-amber { background: #f59e0b; }
+.stripe-red   { background: #ef4444; }
+</style>
+@endpush
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
-                <div class="p-2 bg-indigo-600 rounded-lg shadow-lg shadow-indigo-500/30">
+                <div class="p-2 bg-blue-600 rounded-xl shadow-lg shadow-blue-500/20">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
                     </svg>
                 </div>
-                <h2 class="font-bold text-2xl text-gray-800 dark:text-white tracking-tight">
+                <h2 class="font-black text-2xl text-gray-800 dark:text-white tracking-tight">
                     {{ __('Keys Management') }}
                 </h2>
             </div>
@@ -16,23 +98,23 @@
     </x-slot>
 
     <div class="py-8 px-4 sm:px-6 lg:px-8 min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto space-y-6">
-            <div class="bg-gradient-to-r from-blue-500 dark:from-blue-700 rounded-2xl shadow-xl p-6 sm:p-8 text-white">
+        <div class="space-y-6">
+            <div class="nk-welcome-banner !p-6 sm:!p-8">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="space-y-2">
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">
+                        <h3 class="text-xl sm:text-2xl font-black text-white">
                             {{ __('Keys Overview') }}
                         </h3>
-                        <p class="text-blue-800 dark:text-white text-sm sm:text-base">{{ __('Manage all keys') }}</p>
+                        <p class="text-white/70 text-sm sm:text-base">{{ __('Manage all keys in the system') }}</p>
                     </div>
                     <div class="flex items-center space-x-6">
                         <div class="text-center">
-                            <div class="text-3xl font-bold text-gray-800 dark:text-white">{{ $stats['total'] }}</div>
-                            <div class="text-xs text-blue-800 dark:text-white uppercase tracking-wide">
+                            <div class="text-3xl font-black text-white">{{ $stats['total'] }}</div>
+                            <div class="text-[10px] text-white/50 uppercase tracking-[2px] font-bold">
                                 {{ __('Total Keys') }}
                             </div>
                         </div>
-                        <div class="h-12 w-px bg-white/30"></div>
+                        <div class="h-10 w-px bg-white/10"></div>
                     </div>
                 </div>
             </div>
@@ -41,16 +123,17 @@
             <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
 
                 <div
-                    class="bg-gradient-to-br from-green-200 to-green-600 dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                    class="nk-stat-card">
+                    <div class="nk-stat-accent-stripe stripe-green"></div>
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">Active</p>
-                            <p class="text-2xl sm:text-2xl font-bold text-green-600 dark:text-green-400 mt-1 ">
-                                {{ number_format($stats['active']) }} Keys
+                            <p class="nk-stat-label">Active</p>
+                            <p class="nk-stat-value !text-2xl">
+                                {{ number_format($stats['active']) }}
                             </p>
                         </div>
-                        <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-green-600 dark:text-green-400" fill="none"
+                        <div class="nk-stat-icon nk-stat-icon-green">
+                            <svg class="w-6 h-6 text-green-600" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z " />
@@ -59,17 +142,17 @@
                     </div>
                 </div>
 
-                <div
-                    class="bg-gradient-to-br from-gray-200 to-gray-600 dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                <div class="nk-stat-card">
+                    <div class="nk-stat-accent-stripe stripe-amber"></div>
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">Expired</p>
-                            <p class="text-2xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1">
-                                {{ number_format($stats['expired']) }} Keys
+                            <p class="nk-stat-label">Expired</p>
+                            <p class="nk-stat-value !text-2xl">
+                                {{ number_format($stats['expired']) }}
                             </p>
                         </div>
-                        <div class="bg-gray-100 dark:bg-gray-900/30 p-3 rounded-full">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-gray-600 dark:text-gray-400" fill="none"
+                        <div class="nk-stat-icon nk-stat-icon-amber">
+                            <svg class="w-6 h-6 text-amber-600" fill="none"
                                 stroke="currentColor" viewBox="0 0 28 28 ">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M5 3h14v4l-7 8 7 8v4H5v-4l7-8-7-8V3z" />
@@ -78,17 +161,17 @@
                     </div>
                 </div>
 
-                <div
-                    class="bg-gradient-to-br from-orange-200 to-orange-600 dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                <div class="nk-stat-card">
+                    <div class="nk-stat-accent-stripe stripe-red"></div>
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">Suspended</p>
-                            <p class="text-2xl sm:text-2xl font-bold text-orange-600 dark:text-orange-400 mt-1">
-                                {{ number_format($stats['suspended']) }} Keys
+                            <p class="nk-stat-label">Suspended</p>
+                            <p class="nk-stat-value !text-2xl">
+                                {{ number_format($stats['suspended']) }}
                             </p>
                         </div>
-                        <div class="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-full">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-orange-600 dark:text-orange-400" fill="none"
+                        <div class="nk-stat-icon nk-stat-icon-red">
+                            <svg class="w-6 h-6 text-red-600" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -97,17 +180,17 @@
                     </div>
                 </div>
 
-                <div
-                    class="bg-gradient-to-br from-red-200 to-red-600 dark:bg-gray-800 overflow-hidden shadow-lg rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300">
+                <div class="nk-stat-card">
+                    <div class="nk-stat-accent-stripe !bg-gray-400"></div>
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">Deleted</p>
-                            <p class="text-2xl sm:text-2xl font-bold text-red-600 dark:text-red-400 mt-1">
-                                {{ number_format($stats['deleted']) }} Keys
+                            <p class="nk-stat-label">Deleted</p>
+                            <p class="nk-stat-value !text-2xl">
+                                {{ number_format($stats['deleted']) }}
                             </p>
                         </div>
-                        <div class="bg-red-100 dark:bg-red-900/30 p-3 rounded-full">
-                            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-red-600 dark:text-red-400" fill="none"
+                        <div class="nk-stat-icon bg-gray-100 p-3 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-gray-400" fill="none"
                                 stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -119,17 +202,19 @@
 
             <!-- Filter Box -->
             <div
-                class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 mb-6 border border-gray-200 dark:border-gray-700">
+                class="bg-white dark:bg-[#161b22] rounded-2xl shadow-lg border border-gray-100 dark:border-[#30363d] p-6 transition-all duration-300">
                 <form method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4">
                     <div class="col-span-1 md:col-span-2">
+                        <label class="nk-section-label">{{ __('Search') }}</label>
                         <input type="text" name="search" value="{{ request('search') }}"
                             placeholder="{{ __('Search by Key Code or Email...') }}"
-                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 transition">
+                            class="w-full px-4 py-3 border-2 border-gray-100 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-blue-500 transition duration-200">
                     </div>
 
                     <div>
+                        <label class="nk-section-label">{{ __('Status') }}</label>
                         <select name="status"
-                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                            class="w-full px-4 py-3 border-2 border-gray-100 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-blue-500 cursor-pointer transition duration-200">
                             <option value="">-- {{ __('All Status') }} --</option>
                             <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
                             <option value="expired" {{ request('status') == 'expired' ? 'selected' : '' }}>Expired
@@ -141,8 +226,9 @@
                     </div>
 
                     <div>
+                        <label class="nk-section-label">{{ __('Deleted Status') }}</label>
                         <select name="show_deleted"
-                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                            class="w-full px-4 py-3 border-2 border-gray-100 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-blue-500 cursor-pointer transition duration-200">
                             <option value="">{{ __('Not Deleted Keys') }}</option>
                             <option value="with" {{ request('show_deleted') == 'with' ? 'selected' : '' }}>
                                 {{ __('All Keys') }}
@@ -153,13 +239,13 @@
                         </select>
                     </div>
 
-                    <div class="flex gap-2">
+                    <div class="flex items-end gap-2 pb-[2px]">
                         <button type="submit"
-                            class="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 font-medium transition shadow-md">
+                            class="flex-1 bg-blue-600 text-white px-4 py-3 rounded-xl hover:bg-blue-700 font-bold transition shadow-lg shadow-blue-500/20 uppercase tracking-wider text-xs">
                             🔍 {{ __('Filter') }}
                         </button>
                         <a href="{{ route('admin.keys.index') }}"
-                            class="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-300 transition flex items-center justify-center">
+                            class="px-5 py-3 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 rounded-xl hover:bg-gray-200 transition flex items-center justify-center border-2 border-transparent">
                             ↺
                         </a>
                     </div>
@@ -168,30 +254,30 @@
 
             <!-- Table -->
             <div
-                class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                class="bg-white dark:bg-[#161b22] rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-[#30363d]">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
                         <thead
-                            class="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-700/50 dark:text-gray-400">
+                            class="bg-[#0a0f1e] text-white">
                             <tr>
-                                <th class="px-6 py-4 font-semibold uppercase tracking-wider">{{ __('ID / Time') }}</th>
-                                <th class="px-6 py-4 font-semibold uppercase tracking-wider">{{ __('Key Code') }}</th>
-                                <th class="px-6 py-4 font-semibold uppercase tracking-wider hidden lg:table-cell">
+                                <th class="px-6 py-5 [10px] font-black uppercase tracking-[2px] opacity-50">{{ __('ID / Time') }}</th>
+                                <th class="px-6 py-5 [10px] font-black uppercase tracking-[2px] opacity-50">{{ __('Key Code') }}</th>
+                                <th class="px-6 py-5 [10px] font-black uppercase tracking-[2px] opacity-50 hidden lg:table-cell">
                                     {{ __('Owner') }}</th>
-                                <th class="px-6 py-4 font-semibold uppercase tracking-wider hidden lg:table-cell">
+                                <th class="px-6 py-5 [10px] font-black uppercase tracking-[2px] opacity-50 hidden lg:table-cell">
                                     {{ __('Type') }}
                                 </th>
-                                <th class="px-6 py-4 font-semibold uppercase tracking-wider hidden lg:table-cell">
+                                <th class="px-6 py-5 [10px] font-black uppercase tracking-[2px] opacity-50 hidden lg:table-cell">
                                     {{ __('Status') }}</th>
-                                <th class="px-6 py-4 font-semibold uppercase tracking-wider">{{ __('Expires') }}</th>
-                                <th class="px-6 py-4 text-center font-semibold uppercase tracking-wider">
+                                <th class="px-6 py-5 [10px] font-black uppercase tracking-[2px] opacity-50">{{ __('Expires') }}</th>
+                                <th class="px-6 py-5 text-center [10px] font-black uppercase tracking-[2px] opacity-50">
                                     {{ __('Actions') }}</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                             @forelse($keys as $key)
                                 <tr
-                                    class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition {{ $key->trashed() ? 'opacity-60' : '' }}">
+                                    class="bg-white dark:bg-[#161b22] hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors duration-150 group {{ $key->trashed() ? 'opacity-60' : '' }}">
                                     <td class="px-6 py-4">
                                         <div class="flex flex-col">
                                             <span class="font-medium text-gray-900 dark:text-white">
@@ -250,22 +336,22 @@
                                     <td class="px-6 py-4 hidden lg:table-cell">
                                         @if ($key->isActive())
                                             <span
-                                                class="inline-flex items-center gap-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-green-200 dark:border-green-800">
+                                                class="inline-flex items-center gap-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-green-200 dark:border-green-800">
                                                 Active
                                             </span>
                                         @elseif($key->isExpired())
                                             <span
-                                                class="inline-flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-bold px-2.5 py-0.5 rounded-full border border-gray-300">
+                                                class="inline-flex items-center gap-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-gray-300">
                                                 Expired
                                             </span>
                                         @elseif($key->isSuspended())
                                             <span
-                                                class="inline-flex items-center gap-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-yellow-200 dark:border-yellow-800">
+                                                class="inline-flex items-center gap-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-amber-200 dark:border-amber-800">
                                                 Suspended
                                             </span>
                                         @elseif($key->isRevoked())
                                             <span
-                                                class="inline-flex items-center gap-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-xs font-bold px-2.5 py-0.5 rounded-full border border-red-200 dark:border-red-800">
+                                                class="inline-flex items-center gap-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full border border-red-200 dark:border-red-800">
                                                 Revoked
                                             </span>
                                         @endif
@@ -399,9 +485,9 @@
                                                     class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                                                     <div
                                                         class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
-                                                        <div class="bg-gradient-to-r from-red-500 to-red-600 px-6 py-4">
-                                                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                                                                <svg class="w-6 h-6" fill="none" stroke="currentColor"
+                                                        <div class="bg-[#0a0f1e] px-6 py-5 border-b border-white/5">
+                                                            <h3 class="text-xl font-black text-white flex items-center gap-2">
+                                                                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
                                                                     viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                                         stroke-width="2"

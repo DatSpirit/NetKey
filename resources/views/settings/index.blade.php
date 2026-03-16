@@ -1,3 +1,57 @@
+@push('styles')
+<style>
+/* ── SETTINGS INDEX — NETKEY DESIGN OVERRIDES ── */
+
+/* Cards & Containers */
+.bg-white.dark\:bg-gray-800 {
+    background: var(--bg-card) !important;
+    border-color: var(--border) !important;
+}
+
+/* Interior elements */
+.bg-gray-50.dark\:bg-gray-700,
+.bg-gray-100.dark\:bg-gray-700 {
+    background: var(--bg-layer) !important;
+    border-color: var(--border) !important;
+}
+
+/* Inputs */
+input.bg-gray-50.dark\:bg-gray-700,
+textarea.bg-gray-50.dark\:bg-gray-700,
+select.bg-gray-50.dark\:bg-gray-700 {
+    background: var(--bg-inner) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border) !important;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 1px #2563eb !important;
+}
+
+/* Tab Active State */
+.bg-indigo-600 { background-color: #2563eb !important; }
+
+/* Gradients for buttons */
+.from-indigo-600.to-purple-600 { background: #2563eb !important; }
+.hover\:from-indigo-700.hover\:to-purple-700:hover { background: #1d4ed8 !important; }
+
+/* Status Cards overrides */
+.bg-green-50.dark\:bg-green-900\/20 { background: rgba(16, 185, 129, 0.1) !important; border-color: rgba(16, 185, 129, 0.2) !important; }
+.bg-blue-50.dark\:bg-blue-900\/20 { background: rgba(37, 99, 235, 0.1) !important; border-color: rgba(37, 99, 235, 0.2) !important; }
+.bg-purple-50.dark\:bg-purple-900\/20 { background: rgba(168, 85, 247, 0.1) !important; border-color: rgba(168, 85, 247, 0.2) !important; }
+
+.text-indigo-600.dark\:text-indigo-400,
+.text-indigo-600 { color: #2563eb !important; }
+.text-blue-600.dark\:text-blue-400 { color: #3b82f6 !important; }
+.text-green-600 { color: #10b981 !important; }
+.text-purple-600 { color: #a855f7 !important; }
+.text-red-600.dark\:text-red-400 { color: #ef4444 !important; }
+
+/* Toggle Checkbox styling adjusted for darkmode */
+input[type="checkbox"]:checked + div { background-color: #2563eb !important; }
+</style>
+@endpush
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
@@ -12,47 +66,29 @@
                     </svg>
                     {{ __('System Settings') }}
                 </h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Quản lý cài đặt tài khoản và hệ thống</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 font-medium uppercase tracking-wider">{{ __('Manage your account and system settings') }}</p>
             </div>
         </div>
     </x-slot>
 
-    <div class="space-y-6" x-data="{ activeTab: 'account' }">
+    <div class="space-y-8 py-8" x-data="{ activeTab: 'notifications' }">
 
         {{-- Settings Navigation Tabs --}}
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-2">
-            <div class="flex flex-wrap gap-2">
-                <button @click="activeTab = 'account'"
-                    :class="activeTab === 'account' ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'"
-                    class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold transition-all">
-                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    {{ __('Account') }}
-                </button>
-                <button @click="activeTab = 'security'"
-                    :class="activeTab === 'security' ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'"
-                    class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold transition-all">
-                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                    {{ __('Security') }}
-                </button>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-2 overflow-x-auto">
+            <div class="flex flex-nowrap md:flex-wrap gap-2 min-w-max md:min-w-0">
                 <button @click="activeTab = 'notifications'"
-                    :class="activeTab === 'notifications' ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'"
-                    class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold transition-all">
-                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    :class="activeTab === 'notifications' ? 'bg-indigo-600 text-white shadow-md' : 'bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'"
+                    class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     {{ __('Notifications') }}
                 </button>
                 <button @click="activeTab = 'preferences'"
-                    :class="activeTab === 'preferences' ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'"
-                    class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-semibold transition-all">
-                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    :class="activeTab === 'preferences' ? 'bg-indigo-600 text-white shadow-md' : 'bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'"
+                    class="flex-1 sm:flex-none px-6 py-3 rounded-xl font-bold transition-all flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                     </svg>
@@ -61,210 +97,13 @@
             </div>
         </div>
 
-        {{-- Account Settings --}}
-        <div x-show="activeTab === 'account'" class="space-y-6">
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                    <span class="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg mr-3">
-                        <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                    </span>
-                    {{ __('Profile Information') }}
-                </h3>
-
-                <form action="{{ route('settings.update') }}" method="POST" class="space-y-6">
-                    @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Full
-                                Name</label>
-                            <input type="text" name="name" value="{{ Auth::user()->name }}"
-                                class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email
-                                Address</label>
-                            <input type="email" name="email" value="{{ Auth::user()->email }}"
-                                class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Phone
-                                Number</label>
-                            <input type="tel" name="phone_number" value="{{ Auth::user()->phone_number }}"
-                                placeholder="+84 xxx xxx xxx"
-                                class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Join
-                                Date</label>
-                            <input type="text" value="{{ Auth::user()->created_at->format('d/m/Y') }}" disabled
-                                class="w-full px-4 py-3 bg-gray-100 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-xl cursor-not-allowed opacity-75">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Address</label>
-                        <textarea name="address" rows="3" placeholder="Enter your address..."
-                            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">{{ Auth::user()->address }}</textarea>
-                    </div>
-
-                    <div class="flex justify-end space-x-3">
-                        <button type="submit"
-                            class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg shadow-indigo-500/50">
-                            Save Changes
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            {{-- Account Status --}}
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Account Status</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div
-                        class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">Email Verified</span>
-                            @if(Auth::user()->email_verified_at)
-                                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            @else
-                                <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                            @endif
-                        </div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">
-                            {{ Auth::user()->email_verified_at ? 'Your email is verified' : 'Email not verified' }}
-                        </p>
-                    </div>
-
-                    <div
-                        class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">Account Active</span>
-                            <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">Since
-                            {{ Auth::user()->created_at->format('M Y') }}
-                        </p>
-                    </div>
-
-                    <div
-                        class="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">Member Level</span>
-                            <span class="text-purple-600 dark:text-purple-400 font-bold">
-                                {{ Auth::user()->is_admin ? 'Admin' : 'Regular' }}
-                            </span>
-                        </div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ Auth::user()->login_count ?? 0 }} logins
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- Security Settings --}}
-        <div x-show="activeTab === 'security'" class="space-y-6" style="display: none;">
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                    <span class="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg mr-3">
-                        <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                    </span>
-                    Change Password
-                </h3>
-
-                <form action="{{ route('settings.update') }}" method="POST" class="space-y-6">
-                    @csrf
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Current
-                            Password</label>
-                        <input type="password" name="current_password"
-                            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">New
-                            Password</label>
-                        <input type="password" name="password"
-                            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Confirm New
-                            Password</label>
-                        <input type="password" name="password_confirmation"
-                            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit"
-                            class="px-6 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-xl font-semibold hover:from-red-700 hover:to-pink-700 transition-all shadow-lg shadow-red-500/50">
-                            Update Password
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            {{-- Two-Factor Authentication --}}
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                    <span class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-3">
-                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                    </span>
-                    Two-Factor Authentication
-                </h3>
-
-                <form action="{{ route('settings.update') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="security_settings" value="1">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="font-semibold text-gray-900 dark:text-white">Enable 2FA</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">Secure your account with 2FA.</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" name="2fa_enabled" class="sr-only peer" {{ (Auth::user()->preferences['security']['2fa_enabled'] ?? false) ? 'checked' : '' }}>
-                            <div
-                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                            </div>
-                        </label>
-                    </div>
-                    <div class="mt-4 flex justify-end">
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save
-                            Security Settings</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         {{-- Notification Settings --}}
-        <div x-show="activeTab === 'notifications'" class="space-y-6" style="display: none;">
+        <div x-show="activeTab === 'notifications'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" class="space-y-8">
             <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Email Notifications</h3>
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 border-b border-gray-100 dark:border-gray-700 pb-4">
+                    {{ __('Email Notifications') }}
+                </h3>
                 <form action="{{ route('settings.update') }}" method="POST" class="space-y-4">
                     @csrf
                     <input type="hidden" name="notification_settings" value="1">
@@ -278,34 +117,37 @@
                         ];
                     @endphp
                     @foreach($notifSettings as $setting)
-                        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                        <div class="flex items-center justify-between p-6 bg-gray-50 dark:bg-gray-700/30 border border-gray-100 dark:border-gray-700 rounded-2xl hover:border-indigo-200 dark:hover:border-indigo-800 transition-colors">
                             <div>
-                                <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ $setting['title'] }}</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">{{ $setting['desc'] }}</p>
+                                <p class="text-base font-bold text-gray-900 dark:text-white">{{ $setting['title'] }}</p>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mt-1">{{ $setting['desc'] }}</p>
                             </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
+                            <label class="relative inline-flex items-center cursor-pointer ml-4">
                                 <input type="checkbox" name="{{ $setting['key'] }}" class="sr-only peer" {{ ($prefs[$setting['key']] ?? false) ? 'checked' : '' }}>
                                 <div
-                                    class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600">
+                                    class="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-gray-500 peer-checked:bg-indigo-600">
                                 </div>
                             </label>
                         </div>
                     @endforeach
-                    <div class="flex justify-end pt-4">
+                    <div class="flex justify-end pt-6 border-t border-gray-100 dark:border-gray-700">
                         <button type="submit"
-                            class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700">Save
-                            Notifications</button>
+                            class="px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            {{ __('Save Notifications') }}
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
 
         {{-- Preferences --}}
-        <div x-show="activeTab === 'preferences'" class="space-y-6" style="display: none;">
+        <div x-show="activeTab === 'preferences'" style="display: none;" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" class="space-y-8">
             <div
-                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 p-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Display Preferences</h3>
-                <form action="{{ route('settings.update') }}" method="POST" class="space-y-6">
+                class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 p-8">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 border-b border-gray-100 dark:border-gray-700 pb-4">
+                    {{ __('Display Preferences') }}
+                </h3>
+                <form action="{{ route('settings.update') }}" method="POST" class="space-y-6 max-w-2xl">
                     @csrf
                     <input type="hidden" name="preference_settings" value="1">
                     @php
@@ -313,9 +155,9 @@
                     @endphp
                     <div>
                         <label
-                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Language</label>
+                            class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">{{ __('Language') }}</label>
                         <select name="language"
-                            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium">
                             <option value="en" {{ ($disp['language'] ?? '') == 'en' ? 'selected' : '' }}>English</option>
                             <option value="vi" {{ ($disp['language'] ?? '') == 'vi' ? 'selected' : '' }}>Tiếng Việt
                             </option>
@@ -324,9 +166,9 @@
 
                     <div>
                         <label
-                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Currency</label>
+                            class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">{{ __('Currency') }}</label>
                         <select name="currency"
-                            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium">
                             <option value="VND" {{ ($disp['currency'] ?? '') == 'VND' ? 'selected' : '' }}>VND -
                                 Vietnamese Dong</option>
                             <option value="USD" {{ ($disp['currency'] ?? '') == 'USD' ? 'selected' : '' }}>USD - US Dollar
@@ -338,9 +180,9 @@
 
                     <div>
                         <label
-                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Timezone</label>
+                            class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">{{ __('Timezone') }}</label>
                         <select name="timezone"
-                            class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all">
+                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium">
                             <option value="Asia/Ho_Chi_Minh" {{ ($disp['timezone'] ?? '') == 'Asia/Ho_Chi_Minh' ? 'selected' : '' }}>
                                 (UTC+07:00) Bangkok, Hanoi, Jakarta</option>
                             <option value="Asia/Singapore" {{ ($disp['timezone'] ?? '') == 'Asia/Singapore' ? 'selected' : '' }}>
@@ -352,9 +194,9 @@
                         </select>
                     </div>
 
-                    <div class="flex justify-end">
+                    <div class="flex justify-start pt-6">
                         <button type="submit"
-                            class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg shadow-indigo-500/50">
+                            class="px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             {{ __('Save Preferences') }}
                         </button>
                     </div>

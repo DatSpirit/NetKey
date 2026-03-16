@@ -1,19 +1,89 @@
+@push('styles')
+<style>
+/* ── CUSTOM EXTEND CONFIRM — NETKEY DESIGN OVERRIDES ── */
+
+/* Container & Cards */
+.bg-gradient-to-br.from-blue-50.to-indigo-50.dark\:from-blue-900\/20.dark\:to-indigo-900\/20,
+.bg-gradient-to-br.from-purple-50.to-pink-50.dark\:from-purple-900\/20.dark\:to-pink-900\/20,
+.bg-white.dark\:bg-gray-800 {
+    background: var(--bg-card) !important;
+    border-color: var(--border) !important;
+}
+
+/* Sub-card interior elements */
+.bg-white.dark\:bg-gray-800.p-4 {
+    background: var(--bg-elevated) !important;
+    border-color: var(--border) !important;
+}
+
+/* Icon backgrounds & Action Highlights */
+.bg-blue-500,
+.bg-gradient-to-r.from-purple-500.to-pink-500,
+.bg-gradient-to-r.from-indigo-500.to-purple-500,
+button.bg-gradient-to-r.from-indigo-600.to-purple-600 {
+    background: #2563eb !important; /* Primary blue */
+}
+button.hover\:from-indigo-700.hover\:to-purple-700:hover {
+    background: #1d4ed8 !important; /* Darker blue */
+}
+.bg-purple-600, .bg-green-600 {
+    background: #2563eb !important;
+}
+
+/* Text Highlights */
+.text-indigo-600, .dark\:text-indigo-400,
+.text-purple-600, .dark\:text-purple-400 {
+    color: #2563eb !important; /* Blue-600 */
+}
+
+/* Radio Cards (Checked states) */
+.peer-checked\:border-purple-600:checked ~ div,
+.peer-checked\:border-green-600:checked ~ div {
+    border-color: #2563eb !important; /* Blue-600 */
+}
+.peer-checked\:bg-gradient-to-br.peer-checked\:from-purple-50.peer-checked\:to-pink-50:checked ~ div,
+.peer-checked\:bg-gradient-to-br.peer-checked\:from-green-50.peer-checked\:to-emerald-50:checked ~ div {
+    background: rgba(37, 99, 235, 0.05) !important;
+}
+.dark .peer-checked\:from-purple-900\/30.peer-checked\:to-pink-900\/30:checked ~ div,
+.dark .peer-checked\:from-green-900\/30.peer-checked\:to-emerald-900\/30:checked ~ div {
+    background: rgba(37, 99, 235, 0.1) !important;
+}
+
+.hover\:border-purple-400:hover,
+.hover\:border-green-400:hover {
+    border-color: rgba(37, 99, 235, 0.5) !important;
+}
+
+/* Back button */
+a.bg-gray-200.hover\:bg-gray-300 {
+    background: var(--bg-elevated) !important;
+    color: var(--text-color) !important;
+}
+a.bg-gray-200.hover\:bg-gray-300:hover {
+    background: var(--border) !important;
+}
+</style>
+@endpush
+
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <a href="{{ route('keys.custom-extend') }}"
-                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                    <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        <div class="flex items-center gap-3">
+            <a href="{{ route('keys.custom-extend') }}"
+                class="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+                <svg class="w-6 h-6 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center">
+                    <svg class="w-8 h-8 mr-3 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                </a>
-                <div>
-                    <h2 class="font-bold text-2xl text-gray-800 dark:text-white">{{ __('Confirm extension') }}</h2>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('Check info before payment') }}</p>
-                </div>
+                    {{ __('Confirm extension') }}
+                </h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('Check info before payment') }}</p>
             </div>
         </div>
     </x-slot>
@@ -40,7 +110,7 @@
                     <div class="space-y-4">
                         <div class="flex items-center justify-between p-4 bg-white dark:bg-gray-800 rounded-xl">
                             <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Key Code:</span>
-                            <code class="bg-gray-100 dark:bg-gray-700 px-4 py-2 rounded-lg font-mono font-bold text-lg">
+                            <code class="bg-gray-100 dark:bg-gray-700 px-4 py-2 rounded-lg font-mono font-bold text-lg text-indigo-600 dark:text-indigo-400">
                                 {{ $key->key_code }}
                             </code>
                         </div>
@@ -288,11 +358,11 @@
         document.getElementById('paymentForm').addEventListener('submit', function(e) {
             const submitBtn = this.querySelector('button[type="submit"]');
             submitBtn.innerHTML = `
-                <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                <svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span>Đang xử lý...</span>
+                <span>{{ __('Processing...') }}</span>
             `;
             submitBtn.disabled = true;
         });
