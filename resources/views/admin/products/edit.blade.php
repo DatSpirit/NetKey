@@ -32,7 +32,7 @@
                     <p class="text-gray-400 text-[10px] font-black uppercase tracking-wider mt-1">{{ __('Editing') }}: {{ $product->name }}</p>
                 </div>
 
-                <form action="{{ route('admin.products.update', $product) }}" method="POST" class="p-6 sm:p-8 space-y-6">
+                <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data" class="p-6 sm:p-8 space-y-6">
                     @csrf
                     @method('PUT')
 
@@ -138,6 +138,56 @@
                             class="w-full px-4 py-3 border-2 border-gray-100 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-blue-500 transition duration-200 font-medium resize-none">{{ old('description', $product->description) }}</textarea>
                     </div>
 
+                    <!-- Product Image -->
+                    <div>
+                        <label class="nk-section-label">
+                            {{ __('Product Image') }} <span class="text-gray-400 font-normal text-xs">({{ __('Optional, JPG/PNG/WebP, max 2MB') }})</span>
+                        </label>
+
+                        @if($product->image_url)
+                        <!-- Current image -->
+                        <div id="current-image-wrapper" class="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center gap-4">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                class="w-20 h-20 object-cover rounded-lg border border-gray-200 dark:border-gray-700">
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">{{ __('Current Image') }}</p>
+                                <p class="text-xs text-gray-400 mt-0.5">{{ __('Upload a new image below to replace this one.') }}</p>
+                                <label class="mt-2 flex items-center gap-2 cursor-pointer group">
+                                    <input type="checkbox" name="remove_image" value="1" id="remove_image_cb"
+                                        class="w-4 h-4 text-red-500 border-gray-300 rounded focus:ring-red-400"
+                                        onchange="toggleRemoveImage(this)">
+                                    <span class="text-xs text-red-500 font-semibold group-hover:text-red-700">🗑 {{ __('Remove current image') }}</span>
+                                </label>
+                            </div>
+                        </div>
+                        @endif
+
+                        <div id="image-upload-area"
+                            class="mt-2 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center cursor-pointer hover:border-blue-400 transition-colors duration-200 relative"
+                            onclick="document.getElementById('image_input').click()">
+                            <!-- Preview -->
+                            <div id="image-preview-wrapper" class="hidden mb-4">
+                                <img id="image-preview" src="" alt="Preview"
+                                    class="mx-auto max-h-40 rounded-xl object-contain shadow">
+                            </div>
+                            <!-- Placeholder -->
+                            <div id="image-placeholder">
+                                <svg class="mx-auto w-10 h-10 text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <p class="text-sm text-gray-400 dark:text-gray-500 font-medium">{{ __('Click to select a new image') }}</p>
+                                <p class="text-xs text-gray-300 dark:text-gray-600 mt-1">JPG, PNG, WebP, GIF &mdash; max 2MB</p>
+                            </div>
+                            <input type="file" id="image_input" name="image" accept="image/*" class="hidden"
+                                onchange="previewImage(this)">
+                        </div>
+                        @error('image')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+                        <button type="button" id="clear-image-btn" class="hidden mt-2 text-xs text-red-500 hover:text-red-700 font-semibold"
+                            onclick="clearImage()">✕ {{ __('Remove selected image') }}</button>
+                    </div>
+
                     <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-100 dark:border-gray-800">
                         <button type="submit"
                             class="flex-1 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl shadow-lg shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all duration-200 uppercase tracking-wider text-xs flex items-center justify-center gap-2">
@@ -186,6 +236,41 @@
             }
         }
         document.addEventListener('DOMContentLoaded', toggleFields);
+
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image-preview').src = e.target.result;
+                    document.getElementById('image-preview-wrapper').classList.remove('hidden');
+                    document.getElementById('image-placeholder').classList.add('hidden');
+                    document.getElementById('clear-image-btn').classList.remove('hidden');
+                    // Uncheck remove_image if a new image is selected
+                    const removeCb = document.getElementById('remove_image_cb');
+                    if (removeCb) removeCb.checked = false;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function clearImage() {
+            document.getElementById('image_input').value = '';
+            document.getElementById('image-preview-wrapper').classList.add('hidden');
+            document.getElementById('image-placeholder').classList.remove('hidden');
+            document.getElementById('clear-image-btn').classList.add('hidden');
+        }
+
+        function toggleRemoveImage(checkbox) {
+            const uploadArea = document.getElementById('image-upload-area');
+            if (checkbox.checked) {
+                uploadArea.style.opacity = '0.4';
+                uploadArea.style.pointerEvents = 'none';
+                clearImage();
+            } else {
+                uploadArea.style.opacity = '1';
+                uploadArea.style.pointerEvents = 'auto';
+            }
+        }
     </script>
     <script>
         // Show flash messages

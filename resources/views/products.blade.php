@@ -376,24 +376,26 @@
 
                         <!-- Product Image -->
                         <div
-                            class="relative bg-gradient-to-br from-blue-100 to-blue-600 dark:from-blue-100 dark:to-blue-600 h-48 flex items-center justify-center p-4 sm:p-6">
-                            @if (isset($product['image']))
-                                <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}"
-                                    class="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal">
+                            class="relative aspect-square bg-gray-50 dark:bg-[#111111] flex items-center justify-center p-4 sm:p-6 overflow-hidden w-full image-zoom-container"
+                            onclick="openImageZoom(this)"
+                            data-image-src="{{ $product->image_url }}">
+                            @if ($product->image_url)
+                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                    class="w-full h-full object-contain hover:scale-105 transition-transform duration-300">
                             @else
-                                <svg class="w-24 h-24 text-red-100 dark:text-red-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                <svg class="w-24 h-24 text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                 </svg>
                             @endif
                             <!-- Category Badge -->
                             @if (isset($product['category']))
                                 <span
-                                    class="absolute top-3 right-3 px-2 py-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-xs font-semibold text-gray-700 dark:text-gray-300 rounded-full border border-gray-200 dark:border-gray-600 shadow-sm">
+                                    class="absolute top-3 right-3 px-2 py-1 z-10 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-xs font-semibold text-gray-700 dark:text-gray-300 rounded-full border border-gray-200 dark:border-gray-600 shadow-sm">
                                     {{ $product['category'] }}
                                 </span>
                             @endif
+                            <!-- Cờ hiệu để biết là package js object, ta phải attach thêm tham số image_url -->
+                            <div class="hidden product-data" data-product="{{ json_encode(array_merge($product->toArray(), ['image_url' => $product->image_url])) }}"></div>
                         </div>
 
                         <!-- Product Info -->
@@ -443,7 +445,7 @@
                                 <!-- Nút Xem Chi Tiết -->
                                 <button type="button"
                                     class="view-detail-btn p-2.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all duration-200"
-                                    title="{{ __('View Details') }}" data-product="{{ json_encode($product) }}">
+                                    title="{{ __('View Details') }}" onclick="openDetailModalFromCard(this)">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -488,6 +490,48 @@
                             {{ __('Try changing filters or search keywords') }}
                         </p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH PHÓNG TO ẢNH (IMAGE ZOOM VIEWER) -->
+    <div id="imageZoomModal" class="fixed inset-0 z-[120] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <!-- Nền mờ -->
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-md" onclick="closeImageZoom()"></div>
+        
+        <!-- Nút Đóng -->
+        <button onclick="closeImageZoom()" class="absolute top-6 right-6 p-3 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 rounded-full backdrop-blur-sm transition-all z-10 group">
+            <svg class="w-8 h-8 transform group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <!-- Container chính -->
+        <div class="relative z-10 flex flex-col items-center justify-between w-full h-full p-6 md:p-12 pointer-events-none">
+            <!-- Khu vực ảnh ở giữa -->
+            <div class="flex-1 flex items-center justify-center w-full max-w-5xl transition-transform duration-500 transform scale-95" id="zoomedImageContainer">
+                 <!-- Ảnh sẽ được gán src bằng JS -->
+                 <img id="zoomedImage" src="" alt="Sản phẩm phóng to" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl ring-1 ring-white/10 pointer-events-auto">
+            </div>
+
+            <!-- Thanh chức năng bên dưới (Giữ nguyên các nút cơ bản) -->
+            <div class="w-full max-w-2xl bg-white/10 backdrop-blur-xl border border-white/10 p-5 rounded-2xl shadow-2xl transform translate-y-8 opacity-0 transition-all duration-500 pointer-events-auto flex items-center justify-between gap-4 mt-6" id="zoomActionBar">
+                <div class="flex-1 min-w-0">
+                    <h3 class="text-white font-bold text-xl truncate" id="zoomProductName">Loading...</h3>
+                    <p class="text-blue-300 font-bold text-lg" id="zoomProductPrice">0đ</p>
+                </div>
+                <div class="flex gap-3">
+                    <!-- Nút Chi Tiết -->
+                    <button type="button" id="zoomDetailBtn" class="px-5 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/5 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="hidden sm:inline">{{ __('Overview') }}</span>
+                    </button>
+                    <!-- Nút Mua -->
+                    <button type="button" id="zoomBuyBtn" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                        <span>{{ __('Buy Now') }}</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1118,74 +1162,152 @@
                 setTimeout(() => modal.classList.add('hidden'), 300);
             };
 
-            document.querySelectorAll('.view-detail-btn').forEach(btn => {
-                btn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const product = JSON.parse(this.dataset.product);
-                    const content = document.getElementById('modal-product-content');
-                    const payLink = document.getElementById('modal-pay-link');
+            // Lấy thông tin product JSON từ the card view
+            window.openDetailModalFromCard = function(btnElement) {
+                // Find parent product card
+                const card = btnElement.closest('.product-card');
+                const dataDiv = card.querySelector('.product-data');
+                const product = JSON.parse(dataDiv.dataset.product);
+                
+                openProductDetailModalWithData(product);
+            };
 
-                    // --- RENDER CHI TIẾT SẢN PHẨM ĐẦY ĐỦ ---
-                    const imageSrc = product.image ? product.image : '';
-                    const durationText = product.duration_minutes ? Math.floor(product
-                        .duration_minutes / 1440) + ' ngày' : 'Vĩnh viễn';
-                    const typeText = product.product_type === 'package' ? 'Gói dịch vụ' :
-                        'Nạp Coinkey';
-                    const categoryText = product.category || 'Chưa phân loại';
+            function openProductDetailModalWithData(product) {
+                const content = document.getElementById('modal-product-content');
+                const payLink = document.getElementById('modal-pay-link');
 
-                    content.innerHTML = `
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Cột trái: Ảnh -->
-                            <div class="bg-gray-100 dark:bg-gray-700/50 rounded-xl p-4 flex items-center justify-center min-h-[200px]">
-                                ${imageSrc ? `<img src="${imageSrc}" class="max-w-full max-h-[300px] object-contain rounded-lg shadow-sm">` :
-                            `<svg class="w-32 h-32 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`}
+                // --- RENDER CHI TIẾT SẢN PHẨM ĐẦY ĐỦ ---
+                const imageSrc = product.image_url ? product.image_url : '';
+                const durationText = (product.duration_minutes && product.duration_minutes > 0) ? Math.floor(product.duration_minutes / 1440) + ' ngày' : 'Vĩnh viễn';
+                const typeText = product.product_type === 'package' ? 'Gói dịch vụ' : 'Nạp Coinkey';
+                const categoryText = product.category || 'Chưa phân loại';
+
+                content.innerHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Cột trái: Ảnh -->
+                        <div class="bg-gray-50 dark:bg-[#111111] rounded-xl p-4 flex items-center justify-center min-h-[300px] aspect-square overflow-hidden border border-gray-100 dark:border-gray-800">
+                            ${imageSrc ? `<img src="${imageSrc}" class="w-full h-full object-contain rounded-lg">` :
+                        `<svg class="w-32 h-32 text-gray-300 dark:text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>`}
+                        </div>
+
+                        <!-- Cột phải: Thông tin -->
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">${product.name}</h4>
+                                <div class="flex flex-wrap gap-2 mb-3">
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300">${typeText}</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 border border-gray-200 dark:border-gray-700">${categoryText}</span>
+                                </div>
+                                <p class="text-3xl font-black text-blue-600 dark:text-blue-500 mb-1">${formatMoney(product.price)}<span class="text-xl underline ml-1">đ</span></p>
+                                ${product.coinkey_amount ? `<p class="text-sm font-bold text-yellow-600 dark:text-yellow-500">Hoặc ${formatMoney(product.coinkey_amount)} Coin</p>` : ''}
                             </div>
 
-                            <!-- Cột phải: Thông tin -->
-                            <div class="space-y-4">
-                                <div>
-                                    <h4 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">${product.name}</h4>
-                                    <div class="flex flex-wrap gap-2 mb-3">
-                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300">${typeText}</span>
-                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300">${categoryText}</span>
-                                    </div>
-                                    <p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-1">${formatMoney(product.price)}₫</p>
-                                    ${product.coinkey_amount ? `<p class="text-sm font-medium text-yellow-600 dark:text-yellow-500">Hoặc ${formatMoney(product.coinkey_amount)} Coin</p>` : ''}
+                            <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Thời hạn:</span>
+                                    <span class="text-sm font-bold text-gray-900 dark:text-white">${durationText}</span>
                                 </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Lượt bán:</span>
+                                    <span class="text-sm font-bold text-gray-900 dark:text-white">${product.sold_count || 0}</span>
+                                </div>
+                            </div>
 
-                                <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2">
-                                    <div class="flex justify-between">
-                                        <span class="text-sm text-gray-500">Thời hạn:</span>
-                                        <span class="text-sm font-medium text-gray-900 dark:text-white">${durationText}</span>
-                                    </div>
-                                    <div class="flex justify-between">
-                                        <span class="text-sm text-gray-500">Lượt bán:</span>
-                                        <span class="text-sm font-medium text-gray-900 dark:text-white">${product.sold_count || 0}</span>
-                                    </div>
-                                </div>
-
-                                <div class="bg-blue-50 dark:bg-gray-700/50 p-3 rounded-lg border border-blue-100 dark:border-gray-600">
-                                    <h5 class="text-xs font-bold text-gray-500 uppercase mb-1">Mô tả</h5>
-                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">${product.description || 'Chưa có mô tả.'}</p>
-                                </div>
+                            <div class="bg-blue-50/50 dark:bg-gray-800/30 p-4 rounded-xl border border-blue-100 dark:border-gray-700/50 mt-4">
+                                <h5 class="text-xs font-black text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Mô tả</h5>
+                                <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-line">${product.description || 'Chưa có mô tả chi tiết.'}</p>
                             </div>
                         </div>
-                    `;
+                    </div>
+                `;
 
-                    payLink.onclick = function () {
-                        closeModal();
-                        openPurchaseModal(product);
-                    };
-                    payLink.removeAttribute('href');
-                    openModal();
+                payLink.onclick = function () {
+                    closeModal();
+                    openPurchaseModal(product);
+                };
+                payLink.removeAttribute('href');
+                openModal();
+            }
+
+            // --- ZOOM VIEWER LOGIC ---
+            window.openImageZoom = function(containerElement) {
+                // Ignore if clicked on a badge
+                if(event.target.tagName.toLowerCase() === 'span') return;
+
+                const card = containerElement.closest('.product-card');
+                const dataDiv = card.querySelector('.product-data');
+                const product = JSON.parse(dataDiv.dataset.product);
+                const imgSrc = containerElement.dataset.imageSrc;
+                
+                const zoomModal = document.getElementById('imageZoomModal');
+                const zoomImage = document.getElementById('zoomedImage');
+                const zoomContainer = document.getElementById('zoomedImageContainer');
+                const actionBar = document.getElementById('zoomActionBar');
+                
+                // Mặc định ảnh rỗng nếu không có
+                if (imgSrc) {
+                    zoomImage.src = imgSrc;
+                    zoomImage.classList.remove('hidden');
+                } else {
+                    zoomImage.src = '';
+                    zoomImage.classList.add('hidden'); // Có thể thay bằng svg chữ "No Image" nếu muốn
+                }
+
+                // Gán thông tin thanh Action Bar
+                document.getElementById('zoomProductName').innerText = product.name;
+                document.getElementById('zoomProductPrice').innerText = formatMoney(product.price) + 'đ';
+
+                // Gán event cho nút Mua & Xem Chi Tiết trên Zoom Modal
+                document.getElementById('zoomBuyBtn').onclick = function() {
+                    closeImageZoom();
+                    openPurchaseModal(product);
+                };
+
+                document.getElementById('zoomDetailBtn').onclick = function() {
+                    closeImageZoom();
+                    openProductDetailModalWithData(product);
+                };
+
+                // Bật Modal với hiệu ứng
+                zoomModal.classList.remove('hidden');
+                // Khóa scroll nền
+                document.body.style.overflow = 'hidden';
+
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    zoomModal.classList.remove('opacity-0');
+                    zoomContainer.classList.remove('scale-95');
+                    zoomContainer.classList.add('scale-100');
+                    
+                    setTimeout(() => {
+                        actionBar.classList.remove('translate-y-8', 'opacity-0');
+                    }, 150);
                 });
-            });
+            };
+
+            window.closeImageZoom = function() {
+                const zoomModal = document.getElementById('imageZoomModal');
+                const zoomContainer = document.getElementById('zoomedImageContainer');
+                const actionBar = document.getElementById('zoomActionBar');
+                
+                zoomModal.classList.add('opacity-0');
+                zoomContainer.classList.remove('scale-100');
+                zoomContainer.classList.add('scale-95');
+                actionBar.classList.add('translate-y-8', 'opacity-0');
+
+                // Mở lại scroll nền
+                document.body.style.overflow = 'auto';
+
+                setTimeout(() => {
+                    zoomModal.classList.add('hidden');
+                }, 300); // Wait for transition
+            };
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     closeModal();
                     closePurchaseModal();
+                    closeImageZoom();
                 }
             });
         });

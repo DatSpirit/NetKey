@@ -14,11 +14,18 @@ class Product extends Model
         'category',
         'price',
         'description',
+        'image',
         'product_type',      // 'coinkey' hoặc 'package'
         'coinkey_amount',    // Số lượng Coinkey nhận được (nếu nạp) HOẶC Giá bán bằng Coinkey (nếu là gói)
         'duration_minutes',  // Chỉ dùng cho 'package'
         'is_active'
     ];
+
+    // Trả về URL công khai của ảnh sản phẩm (hoặc null nếu không có)
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image ? \Illuminate\Support\Facades\Storage::disk('public')->url($this->image) : null;
+    }
 
     protected $casts = [
         'price' => 'decimal:2',

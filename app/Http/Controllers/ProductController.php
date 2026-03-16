@@ -5,17 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Transaction;
 use Exception;
 
 class ProductController extends Controller
 {
 
-
     /**  Danh sách sản phẩm */
     public function index()
     {
-        // Chỉ lấy sản phẩm đang active (hoặc tất cả nếu là admin muốn xem)
         $products = Product::where('is_active', true)->get();
 
         return view('products', [
@@ -37,23 +36,26 @@ class ProductController extends Controller
         $this->authorizeAdmin();
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'category' => 'required|string|max:100',
-            'price' => 'required|numeric|min:2000',// Giá tối thiểu của PayOS là 2000
-            'description' => 'nullable|string|max:1000',
-            
-            'product_type' => 'required|in:coinkey,package',
-            'coinkey_amount' => 'required|numeric|min:0',
+            'name'             => 'required|string|max:255',
+            'category'         => 'required|string|max:100',
+            'price'            => 'required|numeric|min:2000',
+            'description'      => 'nullable|string|max:1000',
+            'product_type'     => 'required|in:coinkey,package',
+            'coinkey_amount'   => 'required|numeric|min:0',
             'duration_minutes' => 'nullable|integer|min:0',
+            'image'            => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-         // Nếu là gói nạp tiền (coinkey) thì không cần thời hạn
         if ($validated['product_type'] === 'coinkey') {
             $validated['duration_minutes'] = null;
         }
 
-        // Mặc định active khi tạo mới
         $validated['is_active'] = true;
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('products', 'public');
+        }
 
         Product::create($validated);
 
@@ -73,19 +75,34 @@ class ProductController extends Controller
         $this->authorizeAdmin();
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'category' => 'required|string|max:100',
-            'price' => 'required|numeric|min:2000', // Giá tối thiểu là 2000
-            'description' => 'nullable|string|max:1000',
-            'product_type' => 'required|in:coinkey,package', // 'coinkey' hoặc 'package'
-            'coinkey_amount' => 'required|numeric|min:0', // Admin nhập lượng coin nhận hoặc giá coin
-            'duration_minutes' => 'nullable|integer|min:0', // Chỉ dùng cho 'package'
-            'is_active' => 'boolean'
+            'name'             => 'required|string|max:255',
+            'category'         => 'required|string|max:100',
+            'price'            => 'required|numeric|min:2000',
+            'description'      => 'nullable|string|max:1000',
+            'product_type'     => 'required|in:coinkey,package',
+            'coinkey_amount'   => 'required|numeric|min:0',
+            'duration_minutes' => 'nullable|integer|min:0',
+            'is_active'        => 'boolean',
+            'image'            => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
-        // Nếu là gói Coinkey thì duration phải bằng 0
         if ($validated['product_type'] === 'coinkey') {
             $validated['duration_minutes'] = null;
+        }
+
+        // Remove old image if requested
+        if ($request->input('remove_image') == '1' && $product->image) {
+            Storage::disk('public')->delete($product->image);
+            $validated['image'] = null;
+        }
+
+        // Replace with new image if uploaded
+        if ($request->hasFile('image')) {
+            // Delete old image first
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $validated['image'] = $request->file('image')->store('products', 'public');
         }
 
         $product->update($validated);
@@ -97,6 +114,12 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $this->authorizeAdmin();
+
+        // Delete image from disk when product is deleted
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
+
         $product->delete();
 
         return redirect()->route('products')->with('success', '🗑️ Product deleted successfully.');
