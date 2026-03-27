@@ -657,6 +657,10 @@
                         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                         {{ __('Profile Settings') }}
                     </a>
+                    <a href="{{ route('two-factor.setup') }}" class="nk-profile-link">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        {{ __('Two-Factor Security') }}
+                    </a>
                     <form method="POST" action="{{ route('logout') }}" style="margin:0">
                         @csrf
                         <button type="submit" class="nk-profile-logout">
@@ -760,6 +764,16 @@
                 <a href="{{ route('admin.keys.index') }}" class="nk-nav-link {{ request()->routeIs('admin.keys.index') ? 'active' : '' }}">
                     <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
                     {{ __('Keys Management') }}
+                </a>
+
+                <a href="{{ route('admin.support.index') }}" class="nk-nav-link {{ request()->routeIs('admin.support.*') ? 'active' : '' }}">
+                    <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
+                    {{ __('Support Tickets') }}
+                </a>
+
+                <a href="{{ route('admin.audit-log') }}" class="nk-nav-link {{ request()->routeIs('admin.audit-log') ? 'active' : '' }}">
+                    <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01m-.01 4h.01"/></svg>
+                    {{ __('Audit Log') }}
                 </a>
             </div>
             @endif

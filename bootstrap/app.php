@@ -24,8 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Đăng ký alias cho middleware tuỳ chỉnh
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'check.account' => \App\Http\Middleware\CheckAccountStatus::class, // Thêm alias cho middleware kiểm tra expiration
+            'admin'              => \App\Http\Middleware\AdminMiddleware::class,
+            'check.account'      => \App\Http\Middleware\CheckAccountStatus::class,
+            'require.admin.2fa'  => \App\Http\Middleware\RequireAdminTwoFactor::class,
         ]);
 
         // Middleware mặc định của API
@@ -36,6 +37,19 @@ return Application::configure(basePath: dirname(__DIR__))
 
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // Xử lý Rate Limiting - hiện thông báo thân thiện tiếng Việt
+        $exceptions->render(function (\Illuminate\Http\Exceptions\ThrottleRequestsException $e, $request) {
+            $retryAfter = $e->getHeaders()['Retry-After'] ?? 60;
+            $message = "Bạn thao tác quá nhanh. Vui lòng thử lại sau {$retryAfter} giây.";
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $message,
+                ], 429);
+            }
+
+            return back()->with('error', $message);
+        });
     })
     ->create();

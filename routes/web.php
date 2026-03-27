@@ -21,6 +21,7 @@ use App\Http\Controllers\System\KeyManagementController;
 use App\Http\Controllers\Admin\AdminKeyManagementController;
 use App\Http\Controllers\Admin\AdminCustomExtendController;
 use App\Http\Controllers\User\DailyCheckinController;
+use App\Http\Controllers\Auth\TwoFactorController;
 
 // ===========================
 // 🔹 TRANG CHỦ
@@ -49,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // XỬ LÝ MUA HÀNG TRUNG TÂM - Purchase Processing
     Route::post('/order/process', [OrderController::class, 'process'])
+        ->middleware('throttle:5,1')
         ->name('order.process');
 
     // Danh sách sản phẩm - Product List
@@ -137,7 +139,9 @@ Route::middleware(['auth', 'verified', 'check.account'])->group(function () {
 
     // Liên hệ Hỗ trợ / Contact Form - Contact Support
     Route::get('/contact', [SupportController::class, 'contactSupport'])->name('support.contact');
-    Route::post('/contact', [SupportController::class, 'submitContact'])->name('support.contact.submit');
+    Route::post('/contact', [SupportController::class, 'submitContact'])
+        ->middleware('throttle:3,5')
+        ->name('support.contact.submit');
 
     // Gửi lại email xác minh -- Resend Verification Email
     Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
@@ -148,7 +152,7 @@ Route::middleware(['auth', 'verified', 'check.account'])->group(function () {
 // ===========================
 // 🔹 ADMIN KHU VỰC QUẢN TRỊ
 // ===========================
-Route::middleware(['auth', 'verified', 'admin'])
+Route::middleware(['auth', 'verified', 'admin', 'require.admin.2fa'])
     ->prefix('admin')
     ->group(function () {
 
@@ -262,6 +266,18 @@ Route::middleware(['auth', 'verified', 'admin'])
             // Bulk actions
             Route::post('/bulk-action', [AdminKeyManagementController::class, 'bulkAction'])->name('bulk-action');
         });
+
+        // Quản lý Support Tickets
+        Route::prefix('support-tickets')->name('admin.support.')->group(function () {
+            Route::get('/', [SupportController::class, 'adminIndex'])->name('index');
+            Route::get('/{ticket}', [SupportController::class, 'adminShow'])->name('show');
+            Route::patch('/{ticket}/status', [SupportController::class, 'adminUpdateStatus'])->name('update-status');
+        });
+
+        // Audit Log
+        Route::get('/audit-log', [\App\Http\Controllers\Admin\AdminAuditLogController::class, 'index'])
+            ->name('admin.audit-log');
+
     });
 
 // ===========================
@@ -301,7 +317,9 @@ Route::middleware(['auth', 'verified'])->prefix('keys')->name('keys.')->group(fu
 
     // Route cho chức năng gia hạn theo gói
     Route::get('/{id}/extend-confirm', [KeyManagementController::class, 'extendConfirm'])->name('extend-confirm');
-    Route::post('/{id}/process-extension', [KeyManagementController::class, 'processExtension'])->name('process-extension');
+    Route::post('/{id}/process-extension', [KeyManagementController::class, 'processExtension'])
+        ->middleware('throttle:5,1')
+        ->name('process-extension');
 
     // GIA HẠN TÙY CHỈNH (CUSTOM EXTENSION)
     Route::get('/custom-extend', [KeyManagementController::class, 'customExtendPage'])
@@ -311,6 +329,7 @@ Route::middleware(['auth', 'verified'])->prefix('keys')->name('keys.')->group(fu
         ->name('custom-extend-confirm');
 
     Route::post('/custom-extend/process', [KeyManagementController::class, 'processCustomExtension'])
+        ->middleware('throttle:5,1')
         ->name('process-custom-extension');
 
     Route::post('/{id}/suspend', [KeyManagementController::class, 'suspend'])->name('suspend');
@@ -326,6 +345,21 @@ Route::middleware(['auth', 'verified'])->prefix('keys')->name('keys.')->group(fu
 // ===========================
 // 🔹 XÁC THỰC / ĐĂNG NHẬP
 // ===========================
+
+// ===========================
+// 🔐 TWO FACTOR AUTHENTICATION
+// ===========================
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Trang nhập OTP (verify sau đăng nhập)
+    Route::get('/two-factor/verify', [TwoFactorController::class, 'showVerify'])->name('two-factor.verify');
+    Route::post('/two-factor/verify', [TwoFactorController::class, 'verify'])->name('two-factor.verify.post');
+
+    // Cài đặt 2FA (Admin tự bật)
+    Route::get('/two-factor/setup', [TwoFactorController::class, 'setup'])->name('two-factor.setup');
+    Route::post('/two-factor/confirm', [TwoFactorController::class, 'confirm'])->name('two-factor.confirm');
+    Route::post('/two-factor/disable', [TwoFactorController::class, 'disable'])->name('two-factor.disable');
+});
+
 require __DIR__ . '/auth.php';
 
 // 🔹 CUSTOM CONFIRM PASSWORD (nếu cần giữ /confirm-password cũ)
