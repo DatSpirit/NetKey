@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
+use App\Models\AdminAuditLog;
 use App\Services\AccountExpirationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -61,6 +62,15 @@ class AccountExpirationController extends Controller
                 $user,
                 $days,
                 "Admin extended by {$days} days"
+            );
+
+            // Ghi Audit Log
+            AdminAuditLog::log(
+                action: 'extend_account',
+                targetType: 'User',
+                targetId: $user->id,
+                description: "Gia hạn tài khoản {$user->email} thêm {$days} ngày",
+                new: ['expires_at' => $updatedUser->expires_at?->toDateString()]
             );
 
             return response()->json([
@@ -171,6 +181,15 @@ class AccountExpirationController extends Controller
             $user = User::findOrFail($userId);
             $this->expirationService->suspendAccount($user, $request->reason);
 
+            // Ghi Audit Log
+            AdminAuditLog::log(
+                action: 'suspend_account',
+                targetType: 'User',
+                targetId: $user->id,
+                description: "Đình chỉ tài khoản {$user->email}",
+                new: ['reason' => $request->reason]
+            );
+
             return response()->json([
                 'success' => true,
                 'message' => 'Account suspended successfully',
@@ -192,6 +211,14 @@ class AccountExpirationController extends Controller
         try {
             $user = User::findOrFail($userId);
             $this->expirationService->activateAccount($user, "Admin activated account");
+
+            // Ghi Audit Log
+            AdminAuditLog::log(
+                action: 'activate_account',
+                targetType: 'User',
+                targetId: $user->id,
+                description: "Kích hoạt lại tài khoản {$user->email}",
+            );
 
             return response()->json([
                 'success' => true,

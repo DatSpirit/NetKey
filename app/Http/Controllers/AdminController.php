@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\AdminAuditLog;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
@@ -152,8 +153,20 @@ class AdminController extends Controller
             'notes' => 'nullable|string|max:1000',
         ]);
 
+        $oldValues = $user->only(['name', 'email', 'phone_number', 'notes']);
+
         // Cập nhật user
         $user->update($validated);
+
+        // Ghi Audit Log
+        AdminAuditLog::log(
+            action: 'update_user',
+            targetType: 'User',
+            targetId: $user->id,
+            description: "Sửa thông tin user: {$user->email}",
+            old: $oldValues,
+            new: $user->fresh()->only(['name', 'email', 'phone_number', 'notes'])
+        );
 
         // Chuyển hướng về danh sách user với thông báo
         return redirect()
@@ -183,7 +196,17 @@ class AdminController extends Controller
                 ->with('error', 'You cannot delete another admin account.');
         }
 
+        $userEmail = $user->email;
+        $userId = $user->id;
         $user->delete();
+
+        // Ghi Audit Log
+        AdminAuditLog::log(
+            action: 'delete_user',
+            targetType: 'User',
+            targetId: $userId,
+            description: "Xóa user: {$userEmail}",
+        );
 
         return redirect()
             ->route('admin.users')

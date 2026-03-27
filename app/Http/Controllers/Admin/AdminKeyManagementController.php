@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ProductKey;
 use App\Models\User;
+use App\Models\AdminAuditLog;
 use App\Services\KeyManagementService;
 use Illuminate\Http\Request;
 
@@ -207,8 +208,10 @@ class AdminKeyManagementController extends Controller
         $reason = $request->input('reason', 'Admin suspended');
 
         $key->suspend($reason);
-
         \App\Models\KeyHistory::log($key->id, 'suspend', "Admin suspend: {$reason}");
+
+        AdminAuditLog::log('suspend_key', 'ProductKey', $key->id,
+            "Suspend key {$key->key_code}: {$reason}");
 
         return back()->with('success', 'Key suspended successfully');
     }
@@ -240,8 +243,10 @@ class AdminKeyManagementController extends Controller
         $reason = $request->input('reason', 'Admin revoked');
 
         $key->revoke($reason);
-
         \App\Models\KeyHistory::log($key->id, 'revoke', "Admin revoke: {$reason}");
+
+        AdminAuditLog::log('revoke_key', 'ProductKey', $key->id,
+            "Thu hồi key {$key->key_code}: {$reason}");
 
         return back()->with('success', 'Key revoked successfully');
     }
@@ -323,9 +328,11 @@ class AdminKeyManagementController extends Controller
 
         // Lưu info trước khi xóa
         $keyCode = $key->key_code;
-
-        // Xóa vĩnh viễn
+        $keyId = $key->id;
         $key->forceDelete();
+
+        AdminAuditLog::log('force_delete_key', 'ProductKey', $keyId,
+            "Xóa vĩnh viễn key {$keyCode} khỏi database");
 
         return redirect()
             ->route('admin.keys.index')
