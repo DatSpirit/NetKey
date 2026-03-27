@@ -46,6 +46,11 @@ class User extends Authenticatable
         'account_notes',
         'address',
         'preferences',
+
+        // 2FA
+        'two_factor_secret',
+        'two_factor_enabled',
+        'two_factor_confirmed_at',
     ];
 
     /**
@@ -54,6 +59,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',  // Không được lộ secret 2FA ra JSON/API
     ];
 
     /**
@@ -62,14 +68,14 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'is_admin' => 'boolean',
-            'last_login_at' => 'datetime',
-
-            // Cast quan trọng cho hệ thống expiration
-            'expires_at' => 'datetime',
-            'preferences' => 'array',
+            'email_verified_at'        => 'datetime',
+            'password'                 => 'hashed',
+            'is_admin'                 => 'boolean',
+            'last_login_at'            => 'datetime',
+            'expires_at'               => 'datetime',
+            'preferences'              => 'array',
+            'two_factor_enabled'       => 'boolean',
+            'two_factor_confirmed_at'  => 'datetime',
         ];
     }
 
