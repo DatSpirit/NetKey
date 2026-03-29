@@ -26,6 +26,11 @@ class AdminController extends Controller
         // Xác định cột lọc
         $query = User::query();
 
+        // Xử lý lọc theo trạng thái (Xóa mềm)
+        if ($request->get('status') === 'deleted') {
+            $query->onlyTrashed();
+        }
+
         if ($search) {
             if ($filter === 'all') {
                 $query->where(function ($q) use ($search) {
@@ -39,19 +44,7 @@ class AdminController extends Controller
                 // Giới hạn các cột được phép lọc
                 $allowedFilters = ['name', 'email', 'phone_number'];
                 if (in_array($filter, $allowedFilters)) {
-                    $query->where($filter, 'LIKE', "%{$search}%")
-                        ->orderByRaw("
-                    CASE 
-                        WHEN LOWER($filter) LIKE ? THEN 1
-                        WHEN LOWER($filter) LIKE ? THEN 2
-                        WHEN LOWER($filter) LIKE ? THEN 3
-                        ELSE 4 
-                    END, $filter ASC
-                ", [
-                            strtolower("{$search}%"),
-                            strtolower("% {$search}%"),
-                            strtolower("%{$search}%")
-                        ]);
+                    $query->where($filter, 'LIKE', "%{$search}%");
                 }
             }
         }
@@ -73,7 +66,7 @@ class AdminController extends Controller
      */
     public function show($id): JsonResponse
     {
-        $user = User::findOrFail($id);
+        $user = User::withTrashed()->findOrFail($id);
         return response()->json($user);
     }
 
@@ -211,5 +204,57 @@ class AdminController extends Controller
         return redirect()
             ->route('admin.users')
             ->with('success', 'User deleted successfully.');
+    }
+
+    /**
+     * Khôi phục người dùng đã xóa mềm.
+     */
+    public function restore($id): RedirectResponse
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+
+        // Ghi Audit Log
+        AdminAuditLog::log(
+            action: 'restore_user',
+            targetType: 'User',
+            targetId: $user->id,
+            description: "Khôi phục user: {$user->email}",
+        );
+
+        return redirect()
+            ->route('admin.users', ['status' => 'deleted'])
+            ->with('success', 'User restored successfully.');
+    }
+
+    /**
+     * Xóa vĩnh viễn người dùng.
+     */
+    public function forceDelete($id): RedirectResponse
+    {
+        $user = User::withTrashed()->findOrFail($id);
+
+        // Không cho phép xóa chính Admin hiện tại
+        if (auth()->id() == $user->id) {
+            return redirect()
+                ->route('admin.users')
+                ->with('error', 'You cannot permanently delete your own account.');
+        }
+
+        $userEmail = $user->email;
+        $userId = $user->id;
+        $user->forceDelete();
+
+        // Ghi Audit Log
+        AdminAuditLog::log(
+            action: 'force_delete_user',
+            targetType: 'User',
+            targetId: $userId,
+            description: "Xóa vĩnh viễn user: {$userEmail}",
+        );
+
+        return redirect()
+            ->route('admin.users', ['status' => 'deleted'])
+            ->with('success', 'User permanently deleted.');
     }
 }

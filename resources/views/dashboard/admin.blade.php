@@ -411,12 +411,16 @@
                                 <div class="flex items-center gap-3 flex-1 min-w-0">
                                     <div
                                         class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md bg-gradient-to-br from-indigo-500 to-purple-500">
-                                        {{ strtoupper(substr($item['user']->name, 0, 1)) }}
+                                        {{ $item['user'] ? strtoupper(substr($item['user']->name, 0, 1)) : '?' }}
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p class="font-medium text-gray-900 dark:text-white truncate">
-                                            {{ $item['user']->name }}</p>
-                                        <p class="text-xs text-gray-500 truncate">{{ $item['user']->email }}</p>
+                                            {{ $item['user']->name ?? __('Deleted User') }}
+                                            @if($item['user']?->trashed())
+                                                <span class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded ml-1">{{ __('Deleted') }}</span>
+                                            @endif
+                                        </p>
+                                        <p class="text-xs text-gray-500 truncate">{{ $item['user']->email ?? '#' }}</p>
                                     </div>
                                 </div>
                                 <div class="text-right flex-shrink-0">
@@ -446,12 +450,16 @@
                                 <div class="flex items-center gap-3 flex-1 min-w-0">
                                     <div
                                         class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md bg-gradient-to-br from-green-500 to-emerald-500">
-                                        {{ strtoupper(substr($item['user']->name, 0, 1)) }}
+                                        {{ $item['user'] ? strtoupper(substr($item['user']->name, 0, 1)) : '?' }}
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p class="font-medium text-gray-900 dark:text-white truncate">
-                                            {{ $item['user']->name }}</p>
-                                        <p class="text-xs text-gray-500 truncate">{{ $item['user']->email }}</p>
+                                            {{ $item['user']->name ?? __('Deleted User') }}
+                                            @if($item['user']?->trashed())
+                                                <span class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded ml-1">{{ __('Deleted') }}</span>
+                                            @endif
+                                        </p>
+                                        <p class="text-xs text-gray-500 truncate">{{ $item['user']->email ?? '#' }}</p>
                                     </div>
                                 </div>
                                 <div class="text-right flex-shrink-0">
@@ -481,12 +489,16 @@
                                 <div class="flex items-center gap-3 flex-1 min-w-0">
                                     <div
                                         class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md bg-gradient-to-br from-purple-500 to-pink-500">
-                                        {{ strtoupper(substr($item['user']->name, 0, 1)) }}
+                                        {{ $item['user'] ? strtoupper(substr($item['user']->name, 0, 1)) : '?' }}
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p class="font-medium text-gray-900 dark:text-white truncate">
-                                            {{ $item['user']->name }}</p>
-                                        <p class="text-xs text-gray-500 truncate">{{ $item['user']->email }}</p>
+                                            {{ $item['user']->name ?? __('Deleted User') }}
+                                            @if($item['user']?->trashed())
+                                                <span class="text-[10px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded ml-1">{{ __('Deleted') }}</span>
+                                            @endif
+                                        </p>
+                                        <p class="text-xs text-gray-500 truncate">{{ $item['user']->email ?? '#' }}</p>
                                     </div>
                                 </div>
                                 <div class="text-right flex-shrink-0">

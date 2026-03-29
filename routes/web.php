@@ -218,6 +218,8 @@ Route::middleware(['auth', 'verified', 'admin', 'require.admin.2fa'])
         Route::get('/users/{user}/edit', [AdminController::class, 'edit'])->name('admin.users.edit');
         Route::put('/users/{user}', [AdminController::class, 'update'])->name('admin.users.update');
         Route::delete('/users/{user}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
+        Route::post('/users/{id}/restore', [AdminController::class, 'restore'])->name('admin.users.restore');
+        Route::delete('/users/{id}/force', [AdminController::class, 'forceDelete'])->name('admin.users.force-delete');
 
         // ===========================
         // 🔹 QUẢN LÝ KEY - ADMIN (Cập nhật với Soft Delete & Edit)

@@ -120,7 +120,7 @@ class AdminDashboardController extends Controller
             ->groupBy('user_id')
             ->orderBy('purchase_count', 'desc')
             ->limit(10)
-            ->with('user')
+            ->with(['user' => fn($q) => $q->withTrashed()])
             ->get()
             ->map(function ($item) {
                 return [
@@ -138,7 +138,7 @@ class AdminDashboardController extends Controller
             ->groupBy('user_id')
             ->orderBy('total_spent', 'desc')
             ->limit(10)
-            ->with('user')
+            ->with(['user' => fn($q) => $q->withTrashed()])
             ->get()
             ->map(function ($item) {
                 return [
@@ -281,7 +281,7 @@ class AdminDashboardController extends Controller
             ->groupBy('user_id')
             ->orderBy('key_count', 'desc')
             ->limit(10)
-            ->with('user')
+            ->with(['user' => fn($q) => $q->withTrashed()])
             ->get()
             ->map(function ($item) {
                 return [
