@@ -76,11 +76,11 @@ class SupportController extends Controller
 
             Log::info("Support ticket #{$ticket->id} created by {$validated['email']}");
 
-            return back()->with('success', '✅ Yêu cầu hỗ trợ của bạn đã được gửi thành công! Chúng tôi sẽ phản hồi trong vòng 24 giờ.');
+            return back()->with('success', __('✅ Yêu cầu hỗ trợ của bạn đã được gửi thành công! Chúng tôi sẽ phản hồi trong vòng 24 giờ.'));
 
         } catch (\Exception $e) {
             Log::error('Support ticket submission error: ' . $e->getMessage());
-            return back()->withInput()->with('error', '❌ Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.');
+            return back()->withInput()->with('error', __('❌ Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại.'));
         }
     }
 
@@ -131,6 +131,6 @@ class SupportController extends Controller
         $request->validate(['status' => 'required|in:open,in_progress,closed']);
         $ticket->update(['status' => $request->status]);
 
-        return back()->with('success', 'Đã cập nhật trạng thái ticket.');
+        return back()->with('success', __('Đã cập nhật trạng thái ticket.'));
     }
 }

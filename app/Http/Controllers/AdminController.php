@@ -164,7 +164,7 @@ class AdminController extends Controller
         // Chuyển hướng về danh sách user với thông báo
         return redirect()
             ->route('admin.users')
-            ->with('success', 'User updated successfully.');
+            ->with('success', __('User updated successfully.'));
     }
 
     /**
@@ -179,14 +179,14 @@ class AdminController extends Controller
         if (auth()->id() === $user->id) {
             return redirect()
                 ->route('admin.users')
-                ->with('error', 'You cannot delete your own account.');
+                ->with('error', __('You cannot delete your own account.'));
         }
 
         // Không cho phép xóa admin khác
         if ($user->isAdmin()) {
             return redirect()
                 ->route('admin.users')
-                ->with('error', 'You cannot delete another admin account.');
+                ->with('error', __('You cannot delete another admin account.'));
         }
 
         $userEmail = $user->email;
@@ -203,7 +203,7 @@ class AdminController extends Controller
 
         return redirect()
             ->route('admin.users')
-            ->with('success', 'User deleted successfully.');
+            ->with('success', __('User deleted successfully.'));
     }
 
     /**
@@ -224,7 +224,7 @@ class AdminController extends Controller
 
         return redirect()
             ->route('admin.users', ['status' => 'deleted'])
-            ->with('success', 'User restored successfully.');
+            ->with('success', __('User restored successfully.'));
     }
 
     /**
@@ -238,7 +238,7 @@ class AdminController extends Controller
         if (auth()->id() == $user->id) {
             return redirect()
                 ->route('admin.users')
-                ->with('error', 'You cannot permanently delete your own account.');
+                ->with('error', __('You cannot permanently delete your own account.'));
         }
 
         $userEmail = $user->email;
@@ -255,6 +255,6 @@ class AdminController extends Controller
 
         return redirect()
             ->route('admin.users', ['status' => 'deleted'])
-            ->with('success', 'User permanently deleted.');
+            ->with('success', __('User permanently deleted.'));
     }
 }

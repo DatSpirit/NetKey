@@ -1,8 +1,8 @@
 @push('styles')
     <style>
         /* ──────────────────────────────────────
-       USER DASHBOARD — NETKEY DESIGN SYSTEM
-    ────────────────────────────────────── */
+           USER DASHBOARD — NETKEY DESIGN SYSTEM
+        ────────────────────────────────────── */
 
         /* Welcome Banner → navy with blue accent */
         .nk-welcome-banner {
@@ -632,9 +632,11 @@
                         <select id="chart-range-select"
                             class="px-3 py-1.5 border rounded-lg bg-white dark:bg-gray-700 dark:border-gray-600 text-sm">
                             <option value="7days" {{ $currentRange === '7days' ? 'selected' : '' }}>
-                                {{ __('Last 7 days') }}</option>
+                                {{ __('Last 7 days') }}
+                            </option>
                             <option value="month" {{ $currentRange === 'month' ? 'selected' : '' }}>
-                                {{ __('Last 30 days') }}</option>
+                                {{ __('Last 30 days') }}
+                            </option>
                             <option value="year" {{ $currentRange === 'year' ? 'selected' : '' }}>{{ __('Last year') }}
                             </option>
                         </select>
@@ -737,7 +739,7 @@
                             <div class="flex-shrink-0">
                                 <div
                                     class="w-10 h-10 bg-{{ $activity['color'] }}-100 dark:bg-{{ $activity['color'] }}-900/30 rounded-full flex items-center justify-center">
-                                    <span class="text-lg">{{ $activity['icon'] }}</span>
+                                    <!-- <span class="text-lg">{{ $activity['icon'] }}</span> -->
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
@@ -901,8 +903,8 @@
                                 return gradient;
                             }
 
-                                    // Pie Chart
-                                    const successCount = {{ $stats['success'] }};
+                                        // Pie Chart
+                                        const successCount = {{ $stats['success'] }};
                         const pendingCount = {{ $stats['pending'] }};
                         const failedCount = {{ $stats['failed'] }};
                         // Tính tổng số giao dịch để phục vụ tính toán phần trăm
@@ -957,15 +959,15 @@
                                     cutout: '70%'
                                 }
                             });
-                                    }
+                                        }
 
                         // Gradient TAILWIND 
                         function createGradient(ctx, colorFrom, colorTo) {
-                                        const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+                                            const gradient = ctx.createLinearGradient(0, 0, 0, 350);
                         gradient.addColorStop(0, colorFrom);
                         gradient.addColorStop(1, colorTo);
                         return gradient;
-                                    }
+                                        }
 
                         // ============================
                         // Crosshair X + Y
@@ -973,7 +975,7 @@
                         const crosshairPlugin = {
                             id: 'crosshairPlugin',
                         afterDraw(chart) {
-                                            if (!chart.tooltip?._active?.length) return;
+                                                if (!chart.tooltip?._active?.length) return;
 
                         const ctx = chart.ctx;
                         const point = chart.tooltip._active[0].element;
@@ -1002,8 +1004,8 @@
                         ctx.stroke();
 
                         ctx.restore();
-                                        }
-                                    };
+                                            }
+                                        };
 
                         Chart.register(crosshairPlugin);
 
@@ -1012,7 +1014,7 @@
                         const totals = {!! json_encode($chartTotals) !!};
                         const counts = {!! json_encode($chartCounts) !!};
                         const labels = {!! json_encode($chartLabels) !!};
-                                    const avg = totals.map((v, i) => counts[i] ? v / counts[i] : 0);
+                                        const avg = totals.map((v, i) => counts[i] ? v / counts[i] : 0);
 
                         const ctx = document.getElementById('expenseBarChart').getContext('2d');
 
@@ -1034,7 +1036,7 @@
                         pointRadius: 2,
                         pointHoverRadius: 5,
                         yAxisID: "moneyAxis",
-                                            },
+                                                },
                         {
 
                             label: "Tổng Chi Tiêu (VND)",
@@ -1050,7 +1052,7 @@
                         pointRadius: 2,
                         pointHoverRadius: 5,
                         yAxisID: "moneyAxis"
-                                            },
+                                                },
                         {
 
                             label: 'Số Giao Dịch Thành Công',
@@ -1062,10 +1064,10 @@
                         yAxisID: "countAxis",
                         pointRadius: 2,
                         pointHoverRadius: 5
-                                            }
+                                                }
 
                         ]
-                                        },
+                                            },
                         options: {
                             responsive: true,
                         maintainAspectRatio: false,
@@ -1073,43 +1075,43 @@
                         animation: {
                             duration: 600,
                         easing: 'easeInOutQuart'
-                                            },
+                                                },
 
                         scales: {
                             moneyAxis: {
                             position: "left",
                         ticks: {
                             callback: v => v.toLocaleString('vi-VN')
-                                                    }
-                                                },
+                                                        }
+                                                    },
                         countAxis: {
                             position: "right",
                         beginAtZero: true,
                         grid: {
                             display: false
-                                                    },
+                                                        },
                         ticks: {
                             stepSize: 1,
-                                                        callback: v => Number.isInteger(v) ? v : ''
+                                                            callback: v => Number.isInteger(v) ? v : ''
+                                                        }
                                                     }
-                                                }
-                                            },
+                                                },
 
                         plugins: {
                             tooltip: {
                             enabled: true
-                                                },
+                                                    },
                         legend: {
                             position: 'bottom'
+                                                    }
                                                 }
                                             }
-                                        }
-                                    });
+                                        });
 
 
                         //  BUTTTON: Toggle Chart Type
                         document.getElementById("toggleChartType")
-                                        .addEventListener("click", () => {
+                                            .addEventListener("click", () => {
 
                             // xoay vòng
                             currentType =
@@ -1117,27 +1119,27 @@
                                 currentType === "line" ? "area" :
                                     "bar";
 
-                                            chart.data.datasets.forEach(ds => {
+                                                chart.data.datasets.forEach(ds => {
 
-                                                if (currentType === "area") {
+                                                    if (currentType === "area") {
                             ds.type = "line";
                         ds.fill = true;
-                                                } else {
+                                                    } else {
                             ds.type = currentType;
                         ds.fill = false;
-                                                }
-                                            });
+                                                    }
+                                                });
 
                         chart.update();
-                                        });
+                                            });
 
                         //    --- Logic Chuyển Đổi Phạm Vi ---
                         document.getElementById('chart-range-select')
                         .addEventListener('change', function () {
-                                            const selectedValue = this.value;
+                                                const selectedValue = this.value;
                         window.location.href = `?range=${selectedValue}`;
-                                        });
-                                });
+                                            });
+                                    });
         </script>
     @endpush
 </x-app-layout>

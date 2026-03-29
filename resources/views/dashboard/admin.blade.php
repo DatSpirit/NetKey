@@ -612,38 +612,6 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Toast Notification
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const colors = {
-                success: 'from-green-500 to-emerald-500',
-                error: 'from-red-500 to-pink-500'
-            };
-            const icons = {
-                success: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
-                error: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
-            };
-
-            const toast = document.createElement('div');
-            toast.className =
-                'flex items-center gap-3 w-full max-w-sm p-4 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 transform translate-x-full opacity-0 transition-all duration-300';
-            toast.innerHTML = `
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-br ${colors[type]} flex items-center justify-center flex-shrink-0">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${icons[type]}"/>
-                    </svg>
-                </div>
-                <div class="flex-1 text-sm font-medium text-gray-900 dark:text-white">${message}</div>
-                <button onclick="this.parentElement.remove()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            `;
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.remove('translate-x-full', 'opacity-0'), 100);
-            setTimeout(() => toast.remove(), 5000);
-        }
 
 
 
@@ -838,12 +806,5 @@
             }
         });
 
-        // Session Messages
-        @if (session('success'))
-            showToast("{{ session('success') }}", 'success');
-        @endif
-        @if (session('error'))
-            showToast("{{ session('error') }}", 'error');
-        @endif
     </script>
 </x-app-layout>
