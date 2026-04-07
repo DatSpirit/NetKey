@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('key_validation_logs', function (Blueprint $table) {
             $table->id();// ID bản ghi
-            $table->foreignId('product_key_id')->constrained()->onDelete('cascade');// Khóa sản phẩm được xác thực
+            $table->foreignId('product_key_id')->nullable()->constrained()->onDelete('cascade');// Khóa sản phẩm được xác thực
             $table->string('key_code', 255);// Mã khóa sản phẩm
 
             // Thông tin xác thực

@@ -16,7 +16,6 @@ class AccountExpirationController extends Controller
 
     public function __construct(AccountExpirationService $expirationService)
     {
-        $this->middleware(['auth', 'admin']);
         $this->expirationService = $expirationService;
     }
 
@@ -244,7 +243,7 @@ class AccountExpirationController extends Controller
         return response()->json([
             'success' => true,
             'count' => $users->count(),
-            'users' => $users->map(function ($user) {
+            'users' => $users->map(function (\App\Models\User $user) {
                 return [
                     'id' => $user->id,
                     'name' => $user->name,
