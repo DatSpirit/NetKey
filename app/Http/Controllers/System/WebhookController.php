@@ -15,6 +15,8 @@ use App\Services\KeyManagementService;
 use App\Models\KeyHistory;
 use Exception;
 
+use App\Events\TransactionStatusUpdated;
+
 class WebhookController extends Controller
 {
     /**
@@ -250,6 +252,9 @@ class WebhookController extends Controller
                 // 🔟 MARK AS PROCESSED
                 // ===================================
                 $transaction->markAsProcessed($signature, $payload, $rawPayload);
+
+                // 🔥 PHÁT TÍN HIỆU REAL-TIME (Broadcasting)
+                broadcast(new TransactionStatusUpdated($transaction))->toOthers();
 
                 $processingTime = round((microtime(true) - $startTime) * 1000, 2);
 

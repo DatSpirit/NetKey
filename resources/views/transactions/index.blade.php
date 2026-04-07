@@ -778,17 +778,25 @@
 
     @push('scripts')
         <script>
-            // Auto-refresh transactions every 30 seconds if there are pending transactions
-            @if ($transactions->contains('status', 'pending'))
-                setInterval(() => {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const hasPendingOnly = urlParams.get('status') === 'pending' || !urlParams.get('status');
+            // 🔥 REAL-TIME UPDATE (WebSockets)
+            // Thay thế Polling bằng Laravel Echo để cập nhật ngay lập tức
+            @if(auth()->check())
+                window.Echo.private('user.{{ auth()->id() }}')
+                    .listen('.transaction.updated', (e) => {
+                        console.log('🔔 Giao dịch được cập nhật:', e);
+                        
+                        // Thông báo cho người dùng
+                        if (typeof window.showToast === 'function') {
+                            window.showToast('Giao dịch #' + e.orderCode + ' đã được cập nhật!', 'success');
+                        } else {
+                            console.log('Transaction ' + e.orderCode + ' updated to ' + e.status);
+                        }
 
-                    if (hasPendingOnly) {
-                        console.log('Auto-refreshing pending transactions...');
-                        window.location.reload();
-                    }
-                }, 30000); // 30 seconds
+                        // Reload trang để cập nhật bảng dữ liệu
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    });
             @endif
 
                 // Print function for invoices (if needed)
