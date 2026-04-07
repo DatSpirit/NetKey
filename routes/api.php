@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\System\WebhookController;
 use App\Http\Controllers\Financial\OrderController;
 use App\Http\Controllers\Api\KeyValidationController;
+use App\Http\Controllers\Api\KeyValidationApiController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KeyController;
 use App\Http\Controllers\Api\TransactionController;
@@ -23,6 +24,15 @@ Route::post('/payos/webhook', [WebhookController::class, 'handleWebhook'])
 // ==========================================
 Route::post('/orders/create', [OrderController::class, 'createOrder'])
     ->name('api.orders.create');
+
+// ==========================================
+// KEY VALIDATION API (Public - No auth required)
+// Allows third-party software to verify licence keys.
+// Logs: IP address, User-Agent, device_id for every request.
+// ==========================================
+Route::get('/validate/{key}', [KeyValidationApiController::class, 'validate'])
+    ->middleware('throttle:60,1')  // 60 requests / minute per IP
+    ->name('api.validate.key');
 
 // Public - Không cần token
 Route::post('/login', [AuthController::class, 'login']);

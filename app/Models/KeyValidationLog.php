@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class KeyValidationLog extends Model
 {
-    const UPDATED_AT = null; 
+    const CREATED_AT = 'validated_at';
+    const UPDATED_AT = null;
+
     protected $fillable = [
         'product_key_id',
         'key_code',
