@@ -67,7 +67,23 @@ class AdminController extends Controller
     public function show($id): JsonResponse
     {
         $user = User::withTrashed()->findOrFail($id);
-        return response()->json($user);
+
+        // Explicitly include fields that may be affected by hidden/cast rules
+        return response()->json([
+            'id'                    => $user->id,
+            'name'                  => $user->name,
+            'email'                 => $user->email,
+            'phone_number'          => $user->phone_number,
+            'is_admin'              => $user->is_admin,
+            'two_factor_enabled'    => (bool) $user->two_factor_enabled,
+            'two_factor_confirmed_at' => $user->two_factor_confirmed_at,
+            'expires_at'            => $user->expires_at,
+            'account_status'        => $user->account_status,
+            'notes'                 => $user->notes,
+            'created_at'            => $user->created_at,
+            'updated_at'            => $user->updated_at,
+            'deleted_at'            => $user->deleted_at,
+        ]);
     }
 
     /**

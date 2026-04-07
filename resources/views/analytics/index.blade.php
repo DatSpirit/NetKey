@@ -1,50 +1,79 @@
 @push('styles')
-<style>
-/* ── ANALYTICS DASHBOARD — NETKEY DESIGN OVERRIDES ── */
+    <style>
+        /* ── ANALYTICS DASHBOARD — NETKEY DESIGN OVERRIDES ── */
 
-/* Cards & Containers */
-.bg-white.dark\:bg-gray-800 {
-    background: var(--bg-card) !important;
-    border-color: var(--border) !important;
-}
+        /* Cards & Containers */
+        .bg-white.dark\:bg-gray-800 {
+            background: var(--bg-card) !important;
+            border-color: var(--border) !important;
+        }
 
-/* Interior elements */
-.bg-gray-50.dark\:bg-gray-700,
-.bg-gray-100.dark\:bg-gray-700 {
-    background: var(--bg-layer) !important;
-    border-color: var(--border) !important;
-}
+        /* Interior elements */
+        .bg-gray-50.dark\:bg-gray-700,
+        .bg-gray-100.dark\:bg-gray-700 {
+            background: var(--bg-layer) !important;
+            border-color: var(--border) !important;
+        }
 
-/* Inputs / Selects */
-select.bg-white.dark\:bg-gray-700 {
-    background: var(--bg-layer) !important;
-    border: 1px solid var(--border) !important;
-    color: var(--text-color) !important;
-}
+        /* Inputs / Selects */
+        select.bg-white.dark\:bg-gray-700 {
+            background: var(--bg-layer) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-color) !important;
+        }
 
-select:focus {
-    border-color: #2563eb !important;
-    box-shadow: 0 0 0 1px #2563eb !important;
-}
+        select:focus {
+            border-color: #2563eb !important;
+            box-shadow: 0 0 0 1px #2563eb !important;
+        }
 
-/* Actions */
-.bg-indigo-600 { background-color: #2563eb !important; }
-.hover\:bg-indigo-700:hover { background-color: #1d4ed8 !important; }
+        /* Actions */
+        .bg-indigo-600 {
+            background-color: #2563eb !important;
+        }
 
-/* Status Accents */
-.text-indigo-600.dark\:text-indigo-400,
-.text-indigo-600 { color: #2563eb !important; }
-.bg-indigo-50.dark\:bg-indigo-900\/30 { background: rgba(37, 99, 235, 0.1) !important; color: #2563eb !important; }
+        .hover\:bg-indigo-700:hover {
+            background-color: #1d4ed8 !important;
+        }
 
-.text-blue-600.dark\:text-blue-400 { color: #3b82f6 !important; }
-.bg-blue-50.dark\:bg-blue-900\/30 { background: rgba(59, 130, 246, 0.1) !important; color: #3b82f6 !important; }
-.bg-blue-600 { background-color: #3b82f6 !important; }
+        /* Status Accents */
+        .text-indigo-600.dark\:text-indigo-400,
+        .text-indigo-600 {
+            color: #2563eb !important;
+        }
 
-.text-green-600, .text-green-500 { color: #10b981 !important; }
-.bg-green-50.dark\:bg-green-900\/30 { background: rgba(16, 185, 129, 0.1) !important; color: #10b981 !important; }
-.bg-green-500 { background-color: #10b981 !important; }
+        .bg-indigo-50.dark\:bg-indigo-900\/30 {
+            background: rgba(37, 99, 235, 0.1) !important;
+            color: #2563eb !important;
+        }
 
-</style>
+        .text-blue-600.dark\:text-blue-400 {
+            color: #3b82f6 !important;
+        }
+
+        .bg-blue-50.dark\:bg-blue-900\/30 {
+            background: rgba(59, 130, 246, 0.1) !important;
+            color: #3b82f6 !important;
+        }
+
+        .bg-blue-600 {
+            background-color: #3b82f6 !important;
+        }
+
+        .text-green-600,
+        .text-green-500 {
+            color: #10b981 !important;
+        }
+
+        .bg-green-50.dark\:bg-green-900\/30 {
+            background: rgba(16, 185, 129, 0.1) !important;
+            color: #10b981 !important;
+        }
+
+        .bg-green-500 {
+            background-color: #10b981 !important;
+        }
+    </style>
 @endpush
 
 <x-app-layout>
@@ -92,12 +121,15 @@ select:focus {
 
             {{-- Total Spent (Split) --}}
             <div
-                class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-3xl shadow-lg p-6 text-white transform hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group">
+                class="bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl shadow-lg p-6 text-white transform hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group">
                 <div class="relative z-10">
-                    <p class="text-indigo-100 text-sm font-bold uppercase tracking-wider mb-4">{{ __('Total Spending') }}</p>
+                    <p class="text-indigo-100 text-sm font-bold uppercase tracking-wider mb-4">
+                        {{ __('Total Spending') }}
+                    </p>
 
                     <div class="flex items-baseline space-x-1.5 mb-2">
-                        <span class="text-3xl font-black tracking-tight">{{ number_format($analytics['totalRevenueVND']) }}</span>
+                        <span
+                            class="text-3xl font-black tracking-tight">{{ number_format($analytics['totalRevenueVND']) }}</span>
                         <span class="text-sm font-bold opacity-80">VND</span>
                     </div>
                     <div class="flex items-baseline space-x-1.5">
@@ -107,7 +139,8 @@ select:focus {
                     </div>
                 </div>
                 {{-- Decorative Icon --}}
-                <div class="absolute -right-4 -top-4 p-8 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-110 duration-500">
+                <div
+                    class="absolute -right-4 -top-4 p-8 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:scale-110 duration-500">
                     <svg class="w-24 h-24 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -121,7 +154,9 @@ select:focus {
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-gray-400 text-sm font-bold uppercase tracking-wider">{{ __('Transactions') }}</p>
-                        <h3 class="text-3xl font-black text-gray-900 dark:text-white mt-2">{{ $analytics['ordersTotal'] }}</h3>
+                        <h3 class="text-3xl font-black text-gray-900 dark:text-white mt-2">
+                            {{ $analytics['ordersTotal'] }}
+                        </h3>
                     </div>
                     <div class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
                         <svg class="w-7 h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
@@ -190,7 +225,8 @@ select:focus {
                 class="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 hover:shadow-md transition-shadow">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-gray-400 text-sm font-bold uppercase tracking-wider">{{ __('Current Balance') }}</p>
+                        <p class="text-gray-400 text-sm font-bold uppercase tracking-wider">{{ __('Current Balance') }}
+                        </p>
                         <h3 class="text-3xl font-black text-indigo-600 dark:text-indigo-400 mt-2">
                             {{ number_format($analytics['walletBalance']) }} <span
                                 class="text-sm font-bold text-gray-400 ml-1">COIN</span>
@@ -204,9 +240,12 @@ select:focus {
                         </svg>
                     </div>
                 </div>
-                <div class="mt-6 flex items-center space-x-2 bg-green-50 dark:bg-green-900/20 px-3 py-2 rounded-lg w-max">
+                <div
+                    class="mt-6 flex items-center space-x-2 bg-green-50 dark:bg-green-900/20 px-3 py-2 rounded-lg w-max">
                     <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                    <p class="text-xs text-green-700 dark:text-green-400 font-bold uppercase tracking-wider">{{ __('Available for use') }}</p>
+                    <p class="text-xs text-green-700 dark:text-green-400 font-bold uppercase tracking-wider">
+                        {{ __('Available for use') }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -218,7 +257,9 @@ select:focus {
             <div
                 class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 sm:p-8 relative overflow-hidden">
                 <!-- Background decoration -->
-                <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-50 dark:bg-indigo-900/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none z-0"></div>
+                <div
+                    class="absolute top-0 right-0 w-64 h-64 bg-indigo-50 dark:bg-indigo-900/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none z-0">
+                </div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 relative z-10 flex items-center">
                     <span class="w-1.5 h-6 bg-indigo-600 rounded-full mr-3"></span>
                     {{ __('Spending History') }}
@@ -309,7 +350,10 @@ select:focus {
                     @empty
                         <div class="flex flex-col items-center justify-center h-full text-center space-y-3 opacity-70">
                             <div class="p-3 bg-gray-100 dark:bg-gray-700 rounded-full">
-                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                </svg>
                             </div>
                             <p class="text-gray-500 text-sm font-medium">No purchases yet in this period.</p>
                         </div>
@@ -337,7 +381,8 @@ select:focus {
                         </div>
                     @endforeach
                 </div>
-                <div class="mt-8 flex items-center justify-between px-2 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                <div
+                    class="mt-8 flex items-center justify-between px-2 text-xs font-bold text-gray-400 uppercase tracking-wider">
                     <div class="flex items-center space-x-2">
                         <div class="w-4 h-4 bg-gray-100 dark:bg-gray-700 rounded shadow-sm"></div> <span>None</span>
                     </div>
@@ -355,8 +400,10 @@ select:focus {
         </div>
 
         {{-- Recent Transactions Timeline --}}
-        <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 sm:p-8">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-8 flex items-center border-b border-gray-100 dark:border-gray-700 pb-4">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 sm:p-8">
+            <h3
+                class="text-xl font-bold text-gray-900 dark:text-white mb-8 flex items-center border-b border-gray-100 dark:border-gray-700 pb-4">
                 <span class="w-1.5 h-6 bg-indigo-600 rounded-full mr-3"></span>
                 {{ __('Recent Activity Timeline') }}
             </h3>
@@ -368,13 +415,15 @@ select:focus {
                             class="absolute -left-[10px] top-1 w-4 h-4 rounded-full shadow-sm {{ $t->status == 'success' ? 'bg-green-500 ring-[6px] ring-green-50 dark:ring-green-900/40' : 'bg-red-500 ring-[6px] ring-red-50 dark:ring-red-900/40' }}">
                         </div>
 
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors border border-gray-100/50 dark:border-gray-600/30">
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-gray-50 dark:bg-gray-700/30 rounded-2xl hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors border border-gray-100/50 dark:border-gray-600/30">
                             <div>
                                 <h4 class="text-base font-bold text-gray-900 dark:text-white">
                                     {{ $t->product->name ?? 'Wallet Topup' }}
                                 </h4>
                                 <div class="flex items-center space-x-2 mt-1.5 text-sm font-medium text-gray-500">
-                                    <span class="bg-white dark:bg-gray-800 px-2 py-0.5 rounded shadow-sm text-xs border border-gray-200 dark:border-gray-600">
+                                    <span
+                                        class="bg-white dark:bg-gray-800 px-2 py-0.5 rounded shadow-sm text-xs border border-gray-200 dark:border-gray-600">
                                         {{ $t->created_at->format('h:i A') }} • {{ $t->created_at->format('M d') }}
                                     </span>
                                     <span>#{{ substr($t->order_code, -8) }}</span>
@@ -386,7 +435,8 @@ select:focus {
                                     {{ $t->status == 'success' ? '-' : '' }}{{ number_format($t->amount) }}
                                     <span class="text-xs ml-0.5">{{ $t->currency }}</span>
                                 </span>
-                                <span class="text-xs font-bold uppercase tracking-wider {{ $t->status == 'success' ? 'text-green-500' : 'text-red-500' }} mt-1 bg-white dark:bg-gray-800 px-2 py-0.5 rounded shadow-sm border border-gray-200 dark:border-gray-600">{{ $t->status }}</span>
+                                <span
+                                    class="text-xs font-bold uppercase tracking-wider {{ $t->status == 'success' ? 'text-green-500' : 'text-red-500' }} mt-1 bg-white dark:bg-gray-800 px-2 py-0.5 rounded shadow-sm border border-gray-200 dark:border-gray-600">{{ $t->status }}</span>
                             </div>
                         </div>
                     </div>
@@ -398,7 +448,10 @@ select:focus {
                 <button onclick="window.location.href='{{ route('analytics.export') }}'"
                     class="text-sm text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 font-bold uppercase tracking-wider inline-flex items-center transition-colors">
                     View detailed history in Exports
-                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
                 </button>
             </div>
         </div>
@@ -448,10 +501,10 @@ select:focus {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { 
-                    legend: { display: false }, 
-                    tooltip: { 
-                        mode: 'index', 
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
                         intersect: false,
                         backgroundColor: 'rgba(17, 24, 39, 0.9)',
                         titleFont: { size: 13, weight: 'bold' },
@@ -459,7 +512,7 @@ select:focus {
                         padding: 12,
                         cornerRadius: 8,
                         displayColors: false
-                    } 
+                    }
                 },
                 scales: {
                     x: { grid: { display: false } },
@@ -508,7 +561,7 @@ select:focus {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { 
+                plugins: {
                     legend: { display: false },
                     tooltip: {
                         backgroundColor: 'rgba(17, 24, 39, 0.9)',

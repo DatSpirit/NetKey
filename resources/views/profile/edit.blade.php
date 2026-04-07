@@ -73,7 +73,29 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
 
+            {{-- Flash Messages --}}
+            @if(session('success'))
+            <div class="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/50 rounded-2xl text-green-700 dark:text-green-300 shadow-sm"
+                 x-data="{ show: true }" x-show="show" x-transition
+                 x-init="setTimeout(() => show = false, 5000)">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="font-medium">{{ session('success') }}</span>
+            </div>
+            @endif
+
+            @if(session('error'))
+            <div class="flex items-center gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-2xl text-red-700 dark:text-red-300 shadow-sm">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="font-medium">{{ session('error') }}</span>
+            </div>
+            @endif
+
             <!-- Account Status & Expiration Info -->
+
             <div
                 class="p-6 sm:p-8 bg-white dark:bg-gray-800 shadow-lg sm:rounded-2xl border-l-[6px] {{ $user->account_status === 'active' ? 'border-green-500' : 'border-red-500' }}">
                 <section>

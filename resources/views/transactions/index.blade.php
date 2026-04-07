@@ -1,86 +1,160 @@
 @push('styles')
-<style>
-/* ── TRANSACTIONS — NETKEY DESIGN OVERRIDES ── */
+    <style>
+        /* ── TRANSACTIONS — NETKEY DESIGN OVERRIDES ── */
 
-/* Stat cards: replace colored gradients */
-.bg-gradient-to-br.from-green-300.to-emerald-600 {
-    background: linear-gradient(135deg, #0a0f1e 0%, #16a34a 100%) !important;
-}
-.bg-gradient-to-br.from-yellow-300.to-orange-600 {
-    background: linear-gradient(135deg, #0a0f1e 0%, #d97706 100%) !important;
-}
-.bg-gradient-to-br.from-red-300.to-pink-600 {
-    background: linear-gradient(135deg, #0a0f1e 0%, #dc2626 100%) !important;
-}
-.bg-gradient-to-br.from-indigo-300.to-purple-600 {
-    background: linear-gradient(135deg, #0a0f1e 0%, #2563eb 100%) !important;
-}
+        /* Stat cards: replace colored gradients */
+        .bg-gradient-to-br.from-green-300.to-emerald-600 {
+            background: linear-gradient(135deg, #0a0f1e 0%, #16a34a 50%) !important;
+        }
 
-/* All stat card text to white */
-.bg-gradient-to-br.from-green-300.to-emerald-600 *,
-.bg-gradient-to-br.from-yellow-300.to-orange-600 *,
-.bg-gradient-to-br.from-red-300.to-pink-600 *,
-.bg-gradient-to-br.from-indigo-300.to-purple-600 * {
-    color: white !important;
-}
+        .bg-gradient-to-br.from-yellow-300.to-orange-600 {
+            background: linear-gradient(135deg, #0a0f1e 0%, #d97706 50%) !important;
+        }
 
-/* Filter bar cards */
-.bg-white.dark\:bg-gray-800.rounded-2xl {
-    background: var(--bg-card) !important;
-    border-color: var(--border) !important;
-}
+        .bg-gradient-to-br.from-red-300.to-pink-600 {
+            background: linear-gradient(135deg, #0a0f1e 0%, #dc2626 50%) !important;
+        }
 
-/* Focus ring: indigo → blue */
-.focus\:border-indigo-500:focus { border-color: #2563eb !important; }
-.focus\:ring-indigo-500\/20:focus { --tw-ring-color: rgba(37,99,235,0.2) !important; }
+        .bg-gradient-to-br.from-indigo-300.to-purple-600 {
+            background: linear-gradient(135deg, #0a0f1e 0%, #2563eb 50%) !important;
+        }
 
-/* Table header */
-tr.bg-gray-100 { background: var(--bg-elevated) !important; }
-.dark tr.bg-gray-700 { background: var(--bg-elevated) !important; }
+        /* All stat card text to white */
+        .bg-gradient-to-br.from-green-300.to-emerald-600 *,
+        .bg-gradient-to-br.from-yellow-300.to-orange-600 *,
+        .bg-gradient-to-br.from-red-300.to-pink-600 *,
+        .bg-gradient-to-br.from-indigo-300.to-purple-600 * {
+            color: white !important;
+        }
 
-/* Order code: indigo → blue */
-.text-sm.font-bold.text-indigo-600 { color: #2563eb !important; }
-.dark .text-sm.font-bold.text-indigo-400 { color: #60a5fa !important; }
+        /* Filter bar cards */
+        .bg-white.dark\:bg-gray-800.rounded-2xl {
+            background: var(--bg-card) !important;
+            border-color: var(--border) !important;
+        }
 
-/* Transaction detail boxes: indigo/purple/green → blue/navy */
-.bg-gradient-to-br.from-indigo-50.to-purple-50 {
-    background: rgba(37,99,235,0.04) !important;
-}
-.border-indigo-200 { border-color: rgba(37,99,235,0.2) !important; }
-.text-indigo-700, .dark\:text-indigo-300 { color: #2563eb !important; }
-.bg-indigo-100 { background: rgba(37,99,235,0.1) !important; }
-.text-indigo-600, .dark\:text-indigo-400 { color: #2563eb !important; }
+        /* Focus ring: indigo → blue */
+        .focus\:border-indigo-500:focus {
+            border-color: #2563eb !important;
+        }
 
-.bg-gradient-to-br.from-purple-50.to-pink-50 {
-    background: rgba(30,58,138,0.04) !important;
-}
-.border-purple-200 { border-color: rgba(30,58,138,0.2) !important; }
-.text-purple-700—, .text-purple-600 { color: #1e3a8a !important; }
-.bg-purple-100 { background: rgba(30,58,138,0.1) !important; }
-.bg-purple-100.dark\:bg-purple-800 { background: rgba(30,58,138,0.15) !important; }
+        .focus\:ring-indigo-500\/20:focus {
+            --tw-ring-color: rgba(37, 99, 235, 0.2) !important;
+        }
 
-.bg-gradient-to-br.from-blue-50.to-indigo-50 { background: rgba(37,99,235,0.03) !important; }
-.border-blue-200 { border-color: rgba(37,99,235,0.15) !important; }
+        /* Table header */
+        tr.bg-gray-100 {
+            background: var(--bg-elevated) !important;
+        }
 
-/* Search & submit buttons */
-button.bg-indigo-600, a.bg-indigo-600 { background: #2563eb !important; }
-button.hover\:bg-indigo-700:hover, a.hover\:bg-indigo-700:hover { background: #1d4ed8 !important; }
-.shadow-indigo-500\/50 { box-shadow: 0 4px 14px rgba(37,99,235,0.3) !important; }
+        .dark tr.bg-gray-700 {
+            background: var(--bg-elevated) !important;
+        }
 
-/* View details button */
-a.bg-indigo-500 { background: #2563eb !important; }
-a.hover\:bg-indigo-600:hover { background: #1d4ed8 !important; }
+        /* Order code: indigo → blue */
+        .text-sm.font-bold.text-indigo-600 {
+            color: #2563eb !important;
+        }
 
-/* Empty state & Browse Products */
-a.bg-indigo-600.hover\:bg-indigo-700 { background: #2563eb !important; }
-.shadow-indigo-500\/30 { box-shadow: 0 4px 14px rgba(37,99,235,0.2) !important; }
+        .dark .text-sm.font-bold.text-indigo-400 {
+            color: #60a5fa !important;
+        }
 
-/* Refresh button */
-button.bg-indigo-600.hover\:bg-indigo-700 { background: #2563eb !important; }
+        /* Transaction detail boxes: indigo/purple/green → blue/navy */
+        .bg-gradient-to-br.from-indigo-50.to-purple-50 {
+            background: rgba(37, 99, 235, 0.04) !important;
+        }
 
-/* Page body bg */
-.space-y-6 { color: var(--fg); }
-</style>
+        .border-indigo-200 {
+            border-color: rgba(37, 99, 235, 0.2) !important;
+        }
+
+        .text-indigo-700,
+        .dark\:text-indigo-300 {
+            color: #2563eb !important;
+        }
+
+        .bg-indigo-100 {
+            background: rgba(37, 99, 235, 0.1) !important;
+        }
+
+        .text-indigo-600,
+        .dark\:text-indigo-400 {
+            color: #2563eb !important;
+        }
+
+        .bg-gradient-to-br.from-purple-50.to-pink-50 {
+            background: rgba(30, 58, 138, 0.04) !important;
+        }
+
+        .border-purple-200 {
+            border-color: rgba(30, 58, 138, 0.2) !important;
+        }
+
+        .text-purple-700—,
+        .text-purple-600 {
+            color: #1e3a8a !important;
+        }
+
+        .bg-purple-100 {
+            background: rgba(30, 58, 138, 0.1) !important;
+        }
+
+        .bg-purple-100.dark\:bg-purple-800 {
+            background: rgba(30, 58, 138, 0.15) !important;
+        }
+
+        .bg-gradient-to-br.from-blue-50.to-indigo-50 {
+            background: rgba(37, 99, 235, 0.03) !important;
+        }
+
+        .border-blue-200 {
+            border-color: rgba(37, 99, 235, 0.15) !important;
+        }
+
+        /* Search & submit buttons */
+        button.bg-indigo-600,
+        a.bg-indigo-600 {
+            background: #2563eb !important;
+        }
+
+        button.hover\:bg-indigo-700:hover,
+        a.hover\:bg-indigo-700:hover {
+            background: #1d4ed8 !important;
+        }
+
+        .shadow-indigo-500\/50 {
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
+        }
+
+        /* View details button */
+        a.bg-indigo-500 {
+            background: #2563eb !important;
+        }
+
+        a.hover\:bg-indigo-600:hover {
+            background: #1d4ed8 !important;
+        }
+
+        /* Empty state & Browse Products */
+        a.bg-indigo-600.hover\:bg-indigo-700 {
+            background: #2563eb !important;
+        }
+
+        .shadow-indigo-500\/30 {
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2) !important;
+        }
+
+        /* Refresh button */
+        button.bg-indigo-600.hover\:bg-indigo-700 {
+            background: #2563eb !important;
+        }
+
+        /* Page body bg */
+        .space-y-6 {
+            color: var(--fg);
+        }
+    </style>
 @endpush
 
 <x-app-layout>
@@ -372,8 +446,8 @@ button.bg-indigo-600.hover\:bg-indigo-700 { background: #2563eb !important; }
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-indigo-100 dark:bg-indigo-800 px-2 py-1 rounded text-xs font-mono font-bold">
-                                                                                                                                    {{ $meta['key_code'] }}
-                                                                                                                                </code>
+                                                                                                                                                                    {{ $meta['key_code'] }}
+                                                                                                                                                                </code>
                                                             </div>
                                                         @endif
                                                         @if (isset($meta['days_added']))
@@ -412,8 +486,8 @@ button.bg-indigo-600.hover\:bg-indigo-700 { background: #2563eb !important; }
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-green-100 dark:bg-green-800 px-2 py-1 rounded text-xs font-mono">
-                                                                                                                                    {{ $meta['key_code'] }}
-                                                                                                                                </code>
+                                                                                                                                                                    {{ $meta['key_code'] }}
+                                                                                                                                                                </code>
                                                             </div>
                                                         @endif
                                                     </div>
@@ -450,8 +524,8 @@ button.bg-indigo-600.hover\:bg-indigo-700 { background: #2563eb !important; }
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-purple-100 dark:bg-purple-800 px-2 py-1 rounded text-xs font-mono font-bold">
-                                                                                                                                    {{ $customKey->key_code }}
-                                                                                                                                </code>
+                                                                                                                                                                    {{ $customKey->key_code }}
+                                                                                                                                                                </code>
                                                             </div>
                                                         </div>
                                                     @else
@@ -485,8 +559,8 @@ button.bg-indigo-600.hover\:bg-indigo-700 { background: #2563eb !important; }
                                                                     Code:</span>
                                                                 <code
                                                                     class="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded text-xs font-mono">
-                                                                                                                                    {{ $transaction->productKey->key_code }}
-                                                                                                                                </code>
+                                                                                                                                                                    {{ $transaction->productKey->key_code }}
+                                                                                                                                                                </code>
                                                             </div>
                                                         </div>
                                                     </div>

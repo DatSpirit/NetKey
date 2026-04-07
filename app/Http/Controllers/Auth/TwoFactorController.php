@@ -70,7 +70,7 @@ class TwoFactorController extends Controller
             return back()->with('error', 'Phiên đã hết hạn. Vui lòng bắt đầu lại.');
         }
 
-        $valid = $this->google2fa->verifyKey($secret, $request->otp);
+        $valid = $this->google2fa->verifyKeyNewer($secret, $request->otp, null, 1);
 
         if (!$valid) {
             return back()->withErrors(['otp' => 'Mã OTP không đúng. Vui lòng thử lại.']);
@@ -137,7 +137,7 @@ class TwoFactorController extends Controller
         $user = Auth::user();
         $secret = decrypt($user->two_factor_secret);
 
-        $valid = $this->google2fa->verifyKey($secret, $request->otp);
+        $valid = $this->google2fa->verifyKeyNewer($secret, $request->otp, null, 1);
 
         if (!$valid) {
             return back()->withErrors(['otp' => 'Mã OTP không đúng. Vui lòng thử lại.']);

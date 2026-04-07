@@ -1,12 +1,12 @@
 @push('styles')
     <style>
         /* ──────────────────────────────────────
-       PRODUCTS PAGE — NETKEY DESIGN SYSTEM
-    ────────────────────────────────────── */
+                                               PRODUCTS PAGE — NETKEY DESIGN SYSTEM
+                                            ────────────────────────────────────── */
 
         /* Hero banner */
         .nk-products-banner {
-            background: linear-gradient(135deg, #0a0f1e 0%, #1a2a4e 60%, #2563eb 100%);
+            background: linear-gradient(135deg, #0a0f1e 0%, #1a2a4e 30%, #2563eb 80%);
             border-radius: 18px;
             padding: 32px 36px;
             color: white;
@@ -42,8 +42,8 @@
             align-items: center;
             gap: 8px;
             padding: 10px 18px;
-            background: white;
-            color: #2563eb;
+            background: #151515ff;
+            color: #ffffff;
             border-radius: 10px;
             font-weight: 700;
             font-size: 0.875rem;
@@ -53,7 +53,8 @@
         }
 
         .nk-add-product-btn:hover {
-            background: #f9fafb;
+            background: #ffffffff;
+            color: #000000ff;
             transform: translateY(-1px);
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
         }
@@ -375,16 +376,16 @@
                         data-price="{{ $product['price'] }}" data-category="{{ $product['category'] ?? '' }}">
 
                         <!-- Product Image -->
-                        <div
-                            class="relative aspect-square bg-gray-50 dark:bg-[#111111] flex items-center justify-center p-4 sm:p-6 overflow-hidden w-full image-zoom-container"
-                            onclick="openImageZoom(this)"
-                            data-image-src="{{ $product->image_url }}">
+                        <div class="relative aspect-square bg-gray-50 dark:bg-[#111111] flex items-center justify-center p-4 sm:p-6 overflow-hidden w-full image-zoom-container"
+                            onclick="openImageZoom(this)" data-image-src="{{ $product->image_url }}">
                             @if ($product->image_url)
                                 <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                     class="w-full h-full object-contain hover:scale-105 transition-transform duration-300">
                             @else
-                                <svg class="w-24 h-24 text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                <svg class="w-24 h-24 text-gray-300 dark:text-gray-600 mb-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             @endif
                             <!-- Category Badge -->
@@ -395,7 +396,9 @@
                                 </span>
                             @endif
                             <!-- Cờ hiệu để biết là package js object, ta phải attach thêm tham số image_url -->
-                            <div class="hidden product-data" data-product="{{ json_encode(array_merge($product->toArray(), ['image_url' => $product->image_url])) }}"></div>
+                            <div class="hidden product-data"
+                                data-product="{{ json_encode(array_merge($product->toArray(), ['image_url' => $product->image_url])) }}">
+                            </div>
                         </div>
 
                         <!-- Product Info -->
@@ -496,40 +499,56 @@
     </div>
 
     <!-- MÀN HÌNH PHÓNG TO ẢNH (IMAGE ZOOM VIEWER) -->
-    <div id="imageZoomModal" class="fixed inset-0 z-[120] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div id="imageZoomModal"
+        class="fixed inset-0 z-[120] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <!-- Nền mờ -->
         <div class="absolute inset-0 bg-black/95 backdrop-blur-md" onclick="closeImageZoom()"></div>
-        
+
         <!-- Nút Đóng -->
-        <button onclick="closeImageZoom()" class="absolute top-6 right-6 p-3 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 rounded-full backdrop-blur-sm transition-all z-10 group">
-            <svg class="w-8 h-8 transform group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button onclick="closeImageZoom()"
+            class="absolute top-6 right-6 p-3 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 rounded-full backdrop-blur-sm transition-all z-10 group">
+            <svg class="w-8 h-8 transform group-hover:rotate-90 transition-transform duration-300" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
 
         <!-- Container chính -->
-        <div class="relative z-10 flex flex-col items-center justify-between w-full h-full p-6 md:p-12 pointer-events-none">
+        <div
+            class="relative z-10 flex flex-col items-center justify-between w-full h-full p-6 md:p-12 pointer-events-none">
             <!-- Khu vực ảnh ở giữa -->
-            <div class="flex-1 flex items-center justify-center w-full max-w-5xl transition-transform duration-500 transform scale-95" id="zoomedImageContainer">
-                 <!-- Ảnh sẽ được gán src bằng JS -->
-                 <img id="zoomedImage" src="" alt="Sản phẩm phóng to" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl ring-1 ring-white/10 pointer-events-auto">
+            <div class="flex-1 flex items-center justify-center w-full max-w-5xl transition-transform duration-500 transform scale-95"
+                id="zoomedImageContainer">
+                <!-- Ảnh sẽ được gán src bằng JS -->
+                <img id="zoomedImage" src="" alt="Sản phẩm phóng to"
+                    class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl ring-1 ring-white/10 pointer-events-auto">
             </div>
 
             <!-- Thanh chức năng bên dưới (Giữ nguyên các nút cơ bản) -->
-            <div class="w-full max-w-2xl bg-white/10 backdrop-blur-xl border border-white/10 p-5 rounded-2xl shadow-2xl transform translate-y-8 opacity-0 transition-all duration-500 pointer-events-auto flex items-center justify-between gap-4 mt-6" id="zoomActionBar">
+            <div class="w-full max-w-2xl bg-white/10 backdrop-blur-xl border border-white/10 p-5 rounded-2xl shadow-2xl transform translate-y-8 opacity-0 transition-all duration-500 pointer-events-auto flex items-center justify-between gap-4 mt-6"
+                id="zoomActionBar">
                 <div class="flex-1 min-w-0">
                     <h3 class="text-white font-bold text-xl truncate" id="zoomProductName">Loading...</h3>
                     <p class="text-blue-300 font-bold text-lg" id="zoomProductPrice">0đ</p>
                 </div>
                 <div class="flex gap-3">
                     <!-- Nút Chi Tiết -->
-                    <button type="button" id="zoomDetailBtn" class="px-5 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/5 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <button type="button" id="zoomDetailBtn"
+                        class="px-5 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/5 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                         <span class="hidden sm:inline">{{ __('Overview') }}</span>
                     </button>
                     <!-- Nút Mua -->
-                    <button type="button" id="zoomBuyBtn" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                    <button type="button" id="zoomBuyBtn"
+                        class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl shadow-[0_0_20px_rgba(79,70,229,0.4)] transition-all flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                            </path>
+                        </svg>
                         <span>{{ __('Buy Now') }}</span>
                     </button>
                 </div>
@@ -1163,12 +1182,12 @@
             };
 
             // Lấy thông tin product JSON từ the card view
-            window.openDetailModalFromCard = function(btnElement) {
+            window.openDetailModalFromCard = function (btnElement) {
                 // Find parent product card
                 const card = btnElement.closest('.product-card');
                 const dataDiv = card.querySelector('.product-data');
                 const product = JSON.parse(dataDiv.dataset.product);
-                
+
                 openProductDetailModalWithData(product);
             };
 
@@ -1230,20 +1249,20 @@
             }
 
             // --- ZOOM VIEWER LOGIC ---
-            window.openImageZoom = function(containerElement) {
+            window.openImageZoom = function (containerElement) {
                 // Ignore if clicked on a badge
-                if(event.target.tagName.toLowerCase() === 'span') return;
+                if (event.target.tagName.toLowerCase() === 'span') return;
 
                 const card = containerElement.closest('.product-card');
                 const dataDiv = card.querySelector('.product-data');
                 const product = JSON.parse(dataDiv.dataset.product);
                 const imgSrc = containerElement.dataset.imageSrc;
-                
+
                 const zoomModal = document.getElementById('imageZoomModal');
                 const zoomImage = document.getElementById('zoomedImage');
                 const zoomContainer = document.getElementById('zoomedImageContainer');
                 const actionBar = document.getElementById('zoomActionBar');
-                
+
                 // Mặc định ảnh rỗng nếu không có
                 if (imgSrc) {
                     zoomImage.src = imgSrc;
@@ -1258,12 +1277,12 @@
                 document.getElementById('zoomProductPrice').innerText = formatMoney(product.price) + 'đ';
 
                 // Gán event cho nút Mua & Xem Chi Tiết trên Zoom Modal
-                document.getElementById('zoomBuyBtn').onclick = function() {
+                document.getElementById('zoomBuyBtn').onclick = function () {
                     closeImageZoom();
                     openPurchaseModal(product);
                 };
 
-                document.getElementById('zoomDetailBtn').onclick = function() {
+                document.getElementById('zoomDetailBtn').onclick = function () {
                     closeImageZoom();
                     openProductDetailModalWithData(product);
                 };
@@ -1278,18 +1297,18 @@
                     zoomModal.classList.remove('opacity-0');
                     zoomContainer.classList.remove('scale-95');
                     zoomContainer.classList.add('scale-100');
-                    
+
                     setTimeout(() => {
                         actionBar.classList.remove('translate-y-8', 'opacity-0');
                     }, 150);
                 });
             };
 
-            window.closeImageZoom = function() {
+            window.closeImageZoom = function () {
                 const zoomModal = document.getElementById('imageZoomModal');
                 const zoomContainer = document.getElementById('zoomedImageContainer');
                 const actionBar = document.getElementById('zoomActionBar');
-                
+
                 zoomModal.classList.add('opacity-0');
                 zoomContainer.classList.remove('scale-100');
                 zoomContainer.classList.add('scale-95');

@@ -51,6 +51,11 @@ class AppServiceProvider extends ServiceProvider
             return view('auth.register');
         });
 
+        // Bind confirm-password view for Fortify's /user/confirm-password route (2FA password confirmation)
+        Fortify::confirmPasswordView(function () {
+            return view('auth.confirm-password');
+        });
+
         /*
         |--------------------------------------------------------------------------
         | Chuyển hướng sau khi đăng nhập/đăng ký
