@@ -525,7 +525,7 @@
                                 <div style="display:flex;justify-content:space-between;padding:5px 0">
                                     <span style="color:var(--fg-muted,#6b7280)">{{ __('Total Cost') }}</span>
                                     <span style="font-weight:700;color:#d97706">{{ number_format($key->key_cost) }}
-                                        🪙</span>
+                                        coin</span>
                                 </div>
                             </div>
 
