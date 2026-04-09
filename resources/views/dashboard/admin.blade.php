@@ -541,70 +541,7 @@
                 </div>
             </div>
 
-            <!-- Coin Products - Full Width -->
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-md overflow-hidden">
-                <div
-                    class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-4 font-semibold text-lg flex items-center justify-between">
-                    <span>💎 {{ __('Top Coin Products') }}</span>
-                </div>
-                <div class="p-6">
-                    <div id="coinContent" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        @forelse($topCoinProducts as $item)
-                            <div
-                                class="flex justify-between items-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl border border-yellow-200 dark:border-yellow-800 hover:shadow-md transition-shadow">
-                                <div class="flex-1 min-w-0">
-                                    <p class="font-medium text-gray-900 dark:text-white truncate">
-                                        {{ $item['product']->name ?? __('Unknown') }}</p>
-                                    <p class="text-xs text-gray-500 mt-1">{{ number_format($item['revenue']) }}đ</p>
-                                </div>
-                                <div class="text-right flex-shrink-0 ml-3">
-                                    <p class="font-bold text-yellow-600 text-lg">
-                                        {{ number_format($item['sales_count']) }}</p>
-                                    <p class="text-xs text-gray-500">{{ __('sold') }}</p>
-                                </div>
-                            </div>
-                        @empty
-                            <div class="col-span-3 text-center py-12">
-                                <p class="text-gray-500">{{ __('No data available') }}</p>
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
 
-            <!-- Revenue Chart -->
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-100 dark:border-gray-700 shadow-md">
-                <div class="flex items-center justify-between mb-6">
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ __('Revenue Last 7 Days') }}</h3>
-                            <p class="text-sm text-gray-500">{{ __('Track recent revenue trends') }}</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                        </svg>
-                        <span class="text-sm font-medium text-green-700 dark:text-green-400">Xu hướng tăng
-                            trưởng</span>
-                    </div>
-                </div>
-                <div class="h-80">
-                    <canvas id="revenueChart"></canvas>
-                </div>
-            </div>
 
         </div>
     </div>
@@ -775,36 +712,7 @@
             }
         });
 
-        // Revenue Chart
-        new Chart(document.getElementById('revenueChart'), {
-            type: 'bar',
-            data: {
-                labels: @json($revenueChart->pluck('date')->map(fn($d) => \Carbon\Carbon::parse($d)->format('d/m'))),
-                datasets: [{
-                    label: 'Doanh thu',
-                    data: @json($revenueChart->pluck('revenue')),
-                    backgroundColor: chartColors.green,
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(0, 0, 0, 0.05)'
-                        }
-                    }
-                }
-            }
-        });
+
 
     </script>
 </x-app-layout>

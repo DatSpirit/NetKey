@@ -195,16 +195,6 @@ class AdminDashboardController extends Controller
                 ->sum('amount'),
         ];
 
-        // ===== BIỂU ĐỒ DOANH THU 7 NGÀY =====
-        $revenueChart = Transaction::select(
-            DB::raw('DATE(created_at) as date'),
-            DB::raw('SUM(CASE WHEN status = "success" THEN amount ELSE 0 END) as revenue'),
-            DB::raw('COUNT(CASE WHEN status = "success" THEN 1 END) as orders')
-        )
-            ->where('created_at', '>=', now()->subDays(7))
-            ->groupBy('date')
-            ->orderBy('date', 'asc')
-            ->get();
 
         // ===== THỐNG KÊ DÒNG TIỀN - DỮ LIỆU THỰC TẾ =====
 
@@ -258,22 +248,6 @@ class AdminDashboardController extends Controller
 
 
 
-        // Top 10 sản phẩm Coin (có coinkey_amount > 0)
-        $topCoinProducts = Transaction::select('product_id', DB::raw('COUNT(*) as sales_count'), DB::raw('SUM(amount) as revenue'))
-            ->where('status', 'success')
-            ->whereHas('product', function ($q) {
-                $q->where('coinkey_amount', '>', 0);
-            })
-            ->groupBy('product_id')
-            ->orderBy('sales_count', 'desc')
-            ->limit(10)
-            ->with('product')
-            ->get()
-            ->map(fn($item) => [
-                'product' => $item->product,
-                'sales_count' => $item->sales_count,
-                'revenue' => $item->revenue
-            ]);
 
 
         // Người có nhiều key nhất (từ ProductKey model)
@@ -331,7 +305,6 @@ class AdminDashboardController extends Controller
 
             // Thống kê giao dịch
             'transactionStats',
-            'revenueChart',
 
             // Thống kê dòng tiền
             'totalCash',
@@ -343,7 +316,6 @@ class AdminDashboardController extends Controller
             'totalCoinsDeposited',
             'remainingCoins',
             'totalCashSpent',
-            'topCoinProducts',
             'topKeyHolders',
             'combinedChartData'
         ));
