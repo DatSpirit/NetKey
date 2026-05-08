@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderCashNotification;
 use Exception;
 
 class OrderController extends Controller
@@ -38,9 +40,9 @@ class OrderController extends Controller
 
         // Khởi tạo PayOS SDK
         $this->payOS = new PayOS(
-            env('PAYOS_CLIENT_ID'),
-            env('PAYOS_API_KEY'),
-            env('PAYOS_CHECKSUM_KEY')
+            env('PAYOS_CLIENT_ID') ?? '',
+            env('PAYOS_API_KEY') ?? '',
+            env('PAYOS_CHECKSUM_KEY') ?? ''
         );
     }
     // CẦU NỐI (Public - Nhận request từ Route)
@@ -676,10 +678,21 @@ class OrderController extends Controller
                         ]);
 
                         \App\Models\KeyHistory::log($key->id, 'create', "Mua gói {$product->name}");
-                        Log::info("✅ Package key created (K)");
+                Log::info("✅ Package key created (K)");
                     }
                 }
             }
+
+            // --- GỬI EMAIL THÔNG BÁO (Dành cho thanh toán tiền mặt/PayOS) ---
+            if ($transaction->currency === 'VND' && $user && $user->email) {
+                try {
+                    Mail::to($user->email)->send(new OrderCashNotification($transaction));
+                    Log::info("📧 Order confirmation email sent to {$user->email} for Order #{$transaction->order_code}");
+                } catch (\Exception $mailEx) {
+                    Log::error("❌ Failed to send order email: " . $mailEx->getMessage());
+                }
+            }
+
         } catch (\Exception $e) {
             Log::error("❌ Fulfillment Error: " . $e->getMessage(), [
                 'order_code' => $transaction->order_code,

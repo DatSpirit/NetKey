@@ -9,6 +9,8 @@ use App\Models\Transaction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderCashNotification;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\KeyManagementService;
@@ -584,6 +586,17 @@ class WebhookController extends Controller
                     ]);
                 }
             }
+
+            // --- GỬI EMAIL THÔNG BÁO (Dành cho thanh toán PayOS/Tiền mặt) ---
+            if ($transaction->currency === 'VND' && $user && $user->email) {
+                try {
+                    Mail::to($user->email)->send(new OrderCashNotification($transaction));
+                    Log::info("📧 Webhook: Order confirmation email sent to {$user->email} for Order #{$transaction->order_code}");
+                } catch (\Exception $mailEx) {
+                    Log::error("❌ Webhook: Failed to send order email: " . $mailEx->getMessage());
+                }
+            }
+
         } catch (\Exception $e) {
             Log::error("❌ Fulfillment Error for Order {$transaction->order_code}", [
                 'error' => $e->getMessage(),
