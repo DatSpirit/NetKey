@@ -1,251 +1,112 @@
-### Quản Lý Tài Khoản (Account Management System)
+# NetKey - Hệ Thống Quản Lý Tài Khoản & Sản Phẩm Số
 
-Đây là hệ thống quản lý người dùng được xây dựng bằng **Laravel** và sử dụng cơ sở dữ liệu **MySQL/MariaDB**.
+Dự án **NetKey** là một hệ thống quản lý người dùng, sản phẩm số và giao dịch được xây dựng trên nền tảng **Laravel** và **Vite**. Hệ thống hỗ trợ quản lý Key, ví điện tử, và các gói dịch vụ đa dạng.
 
-Dưới đây là các bước cần thiết để thiết lập và chạy dự án trên máy cục bộ của bạn.
-
---- 
+---
 
 ## 1. Yêu Cầu Hệ Thống
 
-Để chạy ứng dụng này, bạn cần cài đặt các công cụ sau:
+Trước khi cài đặt, hãy đảm bảo máy tính của bạn đã có:
 
-- **Web Server & Database**: XAMPP (bao gồm Apache và MySQL/MariaDB) hoặc môi trường tương đương (WAMP, MAMP, Docker, v.v.).
+- **PHP**: Phiên bản >= 8.1
+- **Composer**: Trình quản lý thư viện PHP
+- **Node.js & NPM**: Phiên bản LTS (để build frontend)
+- **Cơ sở dữ liệu**: MySQL/MariaDB (hoặc SQLite để cài đặt nhanh)
+- **Git**: Để tải mã nguồn
 
-- **PHP**: Phiên bản PHP 8.x (Tùy thuộc vào phiên bản Laravel bạn đang dùng).
+---
 
-- **Composer**: Trình quản lý thư viện PHP.
+## 2. Các Bước Cài Đặt Thực Tế
 
-- **Git**: Dùng để clone mã nguồn.
+Thực hiện theo các bước dưới đây để thiết lập dự án thành công:
 
-
-
-# 1. Cài đặt Git
-Tác dụng: Dùng lệnh git clone để tải code từ GitHub.
-
-Lưu ý: Sau khi cài xong, phải khởi động lại Terminal để nhận lệnh.
-
-Bash
-
-# Kiểm tra phiên bản Git
+### Bước 2.1: Tải Mã Nguồn
 ```bash
-git --version
+git clone https://github.com/DatSpirit/NetKey.git
+cd NetKey
 ```
 
-# 2. Cài đặt Node.js & NPM
-Tác dụng: Biên dịch giao diện (Frontend), chạy Vite/Laravel Mix.
-
-Phiên bản khuyến nghị: v24.x (LTS).
-
-Bash
-
-# Kiểm tra Node.js
-
+### Bước 2.2: Cài Đặt Thư Viện (Backend & Frontend)
 ```bash
-node -v
-npm -v
-```
-
-
-# 3. Web Server & PHP (XAMPP Setup)
-
-3.1. Cài đặt XAMPP
-
-Cài đặt vào đường dẫn mặc định: C:\xampp.
-
-Mở XAMPP Control Panel với quyền Administrator.
-
-3.2. Cấu hình Quan Trọng (php.ini) 
-
-Đây là bước sửa lỗi The zip extension is missing mà chúng ta đã gặp:
-
-Mở file C:\xampp\php\php.ini.
-
-Tìm và bỏ dấu ; (uncomment) ở các dòng sau:
-
-Ini, TOML
-
-extension=zip
-extension=fileinfo
-extension=intl
-extension=gd
-
-
-# 4. Quản Lý Thư Viện PHP (Composer)
-Tải file Composer-Setup.exe và trỏ đường dẫn PHP về C:\xampp\php\php.exe.
-
-Cách sửa lỗi "Fatal Error" khi cài thư viện:
-Nếu thư mục vendor bị lỗi hoặc tải thiếu, cần xóa sạch và cài lại:
-
-DOS
-
-# Cửa sổ CMD Windows
-
-```bash
-cd C:\Project\account_management
-rd /s /q vendor
+# Cài đặt thư viện PHP
 composer install
+
+# Nếu gặp lỗi "Class not found" hoặc treo ở bước autoload, hãy chạy:
+composer dump-autoload
+
+# Cài đặt thư viện Node.js
+npm install
 ```
----
 
+### Bước 2.3: Cấu Hình Môi Trường (.env)
+1. Tạo file cấu hình:
+   ```bash
+   cp .env.example .env
+   ```
+2. Tạo khóa ứng dụng:
+   ```bash
+   php artisan key:generate
+   ```
+3. Cấu hình Database trong `.env`:
+   - **Cách 1: Sử dụng SQLite (Nhanh nhất)**
+     ```env
+     DB_CONNECTION=sqlite
+     ```
+     *(Laravel sẽ tự động tạo file database.sqlite nếu chưa có)*
+   - **Cách 2: Sử dụng MySQL (XAMPP/Docker)**
+     ```env
+     DB_CONNECTION=mysql
+     DB_HOST=127.0.0.1
+     DB_PORT=3306
+     DB_DATABASE=ten_database_cua_ban
+     DB_USERNAME=root
+     DB_PASSWORD=
+     ```
 
-## 2. Thiết Lập Môi Trường Cục Bộ
-
-# 2.1. Clone Dự Án
-
-- Mở Git Bash hoặc Command Prompt và thực hiện lệnh sau để tải mã nguồn về:
-
+### Bước 2.4: Build Giao Diện (Bắt buộc)
+Bước này cực kỳ quan trọng để giao diện hiển thị đúng (CSS/JS):
 ```bash
-git clone https://github.com/DatSpirit/account_management.git
-```
----
-
-# 2.2. Khởi động Web Server và Database
-
-1. Mở **XAMPP Control Panel**
-2. Nhấn **Start Apache**
-3. Nhấn **Start MySQL**
-
----
-
-# 2.3. Cài đặt các Thư viện PHP
-Trong thư mục dự án bạn tải về, chạy lệnh Composer để tải các dependency cần thiết:
-
-```bash
-composer install
+npm run build
 ```
 
----
-
-# 2.4. Tạo Tệp Cấu Hình Môi Trường (.env)
-
-- Tạo một bản sao của tệp mẫu và đổi tên:
-
-## Windows
-```bash
-copy .env.example .env
-```
-
-Hoặc: 
-
-## Linux/Mac/Git Bash
-```bash
-cp .env.example .env
-```
-
-- Sau đó, tạo khóa ứng dụng (Application Key):
-
-```bash
-php artisan key:generate
-```
-
----
-
-## 3. Cấu Hình Cơ Sở Dữ Liệu (Database)
-
-# 3.1. Cấu hình Kết nối trong `.env`
-
-Mở tệp .env và cập nhật các thông số kết nối cơ sở dữ liệu:  
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-
-DB_DATABASE=your_database_name
-DB_USERNAME=root
-DB_PASSWORD=
-```
-
-> 🔹 Nếu dùng XAMPP mặc định → **username: root**, **password để trống**
-
----
-
-# 3.2. Chạy Migration và Seeder
-
-Nếu muốn dùng tài khoản Admin mẫu → mở:
-
-```
-database/seeders/UserSeeder.php
-```
-
-→ Bỏ comment tài khoản Admin.
-
-Chạy migration + seeder:
-
+### Bước 2.5: Khởi Tạo Cơ Sở Dữ Liệu & Dữ Liệu Mẫu
+Chạy lệnh migrate kèm seeder để có sẵn tài khoản Admin và dữ liệu mẫu:
 ```bash
 php artisan migrate --seed
 ```
+*Lưu ý: Nếu dùng SQLite, chọn "Yes" khi được hỏi có muốn tạo file database không.*
 
-Sẽ hiện:
-
-```
-Would you like to create it? (yes/no) [yes]
-```
-
-Nhập:
-
-```
-yes
-```
-
----
-
-- Nếu bạn chạy php artisan migrate --seed thành công.
-- Bạn có thể sử dụng thông tin đăng nhập (Admin) mặc định để kiểm tra khi set-up xong.
-
-# 3.3. (Tùy chọn) Tạo Storage Link
-- Để ứng dụng có sử dụng lưu trữ file, bạn cần tạo liên kết tượng trưng (symlink):
-
+### Bước 2.6: Tạo Liên Kết Lưu Trữ
 ```bash
 php artisan storage:link
 ```
 
 ---
 
-# 3.4 Cài đặt các gói phụ thuộc frontend
-- Dùng lệnh:
-```bash
-npm install
-npm run build
-composer dump-autoload
-```
+## 3. Chạy Ứng Dụng
 
----
-
-## 4. Chạy Ứng Dụng
-Sau khi hoàn tất các bước trên, bạn có thể chạy ứng dụng theo hai cách:
-
-# Sử dụng Server Laravel tích hợp 
-
+Sau khi hoàn tất, khởi động server:
 ```bash
 php artisan serve
 ```
-
-Truy cập:
-
-```
-http://127.0.0.1:8000
-```
+Truy cập ứng dụng tại: [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ---
 
-## 5. Lưu Ý
-Nên kiểm tra lại tạo tài khoản Admin tránh bị trùng sẽ báo lỗi.
+## 4. Các Lưu Ý Quan Trọng
 
-Xóa cache nếu lỗi cấu hình:
-
-```bash
-php artisan config:clear
-php artisan cache:clear
-```
+- **Tài khoản Admin:** Sau khi chạy `--seed`, hãy kiểm tra file `database/seeders/UserSeeder.php` để xem thông tin đăng nhập mặc định.
+- **Lỗi CSS/JS:** Nếu trang web không có định dạng, hãy chạy lại lệnh `npm run build`.
+- **Dữ liệu mẫu:** Seeder sẽ tạo ra hơn 200 giao dịch mẫu, các gói VIP và Key để bạn có thể trải nghiệm đầy đủ các tính năng của Dashboard ngay lập tức.
+- **Xóa Cache (nếu cần):**
+  ```bash
+  php artisan config:clear
+  php artisan cache:clear
+  ```
 
 ---
 
-# Chúc bạn thành công! Nếu gặp bất kỳ lỗi nào, vui lòng kiểm tra lại: 
-- File `.env`  
-- Apache/MySQL đã chạy chưa  
-- Phiên bản PHP  
-- Đã migrate database chưa  
+## 5. Đóng Góp & Hỗ Trợ
+Nếu bạn gặp bất kỳ lỗi nào trong quá trình cài đặt, vui lòng kiểm tra lại phiên bản PHP và file `.env`.
 
-
+**Chúc bạn trải nghiệm NetKey thành công!**
